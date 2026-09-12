@@ -150,7 +150,7 @@ const GIROS = [
       { m: 'PATCH', p: '/v1/membresias/{id}', d: 'Renueva o cambia el estado de una membresía.', c: [200, 404] },
       { m: 'DELETE', p: '/v1/clases/{id}', d: 'Cancela una clase programada.', c: [204, 404] }
     ],
-    j: { r: 'POST /v1/socios', b: { nombre: 'Diego Benítez', correo: 'diego@correo.com', telefono: '7771234567', plan: 'mensual' } }
+    j: { r: 'POST /v1/socios', b: { nombre: 'Ana Rivera', correo: 'ana.rivera@correo.com', telefono: '7771234567', plan: 'mensual' } }
   },
   {
     id: 'cine', e: '🎬', n: 'Cine', s: 'Cartelera, funciones y venta de boletos.',
@@ -645,7 +645,7 @@ const SIM_R = ['mascotas', 'citas', 'socios', 'boletos', 'libros', 'pedidos', 'p
 const SIM_EJ = {
   mascotas: { nombre: 'Firulais', especie: 'perro', edad: 4 },
   citas: { pacienteId: 55, fecha: '2026-09-18T10:30:00', motivo: 'Consulta' },
-  socios: { nombre: 'Diego Benítez', plan: 'mensual', activo: true },
+  socios: { nombre: 'Ana Rivera', plan: 'mensual', activo: true },
   boletos: { funcionId: 88, asiento: 'F12', precio: 95 },
   libros: { titulo: 'Clean Code', autor: 'Robert C. Martin', disponible: true },
   pedidos: { mesaId: 7, total: 245.5, estado: 'en preparación' },
