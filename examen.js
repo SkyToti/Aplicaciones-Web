@@ -63,7 +63,10 @@
 
   const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
   const app = () => $('#examenApp');
-  const sonido = fn => { if (window.Sonido) Sonido[fn](); };
+  /* Un sonido nunca debe poder tumbar el examen. Con un sonido.js viejo en caché
+     (sin tictac ni alarma) el error cortaba actualizarReloj antes de entregar(true)
+     y el simulacro se quedaba en 0:00 para siempre. */
+  const sonido = fn => { try { if (window.Sonido && typeof Sonido[fn] === 'function') Sonido[fn](); } catch (e) { } };
 
   /* Simulacro: 10 preguntas repartidas entre todos los temas, no al azar
      puro. Así no te tocan siete de códigos y ninguna de capas. */
