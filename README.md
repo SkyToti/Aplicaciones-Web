@@ -56,6 +56,19 @@ HTML, CSS y JavaScript puros: sin frameworks, sin dependencias y sin paso de com
 | `armar.js` | El taller «Arma tu propia API». |
 | `sonido.js` | Los sonidos, generados en el navegador. |
 | `styles.css` | Todos los estilos, incluida la hoja imprimible. |
+| `versionar.js` | Le pone `?v=<huella>` a cada CSS y JS en las páginas. **Se corre después de cambiar cualquier `.css` o `.js`, antes del commit.** |
+
+### Por qué existe `versionar.js`
+
+GitHub Pages deja que el navegador guarde cada archivo 10 minutos. Si se publica un HTML nuevo y el navegador
+todavía tiene el `styles.css` viejo, la página nueva se pinta con estilos que no conocen sus clases y sale sin
+diseño: links azules subrayados y todo en un solo renglón. Pasó en la publicación del sitio de 6 páginas.
+Con la huella en la URL, un archivo que cambió es otra dirección para el navegador, y uno que no cambió se sigue
+aprovechando de la caché.
+
+```bash
+node versionar.js
+```
 
 ### Ver en local
 
