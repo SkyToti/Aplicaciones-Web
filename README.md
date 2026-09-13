@@ -38,9 +38,11 @@ JSON de ejemplo, códigos esperados y diagrama de capas.
   (siseo, cuerpo y gotas sueltas al azar) generada con Web Audio — cero archivos,
   cero descargas, cero derechos de autor.
 - **Iconos de [Lucide](https://lucide.dev)** (ISC), no emojis.
-- **Hoja imprimible**: el botón «Imprimir la chuleta» saca un PDF de 2 páginas con
-  lo mínimo, los métodos, los códigos, las reglas y el diagrama. El resto de la
-  página no se imprime.
+- **Hoja imprimible estilo apuntes**: el botón «Imprimir la chuleta» saca un PDF
+  de 2 páginas con papel de cuadrícula, resaltador, washi tape, notas adhesivas,
+  anotaciones a mano y el diagrama de capas dibujado. El resto de la página no se
+  imprime. Lleva , que es lo que hace que los fondos
+  de color salgan de verdad en el PDF.
 - El avance se guarda en `localStorage`, en ese dispositivo.
 - Diseño estilo cuaderno: tinta gruesa, sombras duras, color plano.
   Cada método HTTP y cada familia de códigos tiene su color, y siempre el mismo.

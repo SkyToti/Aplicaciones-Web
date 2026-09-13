@@ -799,39 +799,112 @@ function progreso() {
 function construirHoja() {
   const sinHtml = s => String(s).replace(/<[^>]+>/g, '');
   const claves = CODIGOS.filter(c => c.star);
+  const tonos = ['az', 've', 'am', 'mo', 'ro'];
+
+  // diagrama de capas, dibujado (no una lista con flechas de texto)
+  const cajas = LAYERS.map((l, i) => {
+    const x = 6 + i * 152, col = ['#cfe0ff', '#c8f0d8', '#fff1c9', '#e7e0ff', '#ffd9da'][i];
+    return `
+      <rect x="${x}" y="26" width="132" height="62" rx="13" fill="${col}" stroke="#1a1712" stroke-width="2.4"/>
+      <text x="${x + 66}" y="52" text-anchor="middle" font-size="12" font-weight="800" fill="#1a1712">${l.n}</text>
+      <text x="${x + 66}" y="70" text-anchor="middle" font-size="9.5" fill="#3d3a33">${l.s.length > 27 ? l.s.slice(0, 25) + '…' : l.s}</text>
+      ${i < 4 ? `<path d="M${x + 136} 57 h12" stroke="#1a1712" stroke-width="2.4" marker-end="url(#pta)"/>` : ''}`;
+  }).join('');
+
   $('#hojaImpresa').innerHTML = `
-    <header class="hi-h">
-      <h1>Repaso API REST — chuleta</h1>
-      <p>Aplicaciones Web · UTEZ &nbsp;·&nbsp; skytoti.github.io/Aplicaciones-Web</p>
+  <!-- ===================== HOJA 1 ===================== -->
+  <div class="hi-pg">
+    <span class="hi-tape t1"></span><span class="hi-tape t2"></span>
+
+    <header class="hi-head">
+      <h1>Repaso <span class="hl am">API REST</span></h1>
+      <p class="hi-sub">Aplicaciones Web · UTEZ</p>
+      <p class="hi-mano">todo lo que cae, en dos hojas ✦</p>
     </header>
 
-    <h2>Lo mínimo que hay que saberse</h2>
-    <ul class="hi-cols">${CHEAT.map(c => `<li><b>${c.t}.</b> ${sinHtml(c.d)}</li>`).join('')}</ul>
+    <section class="hi-sec">
+      <h2><span class="hi-tab az"></span>Lo mínimo que hay que saberse</h2>
+      <div class="hi-notas">
+        ${CHEAT.map((c, i) => `<div class="hi-nota ${tonos[i % 5]}"><b>${c.t}</b>${sinHtml(c.d)}</div>`).join('')}
+      </div>
+    </section>
 
-    <h2>Métodos HTTP</h2>
-    <table class="hi-t">
-      <tr><th>Método</th><th>Qué hace</th><th>Seguro</th><th>Idemp.</th><th>Éxito</th></tr>
-      ${METODOS.map(m => `<tr><td><b>${m.m}</b></td><td>${m.t}</td><td>${m.safe ? 'sí' : 'no'}</td><td>${m.idem ? 'sí' : 'no'}</td><td>${m.c}</td></tr>`).join('')}
-    </table>
-    <p class="hi-nota"><b>Seguro</b> = no modifica nada. <b>Idempotente</b> = repetirlo deja el mismo resultado.
-    <b>PUT</b> reemplaza completo, <b>PATCH</b> solo lo que mandes.</p>
+    <section class="hi-sec">
+      <h2><span class="hi-tab ve"></span>Los métodos HTTP</h2>
+      <table class="hi-t hi-met">
+        <tr><th>Método</th><th>Qué hace</th><th>Seguro</th><th>Idemp.</th><th>Éxito</th></tr>
+        ${METODOS.map(m => `<tr>
+          <td><span class="hi-pill" style="background:${m.bg}">${m.m}</span></td>
+          <td>${m.t}</td><td>${m.safe ? 'sí' : 'no'}</td><td>${m.idem ? 'sí' : 'no'}</td>
+          <td><b>${m.c}</b></td></tr>`).join('')}
+      </table>
+      <p class="hi-mano hi-flecha">el método es el <u>verbo</u>, la URL es el <u>sustantivo</u></p>
+      <div class="hi-sticky">
+        <b>PUT vs PATCH</b>
+        PUT reemplaza el recurso <u>completo</u> y lo que no mandes se pierde.
+        PATCH cambia <u>solo</u> los campos que mandaste.
+      </div>
+    </section>
 
-    <h2>Las 5 familias</h2>
-    <ul class="hi-fam">${FAMILIAS.map(f => `<li><b>${f.n}</b> ${f.t} — ${sinHtml(f.d)} <i>${f.q}</i></li>`).join('')}</ul>
+    <section class="hi-sec">
+      <h2><span class="hi-tab am"></span>Las 5 familias</h2>
+      <div class="hi-fams">
+        ${FAMILIAS.map(f => `<div class="hi-fam" style="background:${f.bg}">
+          <b>${f.n}</b><span>${f.t}</span><i>${f.q}</i></div>`).join('')}
+      </div>
+      <p class="hi-mano">el <b>4</b> es «fallaste tú» · el <b>5</b> es «se cayó el servidor»</p>
+    </section>
+  </div>
 
-    <h2>Los códigos que caen</h2>
-    <table class="hi-t">
-      ${claves.map(c => `<tr><td><b>${c.c}</b></td><td>${c.n}</td><td>${sinHtml(c.corto)}</td></tr>`).join('')}
-    </table>
+  <!-- ===================== HOJA 2 ===================== -->
+  <div class="hi-pg">
+    <span class="hi-tape t3"></span>
 
-    <h2>Reglas de nombrado</h2>
-    <ul class="hi-cols">${RULES.map(r => `<li><b>${r.t}:</b> sí <code>${r.g}</code> &nbsp;·&nbsp; no <code>${r.b}</code></li>`).join('')}</ul>
+    <section class="hi-sec">
+      <h2><span class="hi-tab ro"></span>Los códigos que caen</h2>
+      <table class="hi-t hi-cod">
+        ${claves.map(c => `<tr>
+          <td><span class="hi-cod-n" style="background:${famBg(c.f)}">${c.c}</span></td>
+          <td><b>${c.n}</b></td><td>${sinHtml(c.corto)}</td></tr>`).join('')}
+      </table>
+      <p class="hi-mano hi-flecha">colección vacía = <b>200 con [ ]</b>, nunca 404</p>
+    </section>
 
-    <h2>Arquitectura por capas</h2>
-    <p class="hi-capas">${LAYERS.map(l => l.n).join('  →  ')}</p>
-    <ul class="hi-cols">${LAYERS.map(l => `<li><b>${l.n}:</b> ${sinHtml(l.d).split('.')[0]}.</li>`).join('')}</ul>
+    <section class="hi-sec">
+      <h2><span class="hi-tab mo"></span>Reglas de nombrado</h2>
+      <div class="hi-reglas">
+        ${RULES.map(r => `<div class="hi-regla">
+          <b>${r.t}</b>
+          <span class="si">sí &nbsp;<code>${r.g}</code></span>
+          <span class="no">no &nbsp;<code>${r.b}</code></span>
+        </div>`).join('')}
+      </div>
+    </section>
 
-    <p class="hi-pie">La entrega va en la libreta, con foto, y <b>firmada</b>.</p>`;
+    <section class="hi-sec">
+      <h2><span class="hi-tab az"></span>Arquitectura por capas</h2>
+      <svg class="hi-svg" viewBox="0 0 774 132" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="pta" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+          <path d="M0 0 L7 3.5 L0 7 z" fill="#1a1712"/></marker></defs>
+        <text x="6" y="16" font-size="11" font-weight="800" fill="#1a1712">la petición baja →</text>
+        ${cajas}
+        <path d="M740 96 q0 22 -22 22 H30 q-22 0 -22 -18" stroke="#1a1712" stroke-width="2.4"
+              fill="none" stroke-dasharray="6 5" marker-end="url(#pta)"/>
+        <text x="387" y="128" text-anchor="middle" font-size="10.5" font-weight="700" fill="#3d3a33">
+          ← y la respuesta regresa por el mismo camino</text>
+      </svg>
+      <div class="hi-caps">
+        ${LAYERS.map(l => `<div><b>${l.n}:</b> ${sinHtml(l.d).split('.')[0]}.</div>`).join('')}
+      </div>
+    </section>
+
+    <div class="hi-sticky final">
+      <b>No se te olvide</b>
+      La entrega va <u>en la libreta</u>, con fotos, y <u>FIRMADA</u>.
+      Mínimo 2 recursos en plural · 5 endpoints · 1 JSON · códigos · diagrama.
+      <span class="hi-pie">skytoti.github.io/Aplicaciones-Web</span>
+    </div>
+  </div>`;
 }
 
 /* ---------- iconos (Lucide) ----------
@@ -927,6 +1000,11 @@ document.addEventListener('DOMContentLoaded', () => {
   renderLayers(); renderBuilder(); nuevaRonda(); nuevoOrden();
   giroI = store.get('giro', 0); renderGiroTabs(); renderGiro(); renderCheck();
   initSim(); initNav(); initCd(); initSonido(); construirHoja(); progreso(); initIconos();
+
+  // Caveat solo se usa en la hoja impresa, y el navegador no descarga fuentes
+  // de elementos ocultos. Sin esto, quien imprima antes de que cargue saca las
+  // anotaciones con la letra de repuesto del sistema.
+  try { if (document.fonts && document.fonts.load) document.fonts.load('700 13pt Caveat'); } catch (e) { }
 
   const alImprimir = () => { construirHoja(); window.print(); };
   $('#imprimir').addEventListener('click', alImprimir);

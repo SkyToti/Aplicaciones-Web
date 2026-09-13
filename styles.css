@@ -648,35 +648,150 @@ tr:last-child td{border-bottom:0}
 #hojaImpresa{display:none}
 
 @media print{
-  @page{margin:11mm}
-  html,body{background:#fff !important;color:#000 !important}
-  body{background-image:none !important;font-size:10pt;line-height:1.42}
-  .bar,main,.foot,.up,.snd-panel{display:none !important}
-  #hojaImpresa{display:block !important;font-family:var(--body)}
+  /* SIN ESTO EL NAVEGADOR IMPRIME TODOS LOS FONDOS EN BLANCO y la hoja
+     bonita sale en blanco y negro. Es la regla que hace que funcione. */
+  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
 
-  #hojaImpresa h1{font-size:17pt;margin:0 0 2pt}
-  #hojaImpresa h2{
-    font-size:11pt;margin:11pt 0 4pt;padding-bottom:2pt;
-    border-bottom:1.5pt solid #000;break-after:avoid;page-break-after:avoid;
+  /* La hoja SIEMPRE se imprime en claro. Sin esto, quien tenga el modo
+     oscuro encendido saca la tabla con bandas negras: las variables del tema
+     se heredan tal cual al imprimir. */
+  html{
+    --paper:#fdf8ec;--paper-2:#efe7d5;--card:#fffdf7;
+    --ink:#1a1712;--ink-2:#5d564a;--ink-3:#8b8375;--line:#1a1712;--shadow:transparent;
   }
-  .hi-h{border-bottom:2.5pt solid #000;padding-bottom:5pt;margin-bottom:4pt}
-  .hi-h p{margin:0;font-size:8.5pt;color:#444}
+  @page{margin:9mm}
+  /* el fondo va en html: Chrome lo pinta en TODAS las páginas, no solo en la primera */
+  html{
+    background-color:#fdf8ec !important;
+    background-image:radial-gradient(#d5cab0 1.1px, transparent 1.1px) !important;
+    background-size:15pt 15pt !important;
+  }
+  body{background:transparent !important}
+  body{background-image:none !important;font-size:9.5pt;line-height:1.4;color:#1a1712}
+  .bar,main,.foot,.up,.snd-panel{display:none !important}
+  #hojaImpresa{display:block !important;font-family:"Nunito",sans-serif}
 
-  #hojaImpresa ul{margin:0;padding-left:13pt}
-  #hojaImpresa li{margin-bottom:2.5pt;break-inside:avoid;page-break-inside:avoid}
-  .hi-cols{columns:2;column-gap:14pt}
-  .hi-fam li{list-style:none;margin-left:-13pt}
-  .hi-fam i{color:#444}
+  /* ---------- la hoja ---------- */
+  /* padding-bottom 0 y sin margen final: la sombra y el giro de la nota
+     verde desbordaban 3 pt y eso creaba una tercera hoja en blanco. */
+  .hi-pg{position:relative;padding:9pt 2pt 0;break-after:page;page-break-after:always}
+  .hi-pg:last-child{padding-bottom:0;break-after:auto;page-break-after:auto}
+  .hi-pg:last-child>*:last-child{margin-bottom:0}
+  .hi-pg:last-child{break-after:auto;page-break-after:auto;margin-bottom:0}
 
-  .hi-t{width:100%;border-collapse:collapse;font-size:9pt;margin-top:2pt}
-  .hi-t td,.hi-t th{border:.75pt solid #999;padding:2.5pt 5pt;text-align:left}
-  .hi-t th{background:#eee;font-size:8pt;text-transform:uppercase;letter-spacing:.04em}
+  .hi-tape{
+    position:absolute;width:62pt;height:14pt;background:#f7c33f;
+    border:.9pt solid rgba(26,23,18,.35);opacity:.92;
+  }
+  .t1{top:0;left:26pt;transform:rotate(-3.5deg)}
+  .t2{top:0;right:26pt;transform:rotate(2.5deg)}
+  .t3{top:0;right:40pt;transform:rotate(-2deg)}
+
+  /* ---------- cabecera ---------- */
+  .hi-head{margin-bottom:10pt}
+  .hi-head h1{font-family:"Fredoka",sans-serif;font-size:24pt;font-weight:700;margin:0;letter-spacing:-.01em}
+  .hi-sub{margin:1pt 0 0;font-size:8.5pt;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#6b6455}
+  .hi-mano{
+    font-family:"Caveat",cursive;font-size:13pt;font-weight:700;
+    color:#2f6fed;margin:3pt 0 0;
+  }
+  .hi-flecha::before{content:"→ ";font-family:"Nunito",sans-serif;font-weight:800}
+
+  /* resaltador: color solo en la parte baja del texto, como un plumón */
+  .hl{padding:0 2pt;border-radius:2pt}
+  .hl.am{background:linear-gradient(transparent 48%,#ffd94d 48%,#ffd94d 93%,transparent 93%)}
+  .hl.ve{background:linear-gradient(transparent 48%,#9be7bb 48%,#9be7bb 93%,transparent 93%)}
+  .hl.ro{background:linear-gradient(transparent 48%,#ffb3c6 48%,#ffb3c6 93%,transparent 93%)}
+
+  /* ---------- secciones ---------- */
+  /* Las secciones SÍ pueden partirse entre páginas: con break-inside:avoid
+     una sección larga saltaba entera y dejaba media hoja en blanco. Lo que no
+     se parte es cada tarjeta, fila y nota. */
+  .hi-sec{margin-bottom:8pt}
+  #hojaImpresa h2{
+    font-family:"Fredoka",sans-serif;font-size:12.5pt;font-weight:600;
+    margin:0 0 5pt;display:flex;align-items:center;gap:5pt;
+    border-bottom:1.6pt solid #1a1712;padding-bottom:3pt;
+  }
+  .hi-tab{width:13pt;height:13pt;border-radius:4pt;border:1.4pt solid #1a1712;display:inline-block}
+  .hi-tab.az{background:#cfe0ff}.hi-tab.ve{background:#c8f0d8}.hi-tab.am{background:#fff1c9}
+  .hi-tab.mo{background:#e7e0ff}.hi-tab.ro{background:#ffd9da}
+
+  /* ---------- notitas de la chuleta ---------- */
+  .hi-notas{columns:2;column-gap:9pt}
+  .hi-nota{
+    break-inside:avoid;page-break-inside:avoid;
+    border:1.2pt solid #1a1712;border-left-width:4.5pt;border-radius:6pt;
+    padding:4.5pt 6pt;margin-bottom:5pt;font-size:8.8pt;line-height:1.35;background:#fffdf7;
+  }
+  .hi-nota b{display:block;font-size:9.3pt;margin-bottom:1pt}
+  .hi-nota.az{border-left-color:#2f6fed;background:#eef4ff}
+  .hi-nota.ve{border-left-color:#12a150;background:#edfbf3}
+  .hi-nota.am{border-left-color:#e0a80f;background:#fffaea}
+  .hi-nota.mo{border-left-color:#7c5cff;background:#f4f1ff}
+  .hi-nota.ro{border-left-color:#e0454b;background:#fff0f1}
+
+  /* ---------- tablas ---------- */
+  .hi-t{width:100%;border-collapse:separate;border-spacing:0 2.5pt;font-size:9pt}
+  .hi-t th{
+    text-align:left;font-size:7.6pt;text-transform:uppercase;letter-spacing:.06em;
+    color:#6b6455;padding:0 5pt 1pt;background:transparent !important;border:0 !important;
+  }
+  .hi-t td{background:#fffdf7;border-top:1.2pt solid #1a1712;border-bottom:1.2pt solid #1a1712;padding:3pt 5pt;vertical-align:middle}
+  .hi-t td:first-child{border-left:1.2pt solid #1a1712;border-radius:6pt 0 0 6pt}
+  .hi-t td:last-child{border-right:1.2pt solid #1a1712;border-radius:0 6pt 6pt 0}
   .hi-t tr{break-inside:avoid;page-break-inside:avoid}
+  .hi-pill{
+    display:inline-block;font-family:var(--mono);font-size:8pt;font-weight:800;
+    padding:1.5pt 6pt;border:1.2pt solid #1a1712;border-radius:5pt;
+  }
+  .hi-met td:nth-child(3),.hi-met td:nth-child(4){text-align:center;font-weight:700}
+  .hi-met td:last-child{font-family:var(--mono);text-align:center}
+  .hi-cod-n{
+    display:inline-block;font-family:var(--mono);font-size:10pt;font-weight:800;
+    padding:1.5pt 7pt;border:1.2pt solid #1a1712;border-radius:5pt;
+  }
+  .hi-cod td:first-child{width:46pt}
+  .hi-cod td:nth-child(2){width:92pt}
 
-  #hojaImpresa code{font-family:var(--mono);font-size:8.6pt;background:#f0f0f0;padding:0 2pt;border-radius:2pt}
-  .hi-nota{font-size:8.5pt;color:#333;margin:4pt 0 0}
-  .hi-capas{font-weight:800;font-size:10.5pt;margin:2pt 0 5pt;letter-spacing:.01em}
-  .hi-pie{margin-top:10pt;padding-top:5pt;border-top:1pt dashed #999;font-size:9pt}
+  /* ---------- notas adhesivas ---------- */
+  .hi-sticky{
+    background:#fff6a8;border:1.2pt solid #c9ad2e;border-radius:2pt;
+    padding:6pt 8pt;margin-top:7pt;font-size:8.7pt;line-height:1.4;
+    transform:rotate(-.9deg);box-shadow:2.5pt 2.5pt 0 rgba(26,23,18,.13);
+    break-inside:avoid;page-break-inside:avoid;
+  }
+  .hi-sticky b{display:block;font-family:"Fredoka",sans-serif;font-size:10pt;margin-bottom:2pt}
+  .hi-sticky.final{background:#c8f0d8;border-color:#4f9a6d;transform:rotate(.8deg);margin-top:7pt}
+
+  /* ---------- familias ---------- */
+  .hi-fams{display:flex;gap:4pt}
+  .hi-fam{
+    flex:1;border:1.3pt solid #1a1712;border-radius:6pt;padding:4.5pt 4pt;text-align:center;
+    break-inside:avoid;
+  }
+  .hi-fam b{display:block;font-family:var(--mono);font-size:12pt;font-weight:800;line-height:1}
+  .hi-fam span{display:block;font-size:7.6pt;font-weight:800;margin:1.5pt 0}
+  .hi-fam i{display:block;font-size:7.4pt;color:#3d3a33}
+
+  /* ---------- reglas ---------- */
+  .hi-reglas{columns:2;column-gap:10pt}
+  .hi-regla{
+    break-inside:avoid;page-break-inside:avoid;margin-bottom:5pt;
+    border-left:3pt solid #1a1712;padding-left:5pt;
+  }
+  .hi-regla b{display:block;font-size:9pt;margin-bottom:1pt}
+  .hi-regla span{display:block;font-size:8.2pt;line-height:1.35}
+  .hi-regla .si{color:#0d7a3c}
+  .hi-regla .no{color:#b3262c}
+  #hojaImpresa code{font-family:var(--mono);font-size:8.1pt;background:rgba(26,23,18,.07);padding:0 2.5pt;border-radius:2.5pt}
+
+  /* ---------- diagrama ---------- */
+  .hi-svg{width:100%;height:auto;display:block;margin:1pt 0 3pt;font-family:"Nunito",sans-serif}
+  .hi-caps{columns:2;column-gap:10pt;font-size:8.4pt;line-height:1.4}
+  .hi-caps div{break-inside:avoid;margin-bottom:2pt}
+
+  .hi-pie{display:block;font-family:"Caveat",cursive;font-size:11pt;font-weight:700;color:#4a6b55;margin-top:3pt}
 }
 
 @media (prefers-reduced-motion:reduce){
