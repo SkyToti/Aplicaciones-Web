@@ -42,13 +42,31 @@
       <a href="#diseno" class="tab">Diseño</a>
       <a href="#capas" class="tab">Capas</a>
       <a href="#giros" class="tab">Los 6 giros</a>
+      <a href="#armar" class="tab">Arma la tuya</a>
       <a href="#quiz" class="tab">Quiz</a>
     </nav>
 
     <div class="bar-right">
       <div class="prog" title="Tu avance"><div class="prog-fill" id="progFill"></div><span id="progPct">0%</span></div>
+      <button class="icon-btn" id="sndBtn" aria-label="Sonido">🔇</button>
       <button class="icon-btn" id="themeBtn" aria-label="Cambiar tema">🌙</button>
     </div>
+  </div>
+
+  <div class="snd-panel hidden" id="sndPanel">
+    <div class="snd-row">
+      <span>Efectos de sonido</span>
+      <button class="sw" id="swFx" role="switch" aria-checked="false"><i></i></button>
+    </div>
+    <div class="snd-row">
+      <span>Lluvia para concentrarse</span>
+      <button class="sw" id="swRain" role="switch" aria-checked="false"><i></i></button>
+    </div>
+    <div class="snd-row">
+      <span>Volumen</span>
+      <input type="range" id="sndVol" min="0" max="1" step="0.05" value="0.5">
+    </div>
+    <p class="snd-nota">Todo se genera aquí mismo: no descarga nada ni usa datos.</p>
   </div>
 </header>
 
@@ -305,9 +323,56 @@
   <div class="check" id="check"></div>
 </section>
 
-<!-- ================= 12 · QUIZ ================= -->
+<!-- ================= 12 · ARMA LA TUYA ================= -->
+<section id="armar" class="sec">
+  <header class="sec-h"><span class="num">12</span><h2>Arma tu propia API</h2></header>
+  <p class="sec-p">Copiar un giro te saca del apuro; <b>diseñar el tuyo</b> es lo que te deja pasar el examen. Llena esto y al final te doy la hoja lista para pasarla a la libreta.</p>
+
+  <div class="armar">
+    <div class="ar-paso">
+      <h4><span>1</span> ¿De qué es tu API?</h4>
+      <div class="ar-fila">
+        <select id="arGiro"></select>
+        <input type="text" id="arGiroNombre" class="hidden" placeholder="Escribe el giro" autocapitalize="off">
+      </div>
+    </div>
+
+    <div class="ar-paso">
+      <h4><span>2</span> Tus recursos, en plural</h4>
+      <p class="lead">Mínimo dos. Sin verbos, en minúsculas y terminados en <i>s</i>.</p>
+      <div id="arRecursos"></div>
+    </div>
+
+    <div class="ar-paso">
+      <h4><span>3</span> Tus 5 endpoints</h4>
+      <p class="lead">Elige método, recurso y si lleva id. Te digo al momento qué códigos devuelve y si algo no cuadra.</p>
+      <div id="arEps"></div>
+    </div>
+
+    <div class="ar-paso">
+      <h4><span>4</span> Un JSON de ejemplo</h4>
+      <div class="ar-fila">
+        <button class="btn btn-ghost btn-s" id="arGenJson">Generar plantilla</button>
+        <span id="arJsonEstado"></span>
+      </div>
+      <textarea id="arJson" rows="7" spellcheck="false" placeholder='{ "nombre": "Firulais", "edad": 4 }'></textarea>
+    </div>
+
+    <div class="ar-paso">
+      <h4><span>5</span> Tu hoja</h4>
+      <div class="ar-avance" id="arAvance"></div>
+      <pre class="ar-hoja"><code id="arHoja"></code></pre>
+      <div class="row-end">
+        <button class="btn btn-yellow" id="arCopiar">Copiar mi hoja</button>
+        <button class="btn btn-ghost btn-s" id="arReset">Empezar de cero</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 13 · QUIZ ================= -->
 <section id="quiz" class="sec">
-  <header class="sec-h"><span class="num">12</span><h2>Quiz</h2></header>
+  <header class="sec-h"><span class="num">13</span><h2>Quiz</h2></header>
   <p class="sec-p">Preguntas del estilo que te van a poner. Respondes, lees por qué, y sigues.</p>
 
   <div class="quiz">
@@ -335,8 +400,10 @@
       <div class="q-score"><b id="qFinal">0</b><span id="qFinalOf">/24</span></div>
       <h3 id="qMsg"></h3>
       <div id="qWeak"></div>
+      <pre class="q-share" id="qShareTxt"></pre>
       <div class="row-mid">
-        <button class="btn btn-yellow" id="qAgain">Otra vez</button>
+        <button class="btn btn-yellow" id="qShare">📤 Compartir resultado</button>
+        <button class="btn btn-ghost" id="qAgain">Otra vez</button>
         <button class="btn btn-ghost" id="qWrong">Solo las que fallé</button>
       </div>
     </div>
@@ -354,6 +421,8 @@
 </main>
 
 <a href="#top" class="up" id="up" aria-label="Arriba">↑</a>
+<script src="sonido.js"></script>
 <script src="app.js"></script>
+<script src="armar.js"></script>
 </body>
 </html>

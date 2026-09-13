@@ -416,6 +416,7 @@ function comprobarOrden() {
   const bien = ordState.every((v, i) => v === i);
   pintarOrden(true);
   $('#ordMsg').textContent = bien ? '🎉 ¡Exacto! Ese es el orden.' : 'Todavía no. Las verdes están en su lugar.';
+  if (window.Sonido) bien ? Sonido.fanfarria() : Sonido.mal();
   if (bien) { store.set('orden', true); progreso(); }
 }
 
@@ -441,6 +442,7 @@ function nuevaRonda() {
 }
 function tocarCarta(n) {
   if (mLock || n.classList.contains('hit') || n === mSel) return;
+  if (window.Sonido) Sonido.tic();
   if (!mSel) { mSel = n; n.classList.add('sel'); return; }
   if (mSel.dataset.tipo === n.dataset.tipo) { mSel.classList.remove('sel'); mSel = n; n.classList.add('sel'); return; }
 
@@ -448,6 +450,7 @@ function tocarCarta(n) {
   if (mSel.dataset.id === n.dataset.id) {
     mSel.classList.remove('sel'); mSel.classList.add('hit'); n.classList.add('hit');
     mSel = null; mHits++; $('#mPairs').textContent = mHits + '/6';
+    if (window.Sonido) mHits === 6 ? Sonido.fanfarria() : Sonido.pareja();
     if (mHits === 6) {
       const best = store.get('mBest', null);
       const record = best == null || mTries < best;
@@ -460,6 +463,7 @@ function tocarCarta(n) {
   } else {
     mLock = true;
     const a = mSel, b = n;
+    if (window.Sonido) Sonido.mal();
     a.classList.remove('sel'); a.classList.add('miss'); b.classList.add('miss');
     $('#mMsg').textContent = '❌ Esa no.';
     setTimeout(() => { a.classList.remove('miss'); b.classList.remove('miss'); mLock = false; }, 420);
@@ -694,11 +698,11 @@ function runSim() {
 /* ============================================================
    QUIZ
    ============================================================ */
-let qOrd = [], qI = 0, qSc = 0, qBad = [];
+let qOrd = [], qI = 0, qSc = 0, qBad = [], qGrid = [];
 
 function qGo(soloFallos) {
   qOrd = soloFallos && qBad.length ? qBad.slice() : shuffle(QUIZ.map((_, i) => i));
-  qI = 0; qSc = 0; qBad = [];
+  qI = 0; qSc = 0; qBad = []; qGrid = [];
   $('#qStart').classList.add('hidden'); $('#qEnd').classList.add('hidden'); $('#qRun').classList.remove('hidden');
   qPinta();
 }
@@ -720,6 +724,8 @@ function qPinta() {
 function qResp(elegida, boton, q) {
   $$('.qopt').forEach(b => { b.disabled = true; if (b.textContent === q.o[q.r]) b.classList.add('right'); });
   const ok = elegida === q.r;
+  qGrid.push(ok);
+  if (window.Sonido) ok ? Sonido.bien() : Sonido.mal();
   if (ok) { qSc++; $('#qScore').textContent = `${qSc} ✓`; } else { boton.classList.add('wrong'); qBad.push(qOrd[qI]); }
   const fb = $('#qFb');
   fb.className = 'q-fb ' + (ok ? 'ok' : 'no');
@@ -743,7 +749,34 @@ function qFin() {
     : '<p class="counter">No fallaste ningún tema.</p>';
   $('#qWrong').classList.toggle('hidden', qBad.length === 0);
   if (qSc > store.get('best', 0)) store.set('best', qSc);
+  $('#qShareTxt').textContent = textoResultado();
+  if (window.Sonido && pct >= .8) Sonido.fanfarria();
   progreso();
+}
+
+/* Resultado en cuadritos, para pegarlo en el grupo */
+function textoResultado() {
+  const filas = [];
+  for (let i = 0; i < qGrid.length; i += 8) {
+    filas.push(qGrid.slice(i, i + 8).map(ok => ok ? '🟩' : '🟥').join(''));
+  }
+  const temas = [...new Set(qBad.map(i => QUIZ[i].tema))];
+  return `Repaso API REST — Aplicaciones Web\n${qSc}/${qGrid.length}\n${filas.join('\n')}` +
+    (temas.length ? `\nMe falta: ${temas.join(', ')}` : '\nSin fallos 🏆') +
+    `\nhttps://skytoti.github.io/Aplicaciones-Web/`;
+}
+
+async function compartirResultado() {
+  const t = textoResultado(), b = $('#qShare');
+  try {
+    if (navigator.share) await navigator.share({ text: t });
+    else await navigator.clipboard.writeText(t);
+    b.textContent = '✅ Listo';
+  } catch (e) {
+    try { await navigator.clipboard.writeText(t); b.textContent = '✅ Copiado'; }
+    catch (e2) { b.textContent = 'Cópialo de arriba'; }
+  }
+  setTimeout(() => b.textContent = '📤 Compartir resultado', 2000);
 }
 
 /* ============================================================
@@ -757,6 +790,31 @@ function progreso() {
   const pct = Math.round((a * .28 + b * .2 + c * .37 + d * .15) * 100);
   $('#progPct').textContent = pct + '%';
   $('#progFill').style.width = pct + '%';
+}
+
+/* ---------- panel de sonido ---------- */
+function initSonido() {
+  if (!window.Sonido) return;
+  const btn = $('#sndBtn'), panel = $('#sndPanel');
+  const swFx = $('#swFx'), swRain = $('#swRain'), vol = $('#sndVol');
+
+  const pinta = () => {
+    const fx = Sonido.efectosActivos(), rain = Sonido.lluviaActiva();
+    swFx.classList.toggle('on', fx); swFx.setAttribute('aria-checked', fx);
+    swRain.classList.toggle('on', rain); swRain.setAttribute('aria-checked', rain);
+    btn.textContent = (fx || rain) ? '🔊' : '🔇';
+  };
+
+  btn.addEventListener('click', e => { e.stopPropagation(); panel.classList.toggle('hidden'); pinta(); });
+  document.addEventListener('click', e => {
+    if (!panel.classList.contains('hidden') && !panel.contains(e.target) && e.target !== btn) panel.classList.add('hidden');
+  });
+
+  swFx.addEventListener('click', () => { Sonido.alternarEfectos(); pinta(); });
+  swRain.addEventListener('click', () => { Sonido.alternarLluvia(); pinta(); });
+  vol.value = Sonido.volumen();
+  vol.addEventListener('input', e => Sonido.ponerVolumen(+e.target.value));
+  pinta();
 }
 
 function initNav() {
@@ -796,7 +854,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderFams(); renderFilters(); renderCodes(); renderDuels(); renderRules();
   renderLayers(); renderBuilder(); nuevaRonda(); nuevoOrden();
   giroI = store.get('giro', 0); renderGiroTabs(); renderGiro(); renderCheck();
-  initSim(); initNav(); initCd(); progreso();
+  initSim(); initNav(); initCd(); initSonido(); progreso();
 
   $('#resetCheat').addEventListener('click', () => { store.set('cheat', []); renderCheat(); progreso(); });
   $('#mNew').addEventListener('click', nuevaRonda);
@@ -811,6 +869,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#qNext').addEventListener('click', qSig);
   $('#qAgain').addEventListener('click', () => qGo(false));
   $('#qWrong').addEventListener('click', () => qGo(true));
+  $('#qShare').addEventListener('click', compartirResultado);
   const best = store.get('best', 0);
   if (best) $('#qLast').innerHTML = `Tu mejor resultado: <b>${best}/${QUIZ.length}</b>`;
 

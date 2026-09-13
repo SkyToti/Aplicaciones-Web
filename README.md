@@ -22,7 +22,10 @@ Una sola página, pensada para estudiar desde el iPad.
   qué hace y qué códigos devuelve.
 - **Validador de rutas** — escribes una ruta tuya y te marca los errores.
 - **Ordena las capas** — puzzle para fijar el orden de la arquitectura.
-- **Quiz de 24 preguntas** con explicación de cada respuesta y diagnóstico final.
+- **Quiz de 24 preguntas** con explicación de cada respuesta y diagnóstico final,
+  con botón para compartir el resultado en cuadritos (estilo Wordle).
+- **Arma tu propia API** — el alumno diseña la suya paso a paso, con validación en
+  vivo de recursos y endpoints, y al final genera la hoja lista para la libreta.
 
 **Los 6 giros de la actividad, resueltos** — veterinaria, gimnasio, cine, biblioteca,
 restaurante y hospital. Cada uno con recursos en plural, 5 endpoints con su método,
@@ -31,6 +34,9 @@ JSON de ejemplo, códigos esperados y diagrama de capas.
 ## Detalles
 
 - **Tema claro y oscuro**, con el botón de la barra. Arranca según el sistema.
+- **Sonido opcional**, apagado por defecto: efectos cortos y ruido de lluvia para
+  concentrarse. Todo se genera con Web Audio en el navegador — cero archivos,
+  cero descargas, cero derechos de autor.
 - El avance se guarda en `localStorage`, en ese dispositivo.
 - Diseño estilo cuaderno: tinta gruesa, sombras duras, color plano.
   Cada método HTTP y cada familia de códigos tiene su color, y siempre el mismo.
@@ -46,5 +52,5 @@ Y entrar a <http://localhost:4321>.
 ## Cómo está hecho
 
 HTML, CSS y JavaScript puros. Sin frameworks, sin dependencias, sin build.
-Tres archivos: `index.html`, `styles.css` y `app.js`.
+Cinco archivos: `index.html`, `styles.css`, `app.js`, `sonido.js` y `armar.js`.
 Lo único externo son dos tipografías de Google Fonts, con respaldo del sistema si no cargan.
