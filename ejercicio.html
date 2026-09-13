@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f1e3">
+<title>El ejercicio · Repaso API REST</title>
+<meta name="description" content="Reglas de nombrado REST, los 6 giros de la actividad resueltos, arma tu propia API y el checklist de la entrega.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="El ejercicio · Repaso API REST">
+<meta property="og:description" content="Reglas de nombrado REST, los 6 giros de la actividad resueltos, arma tu propia API y el checklist de la entrega.">
+<!-- Si el repo cambia de nombre, actualiza estas dos URLs -->
+<meta property="og:url" content="https://skytoti.github.io/Aplicaciones-Web/ejercicio.html">
+<meta property="og:image" content="https://skytoti.github.io/Aplicaciones-Web/og.png">
+<meta property="og:locale" content="es_MX">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📓</text></svg>">
+<!-- El tema se aplica ANTES de pintar: sin esto, en modo oscuro cada cambio
+     de página daría un destello blanco. -->
+<script>try{var t=localStorage.getItem('rest_tema');var d=t==null?matchMedia('(prefers-color-scheme: dark)').matches:JSON.parse(t);document.documentElement.setAttribute('data-theme',d?'dark':'light')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-pagina="ejercicio">
+<div id="cabecera"></div>
+<main id="top" class="pagina">
+
+  <header class="pg-hero tono-am">
+    <span class="pg-kicker"><i data-lucide="pencil-ruler"></i> Parte 4 de 5</span>
+    <h1>El ejercicio</h1>
+    <p class="pg-lead">La actividad de diseño de API: las reglas, los 6 giros resueltos para copiar, y un taller para diseñar la tuya.</p>
+    <nav class="pg-indice" aria-label="En esta página">
+      <a href="#reglas">Reglas de nombrado</a>
+      <a href="#giros">Los 6 giros</a>
+      <a href="#armar">Arma la tuya</a>
+      <a href="#entrega">Checklist</a>
+    </nav>
+  </header>
+<section id="reglas" class="sec">
+  <header class="sec-h"><span class="num">1</span><h2>Cómo se nombra bien</h2></header>
+  <p class="sec-p">El 80 % de los errores de este ejercicio son de nombres. Estas seis reglas te salvan.</p>
+
+  <div class="rules" id="rules"></div>
+</section>
+<section id="giros" class="sec">
+  <header class="sec-h"><span class="num">2</span><h2>Los 6 giros, resueltos</h2></header>
+  <p class="sec-p">Cada uno trae exactamente lo que pide el entregable. Elige el tuyo y cópialo a la libreta.</p>
+
+  <div class="giro-tabs" id="giroTabs"></div>
+  <div class="giro" id="giro"></div>
+</section>
+<section id="armar" class="sec">
+  <header class="sec-h"><span class="num">3</span><h2>Arma tu propia API</h2></header>
+  <p class="sec-p">Copiar un giro te saca del apuro; <b>diseñar el tuyo</b> es lo que te deja pasar el examen. Llena esto y al final te doy la hoja lista para pasarla a la libreta.</p>
+
+  <div class="armar">
+    <div class="ar-paso">
+      <h4><span>1</span> ¿De qué es tu API?</h4>
+      <div class="ar-fila">
+        <select id="arGiro"></select>
+        <input type="text" id="arGiroNombre" class="hidden" placeholder="Escribe el giro" autocapitalize="off">
+      </div>
+    </div>
+    <div class="ar-paso">
+      <h4><span>2</span> Tus recursos, en plural</h4>
+      <p class="lead">Mínimo dos. Sin verbos, en minúsculas y terminados en <i>s</i>.</p>
+      <div id="arRecursos"></div>
+    </div>
+    <div class="ar-paso">
+      <h4><span>3</span> Tus 5 endpoints</h4>
+      <p class="lead">Elige método, recurso y si lleva id. Te digo al momento qué códigos devuelve y si algo no cuadra.</p>
+      <div id="arEps"></div>
+    </div>
+    <div class="ar-paso">
+      <h4><span>4</span> Un JSON de ejemplo</h4>
+      <div class="ar-fila">
+        <button class="btn btn-ghost btn-s" id="arGenJson">Generar plantilla</button>
+        <span id="arJsonEstado"></span>
+      </div>
+      <textarea id="arJson" rows="7" spellcheck="false" placeholder='{ "nombre": "Firulais", "edad": 4 }'></textarea>
+    </div>
+    <div class="ar-paso">
+      <h4><span>5</span> Tu hoja</h4>
+      <div class="ar-avance" id="arAvance"></div>
+      <pre class="ar-hoja"><code id="arHoja"></code></pre>
+      <div class="row-end">
+        <button class="btn btn-yellow" id="arCopiar">Copiar mi hoja</button>
+        <button class="btn btn-ghost btn-s" id="arReset">Empezar de cero</button>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="entrega" class="sec">
+  <header class="sec-h"><span class="num">4</span><h2>Checklist de la entrega</h2></header>
+  <p class="sec-p">Antes de tomarle foto a la libreta, palomea cada punto.</p>
+
+  <div class="check" id="check"></div>
+</section>
+</main>
+
+<div id="pie"></div>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="sonido.js"></script>
+<script src="datos.js"></script>
+<script src="nucleo.js"></script>
+<script src="secciones.js"></script>
+<script src="armar.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f1e3">
+<title>Fundamentos · Repaso API REST</title>
+<meta name="description" content="Qué es una API, REST en 6 reglas, las partes de un endpoint, los métodos HTTP y la arquitectura por capas.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Fundamentos · Repaso API REST">
+<meta property="og:description" content="Qué es una API, REST en 6 reglas, las partes de un endpoint, los métodos HTTP y la arquitectura por capas.">
+<!-- Si el repo cambia de nombre, actualiza estas dos URLs -->
+<meta property="og:url" content="https://skytoti.github.io/Aplicaciones-Web/fundamentos.html">
+<meta property="og:image" content="https://skytoti.github.io/Aplicaciones-Web/og.png">
+<meta property="og:locale" content="es_MX">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📓</text></svg>">
+<!-- El tema se aplica ANTES de pintar: sin esto, en modo oscuro cada cambio
+     de página daría un destello blanco. -->
+<script>try{var t=localStorage.getItem('rest_tema');var d=t==null?matchMedia('(prefers-color-scheme: dark)').matches:JSON.parse(t);document.documentElement.setAttribute('data-theme',d?'dark':'light')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-pagina="fundamentos">
+<div id="cabecera"></div>
+<main id="top" class="pagina">
+
+  <header class="pg-hero tono-az">
+    <span class="pg-kicker"><i data-lucide="book-open"></i> Parte 1 de 5</span>
+    <h1>Fundamentos</h1>
+    <p class="pg-lead">Lo que tienes que poder explicar con tus palabras. Todo lo demás se construye encima de esto.</p>
+    <nav class="pg-indice" aria-label="En esta página">
+      <a href="#api">¿Qué es una API?</a>
+      <a href="#rest">REST</a>
+      <a href="#url">Partes de un endpoint</a>
+      <a href="#metodos">Métodos HTTP</a>
+      <a href="#capas">Capas</a>
+    </nav>
+  </header>
+<section id="api" class="sec">
+  <header class="sec-h"><span class="num">1</span><h2>¿Qué es una API?</h2></header>
+  <p class="sec-p">La respuesta corta, la que sirve en cualquier examen: <b>una API es un contrato que le dice a un programa cómo pedirle cosas a otro programa.</b></p>
+
+  <p class="lead">Y la analogía que nunca falla es un restaurante. Toca cada pieza:</p>
+  <div class="resto" id="resto"></div>
+  <div class="panel" id="restoOut"><span class="ph">Toca una pieza de arriba.</span></div>
+
+  <div class="box box-blue">
+    <b>Frase para el examen</b>
+    <p>«Una API (Interfaz de Programación de Aplicaciones) es el conjunto de reglas y puntos de acceso que permite que dos sistemas se comuniquen sin conocer cómo está hecho el otro por dentro.»</p>
+  </div>
+</section>
+<section id="rest" class="sec">
+  <header class="sec-h"><span class="num">2</span><h2>REST en 6 reglas</h2></header>
+  <p class="sec-p">REST = <b>RE</b>presentational <b>S</b>tate <b>T</b>ransfer. No es un lenguaje ni una librería: es un <b>estilo</b> de diseñar APIs. Si cumple estas reglas, es RESTful.</p>
+
+  <div class="rest" id="restGrid"></div>
+  <div class="box box-yellow">
+    <b><i data-lucide="triangle-alert"></i> La que más cae</b>
+    <p><b>Sin estado (stateless).</b> Cada petición viaja completa y el servidor <b>no recuerda</b> la anterior. Si necesitas identidad, la mandas en cada petición.</p>
+  </div>
+</section>
+<section id="url" class="sec">
+  <header class="sec-h"><span class="num">3</span><h2>Las partes de un endpoint</h2></header>
+  <p class="sec-p">Te lo pueden pedir literal. Toca cada pedazo de la URL.</p>
+
+  <div class="url" id="urlBox"></div>
+  <div class="panel" id="urlOut"><span class="ph">Toca una parte de la URL.</span></div>
+</section>
+<section id="metodos" class="sec">
+  <header class="sec-h"><span class="num">4</span><h2>Los métodos HTTP</h2></header>
+  <p class="sec-p">La URL dice <b>qué</b> recurso. El método dice <b>qué le haces</b>. Con estos cinco cubres todo el examen.</p>
+
+  <div class="mets" id="mets"></div>
+
+  <h3 class="sub">La trampa clásica: PUT vs PATCH</h3>
+  <div class="duo">
+    <div class="card card-yellow">
+      <h4>PUT · reemplazo total</h4>
+      <p>Mandas el objeto <b>completo</b>. Lo que no mandes se pierde.</p>
+      <pre><code>PUT /v1/mascotas/42
+{ "nombre": "Firulais", "edad": 4, "especie": "perro" }</code></pre>
+    </div>
+    <div class="card card-purple">
+      <h4>PATCH · cambio parcial</h4>
+      <p>Mandas <b>solo lo que cambia</b>. Lo demás queda igual.</p>
+      <pre><code>PATCH /v1/mascotas/42
+{ "edad": 5 }</code></pre>
+    </div>
+  </div>
+
+  <div class="box box-purple">
+    <b>Dos palabras que suenan a examen</b>
+    <p><b>Seguro (safe):</b> no modifica nada. Solo GET.<br>
+    <b>Idempotente:</b> repetirlo 100 veces deja lo mismo que hacerlo 1 vez. GET, PUT y DELETE sí. <b>POST no</b> — lo repites y creas 100 registros.</p>
+  </div>
+</section>
+<section id="capas" class="sec">
+  <header class="sec-h"><span class="num">5</span><h2>Arquitectura por capas</h2></header>
+  <p class="sec-p">Esto es literalmente lo que tienes que dibujar en la libreta: cajas y flechas. Toca cada capa para saber qué decir de ella.</p>
+
+  <div class="layers" id="layers"></div>
+  <div class="panel" id="layerOut"><span class="ph">Toca una capa.</span></div>
+
+  <h3 class="sub">Juego: ordénalas</h3>
+  <p class="lead">Están revueltas. Súbelas y bájalas hasta dejarlas en el orden correcto de la petición.</p>
+  <div class="order" id="order"></div>
+  <div class="row-end">
+    <button class="btn btn-yellow btn-s" id="ordCheck">Comprobar</button>
+    <button class="btn btn-ghost btn-s" id="ordNew">Revolver</button>
+    <span class="counter" id="ordMsg"></span>
+  </div>
+
+  <div class="box box-green">
+    <b>Cómo dibujarlo en 30 segundos</b>
+    <p>Cinco cajas apiladas, una flecha hacia abajo que diga «petición» y otra hacia arriba que diga «respuesta». Dentro de cada caja, su nombre y una frase de qué hace. Eso es el entregable.</p>
+  </div>
+</section>
+</main>
+
+<div id="pie"></div>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="sonido.js"></script>
+<script src="datos.js"></script>
+<script src="nucleo.js"></script>
+<script src="secciones.js"></script>
+</body>
+</html>

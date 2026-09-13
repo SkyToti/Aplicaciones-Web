@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f1e3">
+<title>Laboratorio · Repaso API REST</title>
+<meta name="description" content="Simulador de peticiones HTTP, constructor de endpoints y validador de rutas REST.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Laboratorio · Repaso API REST">
+<meta property="og:description" content="Simulador de peticiones HTTP, constructor de endpoints y validador de rutas REST.">
+<!-- Si el repo cambia de nombre, actualiza estas dos URLs -->
+<meta property="og:url" content="https://skytoti.github.io/Aplicaciones-Web/laboratorio.html">
+<meta property="og:image" content="https://skytoti.github.io/Aplicaciones-Web/og.png">
+<meta property="og:locale" content="es_MX">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📓</text></svg>">
+<!-- El tema se aplica ANTES de pintar: sin esto, en modo oscuro cada cambio
+     de página daría un destello blanco. -->
+<script>try{var t=localStorage.getItem('rest_tema');var d=t==null?matchMedia('(prefers-color-scheme: dark)').matches:JSON.parse(t);document.documentElement.setAttribute('data-theme',d?'dark':'light')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-pagina="laboratorio">
+<div id="cabecera"></div>
+<main id="top" class="pagina">
+
+  <header class="pg-hero tono-mo">
+    <span class="pg-kicker"><i data-lucide="flask-conical"></i> Parte 3 de 5</span>
+    <h1>Laboratorio</h1>
+    <p class="pg-lead">Aquí no se lee: se prueba. Arma peticiones, construye rutas y deja que te diga en qué te equivocaste.</p>
+    <nav class="pg-indice" aria-label="En esta página">
+      <a href="#simulador">Simulador</a>
+      <a href="#constructor">Constructor</a>
+      <a href="#validador">Validador</a>
+    </nav>
+  </header>
+<section id="simulador" class="sec">
+  <header class="sec-h"><span class="num">1</span><h2>Simulador de peticiones</h2></header>
+  <p class="sec-p">Arma una petición y mira qué contesta el servidor <b>y por qué</b>. Esto es justo lo que te van a pedir razonar.</p>
+
+  <div class="sim">
+    <div class="sim-ctrl">
+      <label>Método<select id="simMetodo"></select></label>
+      <label>Recurso<select id="simRecurso"></select></label>
+      <label>¿Con ID?<select id="simId">
+        <option value="no">No · toda la colección</option>
+        <option value="si">Sí · un elemento (/42)</option>
+      </select></label>
+      <label>Escenario<select id="simCaso">
+        <option value="ok">Todo bien</option>
+        <option value="noexiste">El ID no existe</option>
+        <option value="malos">Datos inválidos</option>
+        <option value="sintoken">Sin autenticarse</option>
+        <option value="servidor">Se cayó el servidor</option>
+      </select></label>
+    </div>
+    <div class="sim-two">
+      <div class="term">
+        <div class="term-h">Petición</div>
+        <pre><code id="simReq"></code></pre>
+      </div>
+      <div class="term">
+        <div class="term-h">Respuesta</div>
+        <div class="term-status" id="simStatus"></div>
+        <pre><code id="simRes"></code></pre>
+      </div>
+    </div>
+    <div class="why" id="simWhy"></div>
+  </div>
+</section>
+<section id="constructor" class="sec">
+  <header class="sec-h"><span class="num">2</span><h2>Constructor de endpoints</h2></header>
+  <p class="sec-p">Arma un endpoint tocando bloques y te digo si está bien, qué hace y qué código devuelve.</p>
+
+  <div class="builder">
+    <div class="build-out">
+      <span class="build-m" id="bMet">GET</span>
+      <span class="build-p" id="bPath">/v1/mascotas</span>
+    </div>
+    <div class="build-groups" id="bGroups"></div>
+    <div class="build-verdict" id="bVerdict"></div>
+  </div>
+</section>
+<section id="validador" class="sec">
+  <header class="sec-h"><span class="num">3</span><h2>Revisa una ruta tuya</h2></header>
+  <p class="sec-p">Escríbela como la pondrías en tu libreta y te marco lo que está mal.</p>
+
+  <div class="val">
+    <div class="val-row">
+      <input type="text" id="valInput" placeholder="/v1/mascotas/42/vacunas" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <button class="btn btn-blue" id="valBtn">Revisar</button>
+    </div>
+    <div id="valOut"></div>
+    <div class="val-ex">
+      <span class="lead">Prueba:</span>
+      <button class="tagbtn bad" data-val="/getMascotas">/getMascotas</button>
+      <button class="tagbtn bad" data-val="/mascota/42">/mascota/42</button>
+      <button class="tagbtn bad" data-val="/Mascotas/borrar/42">/Mascotas/borrar/42</button>
+      <button class="tagbtn good" data-val="/v1/mascotas/42/vacunas">/v1/mascotas/42/vacunas</button>
+    </div>
+  </div>
+</section>
+</main>
+
+<div id="pie"></div>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="sonido.js"></script>
+<script src="datos.js"></script>
+<script src="nucleo.js"></script>
+<script src="secciones.js"></script>
+</body>
+</html>

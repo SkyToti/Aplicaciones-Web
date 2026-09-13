@@ -1,62 +1,67 @@
 # Repaso API REST — Aplicaciones Web
 
-Cuaderno interactivo para repasar antes del examen de **Aplicaciones Web** (UTEZ).
-Una sola página, pensada para estudiar desde el iPad.
+Sitio de repaso para el examen de **Aplicaciones Web** (UTEZ), pensado para estudiar desde el iPad o el celular.
 
-## Qué trae
+**https://skytoti.github.io/Aplicaciones-Web/**
 
-**Teoría**
-- **La chuleta** — lo mínimo que hay que saberse, marcable.
-- **¿Qué es una API?** — la analogía del restaurante, pieza por pieza.
-- **REST en 6 reglas** — con la frase exacta que conviene decir en el examen.
-- **Anatomía de un endpoint** — tocas cada parte de la URL y te dice cómo se llama.
-- **Métodos HTTP** — los 5, con *seguro* e *idempotente*, y el duelo PUT vs PATCH.
-- **Códigos de estado** — las 5 familias, explorador de 18 códigos y los duelos
-  que más se confunden (401 vs 403, 400 vs 404 vs 422, 500 vs 503).
-- **Arquitectura por capas** — el diagrama que va en la libreta.
+## Páginas
 
-**Práctica**
-- **Simulador de peticiones** — armas una petición y ves qué código responde y por qué.
-- **Juego de parejas** — empareja cada código con su significado, con récord de intentos.
-- **Constructor de endpoints** — armas una ruta con bloques y te dice si está bien,
-  qué hace y qué códigos devuelve.
-- **Validador de rutas** — escribes una ruta tuya y te marca los errores.
-- **Ordena las capas** — puzzle para fijar el orden de la arquitectura.
-- **Quiz de 24 preguntas** con explicación de cada respuesta y diagnóstico final,
-  con botón para compartir el resultado en cuadritos (estilo Wordle).
-- **Arma tu propia API** — el alumno diseña la suya paso a paso, con validación en
-  vivo de recursos y endpoints, y al final genera la hoja lista para la libreta.
+La ruta de estudio va en este orden; cada página lleva a la siguiente.
 
-**Los 6 giros de la actividad, resueltos** — veterinaria, gimnasio, cine, biblioteca,
-restaurante y hospital. Cada uno con recursos en plural, 5 endpoints con su método,
-JSON de ejemplo, códigos esperados y diagrama de capas.
+| Página | Qué tiene |
+|---|---|
+| **Inicio** | Cuenta regresiva, dónde te quedaste, tus fallos pendientes, la ruta de estudio con tu avance y la chuleta. |
+| **Fundamentos** | Qué es una API (la analogía del restaurante), REST en 6 reglas, las partes de un endpoint, los métodos HTTP y la arquitectura por capas con su juego de ordenar. |
+| **Códigos HTTP** | Las 5 familias, explorador de 18 códigos, los duelos que confunden (401 vs 403…) y el juego de parejas. |
+| **Laboratorio** | Simulador de peticiones, constructor de endpoints por bloques y validador de rutas. |
+| **El ejercicio** | Reglas de nombrado, los 6 giros de la actividad resueltos, taller para armar tu propia API y el checklist de la entrega. |
+| **Examen** | Simulacro cronometrado, práctica libre y repaso de tus fallos. |
+
+## El examen
+
+- **Simulacro** — 10 preguntas repartidas entre todos los temas y 6 minutos de reloj. No ves si acertaste
+  hasta entregar, puedes regresar a cambiar respuestas y, si se acaba el tiempo, se entrega solo.
+  Al final: calificación, tiempo, revisión pregunta por pregunta e historial de tus últimos intentos.
+- **Práctica libre** — las 24 preguntas sin tiempo, con la explicación después de cada una.
+- **Mis fallos** — toda pregunta que falles, en cualquier modo, se guarda aquí. Sale de la lista cuando
+  la contestas bien **dos veces seguidas**: una sola puede ser suerte.
+- **Compartir resultado** — genera el marcador en cuadritos para pegarlo en el grupo.
+
+Los enlaces pueden abrir un modo directo: `examen.html#fallos`, `examen.html#practica`.
+El simulacro nunca arranca solo.
 
 ## Detalles
 
-- **Tema claro y oscuro**, con el botón de la barra. Arranca según el sistema.
-- **Sonido opcional**, apagado por defecto: efectos cortos y lluvia en tres capas
-  (siseo, cuerpo y gotas sueltas al azar) generada con Web Audio — cero archivos,
-  cero descargas, cero derechos de autor.
-- **Iconos de [Lucide](https://lucide.dev)** (ISC), no emojis.
-- **Hoja imprimible estilo apuntes**: el botón «Imprimir la chuleta» saca un PDF
-  de 2 páginas con papel de cuadrícula, resaltador, washi tape, notas adhesivas,
-  anotaciones a mano y el diagrama de capas dibujado. El resto de la página no se
-  imprime. Lleva `print-color-adjust: exact`, que es lo que hace que los fondos
-  de color salgan de verdad en el PDF y no en gris.
-- El avance se guarda en `localStorage`, en ese dispositivo.
-- Diseño estilo cuaderno: tinta gruesa, sombras duras, color plano.
-  Cada método HTTP y cada familia de códigos tiene su color, y siempre el mismo.
+- **Tema claro y oscuro**, que se aplica antes de pintar la página para que no haya destello al navegar.
+- **Sonido opcional**, apagado por defecto: efectos cortos, el tic de los últimos 10 segundos del simulacro
+  y lluvia en tres capas (siseo, cuerpo y gotas). Todo generado con Web Audio: cero archivos.
+  Si la lluvia venía sonando, sigue en la página nueva con el primer toque.
+- **Hoja imprimible estilo apuntes**: «Imprimir la chuleta» saca un PDF de 2 páginas con papel de
+  cuadrícula, resaltador, notas adhesivas y el diagrama de capas dibujado. Lleva
+  `print-color-adjust: exact`, que es lo que hace que los fondos de color salgan en el PDF.
+- **Iconos de [Lucide](https://lucide.dev)** (ISC).
+- **Tu avance se guarda en este dispositivo** (`localStorage`). Nadie más lo ve.
+- Los enlaces de la versión anterior (una sola página con `#quiz`, `#giros`…) redirigen a su página nueva.
 
-## Ver la página en local
+## Cómo está hecho
+
+HTML, CSS y JavaScript puros: sin frameworks, sin dependencias y sin paso de compilación.
+
+| Archivo | Para qué |
+|---|---|
+| `datos.js` | **Todo el contenido**: teoría, códigos, giros y preguntas. Para corregir un dato o agregar una pregunta, solo se toca este. |
+| `nucleo.js` | Lo común a todas las páginas: menú, pie, tema, iconos, sonido, avance y la hoja imprimible. El menú vive aquí, en un solo lugar. |
+| `secciones.js` | Cada bloque interactivo. Se enciende solo si su contenedor existe en la página. |
+| `examen.js` | Los tres modos del examen y la memoria de fallos. |
+| `armar.js` | El taller «Arma tu propia API». |
+| `sonido.js` | Los sonidos, generados en el navegador. |
+| `styles.css` | Todos los estilos, incluida la hoja imprimible. |
+
+### Ver en local
 
 ```bash
 node dev-server.js
 ```
 
-Y entrar a <http://localhost:4321>.
-
-## Cómo está hecho
-
-HTML, CSS y JavaScript puros. Sin frameworks, sin dependencias, sin build.
-Cinco archivos: `index.html`, `styles.css`, `app.js`, `sonido.js` y `armar.js`.
-Lo único externo son dos tipografías de Google Fonts, con respaldo del sistema si no cargan.
+Y entrar a <http://localhost:4321>. Para probar el fin de tiempo del simulacro sin esperar 6 minutos:
+<http://localhost:4321/examen.html?seg=15>.

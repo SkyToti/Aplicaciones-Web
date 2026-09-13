@@ -4,82 +4,36 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f1e3">
-<title>Repaso API REST · Aplicaciones Web</title>
-<meta name="description" content="Cuaderno interactivo para repasar APIs REST, métodos HTTP y códigos de estado. Con juegos, simulador y los 6 giros de la actividad resueltos.">
+<title>Repaso API REST — Aplicaciones Web</title>
+<meta name="description" content="Cuaderno interactivo para el examen de Aplicaciones Web: teoría, códigos HTTP, laboratorio, los 6 giros resueltos y simulacro cronometrado.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Repaso API REST — Aplicaciones Web">
-<meta property="og:description" content="Toda la teoría, los códigos que sí caen y los 6 giros resueltos. Con juegos, simulador de peticiones y quiz de 24 preguntas.">
+<meta property="og:description" content="Cuaderno interactivo para el examen de Aplicaciones Web: teoría, códigos HTTP, laboratorio, los 6 giros resueltos y simulacro cronometrado.">
 <!-- Si el repo cambia de nombre, actualiza estas dos URLs -->
 <meta property="og:url" content="https://skytoti.github.io/Aplicaciones-Web/">
 <meta property="og:image" content="https://skytoti.github.io/Aplicaciones-Web/og.png">
 <meta property="og:locale" content="es_MX">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📓</text></svg>">
+<!-- El tema se aplica ANTES de pintar: sin esto, en modo oscuro cada cambio
+     de página daría un destello blanco. -->
+<script>try{var t=localStorage.getItem('rest_tema');var d=t==null?matchMedia('(prefers-color-scheme: dark)').matches:JSON.parse(t);document.documentElement.setAttribute('data-theme',d?'dark':'light')}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body data-pagina="inicio">
+<div id="cabecera"></div>
+<main id="top" class="pagina">
 
-<!-- ================= BARRA ================= -->
-<header class="bar">
-  <div class="bar-in">
-    <a class="logo" href="#top">
-      <i class="logo-mark" data-lucide="notebook-pen"></i>
-      <span class="logo-txt">Repaso <b>REST</b></span>
-    </a>
-
-    <nav class="tabs" id="tabs" aria-label="Secciones">
-      <a href="#chuleta" class="tab">Chuleta</a>
-      <a href="#api" class="tab">¿Qué es?</a>
-      <a href="#rest" class="tab">REST</a>
-      <a href="#url" class="tab">URL</a>
-      <a href="#metodos" class="tab">Métodos</a>
-      <a href="#simulador" class="tab">Simulador</a>
-      <a href="#codigos" class="tab">Códigos</a>
-      <a href="#parejas" class="tab">Juego</a>
-      <a href="#diseno" class="tab">Diseño</a>
-      <a href="#capas" class="tab">Capas</a>
-      <a href="#giros" class="tab">Los 6 giros</a>
-      <a href="#armar" class="tab">Arma la tuya</a>
-      <a href="#quiz" class="tab">Quiz</a>
-    </nav>
-
-    <div class="bar-right">
-      <div class="prog" title="Tu avance"><div class="prog-fill" id="progFill"></div><span id="progPct">0%</span></div>
-      <button class="icon-btn" id="sndBtn" aria-label="Sonido"><i data-lucide="volume-x"></i></button>
-      <button class="icon-btn" id="themeBtn" aria-label="Cambiar tema"><i data-lucide="moon"></i></button>
-    </div>
-  </div>
-
-  <div class="snd-panel hidden" id="sndPanel">
-    <div class="snd-row">
-      <span>Efectos de sonido</span>
-      <button class="sw" id="swFx" role="switch" aria-checked="false"><i></i></button>
-    </div>
-    <div class="snd-row">
-      <span>Lluvia para concentrarse</span>
-      <button class="sw" id="swRain" role="switch" aria-checked="false"><i></i></button>
-    </div>
-    <div class="snd-row">
-      <span>Volumen</span>
-      <input type="range" id="sndVol" min="0" max="1" step="0.05" value="0.5">
-    </div>
-    <p class="snd-nota">Todo se genera aquí mismo: no descarga nada ni usa datos.</p>
-  </div>
-</header>
-
-<main id="top">
-
-<!-- ================= PORTADA ================= -->
 <section class="cover">
   <div class="cover-card">
     <span class="tape tape-l"></span>
     <span class="tape tape-r"></span>
     <div class="cover-sub">Aplicaciones Web · UTEZ</div>
     <h1>Cuaderno de<br>repaso <span class="marker">API REST</span></h1>
-    <p class="cover-p">Toda la teoría, los códigos que sí caen y el ejercicio de diseño resuelto para los 6 giros. Con juegos, porque leyendo no se te va a quedar.</p>
+    <p class="cover-p">Toda la teoría, los códigos que sí caen, el ejercicio resuelto para los 6 giros y un simulacro con reloj. Con juegos, porque leyendo no se te va a quedar.</p>
 
     <div class="cd" id="cd">
       <span class="cd-t">Faltan para el lunes 7:00 a.m.</span>
@@ -90,347 +44,34 @@
         <div class="cd-b"><b id="cdS">–</b><i>seg</i></div>
       </div>
     </div>
-
-    <div class="cover-btns">
-      <a href="#chuleta" class="btn btn-yellow">Empezar por la chuleta</a>
-      <a href="#quiz" class="btn btn-ghost">Ir directo al quiz</a>
-    </div>
   </div>
 
-  <div class="cover-notes">
-    <div class="note note-blue"><b>3</b><span>familias clave</span></div>
-    <div class="note note-green"><b>5</b><span>métodos HTTP</span></div>
-    <div class="note note-purple"><b>6</b><span>giros resueltos</span></div>
-    <div class="note note-pink"><b id="statQuiz">24</b><span>preguntas</span></div>
-  </div>
+  <div class="avisos" id="avisos"></div>
 </section>
 
-<!-- ================= 1 · CHULETA ================= -->
+<section id="ruta-sec" class="sec">
+  <header class="sec-h"><span class="num"><i data-lucide="route"></i></span><h2>Tu ruta de estudio</h2></header>
+  <p class="sec-p">En este orden. Cada tarjeta se va llenando conforme avanzas, y se guarda en este dispositivo.</p>
+  <div class="ruta" id="ruta"></div>
+</section>
+
 <section id="chuleta" class="sec">
-  <header class="sec-h"><span class="num">1</span><h2>La chuleta</h2></header>
+  <header class="sec-h"><span class="num"><i data-lucide="zap"></i></span><h2>La chuleta</h2></header>
   <p class="sec-p">Si solo tuvieras diez minutos, sería esto. Toca una tarjeta cuando ya te la sepas de memoria.</p>
   <div class="cheats" id="cheats"></div>
   <div class="row-end">
     <span class="counter" id="cheatCount"></span>
     <button class="btn btn-ghost btn-s" id="resetCheat">Desmarcar todo</button>
-    <button class="btn btn-ghost btn-s" id="imprimir2"><i data-lucide="printer"></i> Guardar como PDF</button>
+    <button class="btn btn-ghost btn-s" data-imprimir><i data-lucide="printer"></i> Guardar como PDF</button>
   </div>
 </section>
-
-<!-- ================= 2 · QUÉ ES ================= -->
-<section id="api" class="sec">
-  <header class="sec-h"><span class="num">2</span><h2>¿Qué es una API?</h2></header>
-  <p class="sec-p">La respuesta corta, la que sirve en cualquier examen: <b>una API es un contrato que le dice a un programa cómo pedirle cosas a otro programa.</b></p>
-
-  <p class="lead">Y la analogía que nunca falla es un restaurante. Toca cada pieza:</p>
-  <div class="resto" id="resto"></div>
-  <div class="panel" id="restoOut"><span class="ph">Toca una pieza de arriba.</span></div>
-
-  <div class="box box-blue">
-    <b>Frase para el examen</b>
-    <p>«Una API (Interfaz de Programación de Aplicaciones) es el conjunto de reglas y puntos de acceso que permite que dos sistemas se comuniquen sin conocer cómo está hecho el otro por dentro.»</p>
-  </div>
-</section>
-
-<!-- ================= 3 · REST ================= -->
-<section id="rest" class="sec">
-  <header class="sec-h"><span class="num">3</span><h2>REST en 6 reglas</h2></header>
-  <p class="sec-p">REST = <b>RE</b>presentational <b>S</b>tate <b>T</b>ransfer. No es un lenguaje ni una librería: es un <b>estilo</b> de diseñar APIs. Si cumple estas reglas, es RESTful.</p>
-  <div class="rest" id="rest"></div>
-  <div class="box box-yellow">
-    <b><i data-lucide="triangle-alert"></i> La que más cae</b>
-    <p><b>Sin estado (stateless).</b> Cada petición viaja completa y el servidor <b>no recuerda</b> la anterior. Si necesitas identidad, la mandas en cada petición.</p>
-  </div>
-</section>
-
-<!-- ================= 4 · URL ================= -->
-<section id="url" class="sec">
-  <header class="sec-h"><span class="num">4</span><h2>Las partes de un endpoint</h2></header>
-  <p class="sec-p">Te lo pueden pedir literal. Toca cada pedazo de la URL.</p>
-  <div class="url" id="url"></div>
-  <div class="panel" id="urlOut"><span class="ph">Toca una parte de la URL.</span></div>
-</section>
-
-<!-- ================= 5 · MÉTODOS ================= -->
-<section id="metodos" class="sec">
-  <header class="sec-h"><span class="num">5</span><h2>Los métodos HTTP</h2></header>
-  <p class="sec-p">La URL dice <b>qué</b> recurso. El método dice <b>qué le haces</b>. Con estos cinco cubres todo el examen.</p>
-  <div class="mets" id="mets"></div>
-
-  <h3 class="sub">La trampa clásica: PUT vs PATCH</h3>
-  <div class="duo">
-    <div class="card card-yellow">
-      <h4>PUT · reemplazo total</h4>
-      <p>Mandas el objeto <b>completo</b>. Lo que no mandes se pierde.</p>
-      <pre><code>PUT /v1/mascotas/42
-{ "nombre": "Firulais", "edad": 4, "especie": "perro" }</code></pre>
-    </div>
-    <div class="card card-purple">
-      <h4>PATCH · cambio parcial</h4>
-      <p>Mandas <b>solo lo que cambia</b>. Lo demás queda igual.</p>
-      <pre><code>PATCH /v1/mascotas/42
-{ "edad": 5 }</code></pre>
-    </div>
-  </div>
-
-  <div class="box box-purple">
-    <b>Dos palabras que suenan a examen</b>
-    <p><b>Seguro (safe):</b> no modifica nada. Solo GET.<br>
-    <b>Idempotente:</b> repetirlo 100 veces deja lo mismo que hacerlo 1 vez. GET, PUT y DELETE sí. <b>POST no</b> — lo repites y creas 100 registros.</p>
-  </div>
-</section>
-
-<!-- ================= 6 · SIMULADOR ================= -->
-<section id="simulador" class="sec">
-  <header class="sec-h"><span class="num">6</span><h2>Simulador de peticiones</h2></header>
-  <p class="sec-p">Arma una petición y mira qué contesta el servidor <b>y por qué</b>. Esto es justo lo que te van a pedir razonar.</p>
-
-  <div class="sim">
-    <div class="sim-ctrl">
-      <label>Método<select id="simMetodo"></select></label>
-      <label>Recurso<select id="simRecurso"></select></label>
-      <label>¿Con ID?<select id="simId">
-        <option value="no">No · toda la colección</option>
-        <option value="si">Sí · un elemento (/42)</option>
-      </select></label>
-      <label>Escenario<select id="simCaso">
-        <option value="ok">Todo bien</option>
-        <option value="noexiste">El ID no existe</option>
-        <option value="malos">Datos inválidos</option>
-        <option value="sintoken">Sin autenticarse</option>
-        <option value="servidor">Se cayó el servidor</option>
-      </select></label>
-    </div>
-
-    <div class="sim-two">
-      <div class="term">
-        <div class="term-h">Petición</div>
-        <pre><code id="simReq"></code></pre>
-      </div>
-      <div class="term">
-        <div class="term-h">Respuesta</div>
-        <div class="term-status" id="simStatus"></div>
-        <pre><code id="simRes"></code></pre>
-      </div>
-    </div>
-    <div class="why" id="simWhy"></div>
-  </div>
-</section>
-
-<!-- ================= 7 · CÓDIGOS ================= -->
-<section id="codigos" class="sec">
-  <header class="sec-h"><span class="num">7</span><h2>Códigos de estado</h2></header>
-  <p class="sec-p">Son cinco familias. Tu profe pide las <b>tres principales</b> (2xx, 4xx, 5xx), pero saberte las cinco te cuesta veinte segundos y te blinda.</p>
-
-  <div class="fams" id="fams"></div>
-
-  <div class="box box-green">
-    <b>Truco para no olvidarlas</b>
-    <ul id="mnemo"></ul>
-  </div>
-
-  <h3 class="sub">Explorador</h3>
-  <p class="lead">Toca cualquiera para ver cuándo se usa. Los que tienen ⭐ son los que casi seguro caen.</p>
-  <div class="filters" id="filters"></div>
-  <div class="codes" id="codes"></div>
-  <div class="panel" id="codeOut"><span class="ph">Toca un código.</span></div>
-
-  <h3 class="sub">Los duelos que te van a poner</h3>
-  <div class="duels" id="duels"></div>
-</section>
-
-<!-- ================= 8 · JUEGO DE PAREJAS ================= -->
-<section id="parejas" class="sec">
-  <header class="sec-h"><span class="num">8</span><h2>Juego: encuentra la pareja</h2></header>
-  <p class="sec-p">Toca un código y luego su significado. Seis parejas por ronda. Esto se te va a quedar más que leerlo veinte veces.</p>
-
-  <div class="game">
-    <div class="game-top">
-      <span class="stat">Parejas <b id="mPairs">0/6</b></span>
-      <span class="stat">Intentos <b id="mTries">0</b></span>
-      <span class="stat">Récord <b id="mBest">–</b></span>
-      <button class="btn btn-yellow btn-s" id="mNew">Nueva ronda</button>
-    </div>
-    <div class="match" id="match"></div>
-    <div class="game-msg" id="mMsg"></div>
-  </div>
-</section>
-
-<!-- ================= 9 · DISEÑO ================= -->
-<section id="diseno" class="sec">
-  <header class="sec-h"><span class="num">9</span><h2>Cómo se nombra bien</h2></header>
-  <p class="sec-p">El 80 % de los errores de este ejercicio son de nombres. Estas seis reglas te salvan.</p>
-  <div class="rules" id="rules"></div>
-
-  <h3 class="sub">Constructor de endpoints</h3>
-  <p class="lead">Arma un endpoint tocando bloques y te digo si está bien, qué hace y qué código devuelve.</p>
-  <div class="builder">
-    <div class="build-out">
-      <span class="build-m" id="bMet">GET</span>
-      <span class="build-p" id="bPath">/v1/mascotas</span>
-    </div>
-    <div class="build-groups" id="bGroups"></div>
-    <div class="build-verdict" id="bVerdict"></div>
-  </div>
-
-  <h3 class="sub">O revisa una ruta tuya</h3>
-  <div class="val">
-    <div class="val-row">
-      <input type="text" id="valInput" placeholder="/v1/mascotas/42/vacunas" autocomplete="off" autocapitalize="off" spellcheck="false">
-      <button class="btn btn-blue" id="valBtn">Revisar</button>
-    </div>
-    <div id="valOut"></div>
-    <div class="val-ex">
-      <span class="lead">Prueba:</span>
-      <button class="tagbtn bad" data-val="/getMascotas">/getMascotas</button>
-      <button class="tagbtn bad" data-val="/mascota/42">/mascota/42</button>
-      <button class="tagbtn bad" data-val="/Mascotas/borrar/42">/Mascotas/borrar/42</button>
-      <button class="tagbtn good" data-val="/v1/mascotas/42/vacunas">/v1/mascotas/42/vacunas</button>
-    </div>
-  </div>
-</section>
-
-<!-- ================= 10 · CAPAS ================= -->
-<section id="capas" class="sec">
-  <header class="sec-h"><span class="num">10</span><h2>Arquitectura por capas</h2></header>
-  <p class="sec-p">Esto es literalmente lo que tienes que dibujar en la libreta: cajas y flechas. Toca cada capa para saber qué decir de ella.</p>
-  <div class="layers" id="layers"></div>
-  <div class="panel" id="layerOut"><span class="ph">Toca una capa.</span></div>
-
-  <h3 class="sub">Juego: ordénalas</h3>
-  <p class="lead">Están revueltas. Súbelas y bájalas hasta dejarlas en el orden correcto de la petición.</p>
-  <div class="order" id="order"></div>
-  <div class="row-end">
-    <button class="btn btn-yellow btn-s" id="ordCheck">Comprobar</button>
-    <button class="btn btn-ghost btn-s" id="ordNew">Revolver</button>
-    <span class="counter" id="ordMsg"></span>
-  </div>
-
-  <div class="box box-green">
-    <b>Cómo dibujarlo en 30 segundos</b>
-    <p>Cinco cajas apiladas, una flecha hacia abajo que diga «petición» y otra hacia arriba que diga «respuesta». Dentro de cada caja, su nombre y una frase de qué hace. Eso es el entregable.</p>
-  </div>
-</section>
-
-<!-- ================= 11 · GIROS ================= -->
-<section id="giros" class="sec">
-  <header class="sec-h"><span class="num">11</span><h2>Los 6 giros, resueltos</h2></header>
-  <p class="sec-p">Cada uno trae exactamente lo que pide el entregable. Elige el tuyo y cópialo a la libreta.</p>
-
-  <div class="giro-tabs" id="giroTabs"></div>
-  <div class="giro" id="giro"></div>
-
-  <h3 class="sub">Checklist del entregable</h3>
-  <div class="check" id="check"></div>
-</section>
-
-<!-- ================= 12 · ARMA LA TUYA ================= -->
-<section id="armar" class="sec">
-  <header class="sec-h"><span class="num">12</span><h2>Arma tu propia API</h2></header>
-  <p class="sec-p">Copiar un giro te saca del apuro; <b>diseñar el tuyo</b> es lo que te deja pasar el examen. Llena esto y al final te doy la hoja lista para pasarla a la libreta.</p>
-
-  <div class="armar">
-    <div class="ar-paso">
-      <h4><span>1</span> ¿De qué es tu API?</h4>
-      <div class="ar-fila">
-        <select id="arGiro"></select>
-        <input type="text" id="arGiroNombre" class="hidden" placeholder="Escribe el giro" autocapitalize="off">
-      </div>
-    </div>
-
-    <div class="ar-paso">
-      <h4><span>2</span> Tus recursos, en plural</h4>
-      <p class="lead">Mínimo dos. Sin verbos, en minúsculas y terminados en <i>s</i>.</p>
-      <div id="arRecursos"></div>
-    </div>
-
-    <div class="ar-paso">
-      <h4><span>3</span> Tus 5 endpoints</h4>
-      <p class="lead">Elige método, recurso y si lleva id. Te digo al momento qué códigos devuelve y si algo no cuadra.</p>
-      <div id="arEps"></div>
-    </div>
-
-    <div class="ar-paso">
-      <h4><span>4</span> Un JSON de ejemplo</h4>
-      <div class="ar-fila">
-        <button class="btn btn-ghost btn-s" id="arGenJson">Generar plantilla</button>
-        <span id="arJsonEstado"></span>
-      </div>
-      <textarea id="arJson" rows="7" spellcheck="false" placeholder='{ "nombre": "Firulais", "edad": 4 }'></textarea>
-    </div>
-
-    <div class="ar-paso">
-      <h4><span>5</span> Tu hoja</h4>
-      <div class="ar-avance" id="arAvance"></div>
-      <pre class="ar-hoja"><code id="arHoja"></code></pre>
-      <div class="row-end">
-        <button class="btn btn-yellow" id="arCopiar">Copiar mi hoja</button>
-        <button class="btn btn-ghost btn-s" id="arReset">Empezar de cero</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= 13 · QUIZ ================= -->
-<section id="quiz" class="sec">
-  <header class="sec-h"><span class="num">13</span><h2>Quiz</h2></header>
-  <p class="sec-p">Preguntas del estilo que te van a poner. Respondes, lees por qué, y sigues.</p>
-
-  <div class="quiz">
-    <div id="qStart" class="q-start">
-      <div class="q-start-emo"><i data-lucide="pencil-line"></i></div>
-      <p><b id="qTotal">24</b> preguntas. Sin tiempo y sin castigo: lo que falles se te queda más.</p>
-      <button class="btn btn-yellow btn-l" id="qStartBtn">Empezar</button>
-      <p class="counter" id="qLast"></p>
-    </div>
-
-    <div id="qRun" class="hidden">
-      <div class="q-top">
-        <span class="counter" id="qNum"></span>
-        <div class="q-bar"><div id="qBar"></div></div>
-        <span class="counter" id="qScore"></span>
-      </div>
-      <span class="q-tag" id="qTag"></span>
-      <h3 class="q-q" id="qQ"></h3>
-      <div class="q-opts" id="qOpts"></div>
-      <div class="q-fb hidden" id="qFb"></div>
-      <button class="btn btn-yellow hidden" id="qNext">Siguiente</button>
-    </div>
-
-    <div id="qEnd" class="hidden q-end">
-      <div class="q-score"><b id="qFinal">0</b><span id="qFinalOf">/24</span></div>
-      <h3 id="qMsg"></h3>
-      <div id="qWeak"></div>
-      <pre class="q-share" id="qShareTxt"></pre>
-      <div class="row-mid">
-        <button class="btn btn-yellow" id="qShare"><i data-lucide="share-2"></i> Compartir resultado</button>
-        <button class="btn btn-ghost" id="qAgain">Otra vez</button>
-        <button class="btn btn-ghost" id="qWrong">Solo las que fallé</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer class="foot">
-  <p class="foot-big">Tú puedes.</p>
-  <p>Chuleta → juego de parejas → quiz dos veces → copiar un giro a la libreta. Con eso pasas.</p>
-  <p class="counter">Tu avance se guarda solo en este dispositivo. Nadie más lo ve.</p>
-  <p class="counter">Hecho por Diego para el grupo de Aplicaciones Web.</p>
-  <div class="row-mid">
-    <button class="btn btn-ghost btn-s" id="imprimir"><i data-lucide="printer"></i> Imprimir la chuleta</button>
-    <button class="btn btn-ghost btn-s" id="wipe">Borrar mi avance</button>
-  </div>
-</footer>
-
 </main>
 
-<a href="#top" class="up" id="up" aria-label="Arriba">↑</a>
-
-<!-- Solo se ve al imprimir o al guardar como PDF. La llena app.js. -->
-<div id="hojaImpresa" aria-hidden="true"></div>
+<div id="pie"></div>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 <script src="sonido.js"></script>
-<script src="app.js"></script>
-<script src="armar.js"></script>
+<script src="datos.js"></script>
+<script src="nucleo.js"></script>
+<script src="secciones.js"></script>
 </body>
 </html>

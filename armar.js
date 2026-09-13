@@ -228,6 +228,9 @@
 
   function pintaAvance() {
     const f = faltantes(), listo = f.length === 0;
+    // cuenta para el avance de la página «El ejercicio»
+    try { localStorage.setItem('rest_armarOk', JSON.stringify(listo)); } catch (e) { }
+    if (typeof progreso === 'function') progreso();
     const c = $('#arAvance');
     c.className = 'ar-avance ' + (listo ? 'ok' : '');
     c.innerHTML = listo

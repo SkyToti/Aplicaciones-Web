@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f1e3">
+<title>Examen · Repaso API REST</title>
+<meta name="description" content="Simulacro cronometrado de 10 preguntas, práctica libre con explicaciones y repaso de las preguntas que has fallado.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Examen · Repaso API REST">
+<meta property="og:description" content="Simulacro cronometrado de 10 preguntas, práctica libre con explicaciones y repaso de las preguntas que has fallado.">
+<!-- Si el repo cambia de nombre, actualiza estas dos URLs -->
+<meta property="og:url" content="https://skytoti.github.io/Aplicaciones-Web/examen.html">
+<meta property="og:image" content="https://skytoti.github.io/Aplicaciones-Web/og.png">
+<meta property="og:locale" content="es_MX">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📓</text></svg>">
+<!-- El tema se aplica ANTES de pintar: sin esto, en modo oscuro cada cambio
+     de página daría un destello blanco. -->
+<script>try{var t=localStorage.getItem('rest_tema');var d=t==null?matchMedia('(prefers-color-scheme: dark)').matches:JSON.parse(t);document.documentElement.setAttribute('data-theme',d?'dark':'light')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-pagina="examen">
+<div id="cabecera"></div>
+<main id="top" class="pagina">
+
+  <header class="pg-hero tono-ro">
+    <span class="pg-kicker"><i data-lucide="timer"></i> Parte 5 de 5</span>
+    <h1>Examen</h1>
+    <p class="pg-lead">Pruébate como el lunes. Todo lo que falles aquí se guarda en «Mis fallos» hasta que lo domines.</p>
+    
+  </header>
+<section id="examen" class="sec">
+  <div id="examenApp"></div>
+</section>
+</main>
+
+<div id="pie"></div>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="sonido.js"></script>
+<script src="datos.js"></script>
+<script src="nucleo.js"></script>
+<script src="secciones.js"></script>
+<script src="examen.js"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f1e3">
+<title>Códigos HTTP · Repaso API REST</title>
+<meta name="description" content="Las 5 familias de códigos de estado, los 18 códigos y cuándo se usa cada uno, los duelos que confunden y el juego de parejas.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Códigos HTTP · Repaso API REST">
+<meta property="og:description" content="Las 5 familias de códigos de estado, los 18 códigos y cuándo se usa cada uno, los duelos que confunden y el juego de parejas.">
+<!-- Si el repo cambia de nombre, actualiza estas dos URLs -->
+<meta property="og:url" content="https://skytoti.github.io/Aplicaciones-Web/codigos.html">
+<meta property="og:image" content="https://skytoti.github.io/Aplicaciones-Web/og.png">
+<meta property="og:locale" content="es_MX">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📓</text></svg>">
+<!-- El tema se aplica ANTES de pintar: sin esto, en modo oscuro cada cambio
+     de página daría un destello blanco. -->
+<script>try{var t=localStorage.getItem('rest_tema');var d=t==null?matchMedia('(prefers-color-scheme: dark)').matches:JSON.parse(t);document.documentElement.setAttribute('data-theme',d?'dark':'light')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-pagina="codigos">
+<div id="cabecera"></div>
+<main id="top" class="pagina">
+
+  <header class="pg-hero tono-ve">
+    <span class="pg-kicker"><i data-lucide="traffic-cone"></i> Parte 2 de 5</span>
+    <h1>Códigos HTTP</h1>
+    <p class="pg-lead">Lo que más peso tiene en el examen. Primero las familias, luego cada código, y al final el juego para que se te quede.</p>
+    <nav class="pg-indice" aria-label="En esta página">
+      <a href="#familias">Las 5 familias</a>
+      <a href="#explorador">Explorador</a>
+      <a href="#duelos">Los duelos</a>
+      <a href="#parejas">Juego de parejas</a>
+    </nav>
+  </header>
+<section id="familias" class="sec">
+  <header class="sec-h"><span class="num">1</span><h2>Las 5 familias</h2></header>
+  <p class="sec-p">Tu profe pide las <b>tres principales</b> (2xx, 4xx, 5xx), pero saberte las cinco te cuesta veinte segundos y te blinda.</p>
+
+  <div class="fams" id="fams"></div>
+  <div class="box box-green">
+    <b>Truco para no olvidarlas</b>
+    <ul id="mnemo"></ul>
+  </div>
+</section>
+<section id="explorador" class="sec">
+  <header class="sec-h"><span class="num">2</span><h2>Explorador de códigos</h2></header>
+  <p class="sec-p">Toca cualquiera para ver cuándo se usa. Los que tienen <i data-lucide="star" class="ico-star"></i> son los que casi seguro caen.</p>
+
+  <div class="filters" id="filters"></div>
+  <div class="codes" id="codes"></div>
+  <div class="panel" id="codeOut"><span class="ph">Toca un código.</span></div>
+</section>
+<section id="duelos" class="sec">
+  <header class="sec-h"><span class="num">3</span><h2>Los duelos que te van a poner</h2></header>
+  <p class="sec-p">Pares de códigos que se confunden. Si te sabes la diferencia, ya ganaste la pregunta.</p>
+
+  <div class="duels" id="duels"></div>
+</section>
+<section id="parejas" class="sec">
+  <header class="sec-h"><span class="num">4</span><h2>Juego: encuentra la pareja</h2></header>
+  <p class="sec-p">Toca un código y luego su significado. Seis parejas por ronda. Esto se te va a quedar más que leerlo veinte veces.</p>
+
+  <div class="game">
+    <div class="game-top">
+      <span class="stat">Parejas <b id="mPairs">0/6</b></span>
+      <span class="stat">Intentos <b id="mTries">0</b></span>
+      <span class="stat">Récord <b id="mBest">–</b></span>
+      <button class="btn btn-yellow btn-s" id="mNew">Nueva ronda</button>
+    </div>
+    <div class="match" id="match"></div>
+    <div class="game-msg" id="mMsg"></div>
+  </div>
+</section>
+</main>
+
+<div id="pie"></div>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="sonido.js"></script>
+<script src="datos.js"></script>
+<script src="nucleo.js"></script>
+<script src="secciones.js"></script>
+</body>
+</html>

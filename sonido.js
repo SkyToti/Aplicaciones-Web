@@ -57,6 +57,14 @@ const Sonido = (() => {
     mal() { tono(300, 0.22, 'triangle', 0.16, -110); },
     /* encontraste una pareja: pluck cortito */
     pareja() { tono(880, 0.07, 'triangle', 0.16); setTimeout(() => tono(1320, 0.1, 'sine', 0.13), 60); },
+    /* los últimos 10 segundos del simulacro: un tic seco, no alarmante */
+    tictac() { tono(1900, 0.03, 'square', 0.035); },
+    /* se acabó el tiempo: dos notas que bajan */
+    alarma() {
+      tono(880, 0.18, 'triangle', 0.2);
+      setTimeout(() => tono(660, 0.18, 'triangle', 0.2), 190);
+      setTimeout(() => tono(440, 0.32, 'triangle', 0.2), 380);
+    },
     /* terminaste algo */
     fanfarria() {
       [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => tono(f, 0.22, 'sine', 0.17), i * 105));
