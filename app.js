@@ -31,11 +31,11 @@ const CHEAT = [
 ];
 
 const RESTO = [
-  { e: '🧑', n: 'Tú, el cliente', q: 'App / Frontend', d: 'Quien <b>quiere algo</b> y no sabe (ni le importa) cómo se cocina. En la vida real: tu app, la página web u otro sistema. Solo sabe <b>pedir</b>.' },
-  { e: '📋', n: 'El menú', q: 'Documentación', d: 'La lista de lo que <b>puedes pedir</b> y cómo se llama cada cosa. En una API es la documentación: qué endpoints hay, qué mandar y qué te devuelven.' },
-  { e: '🧑‍🍳', n: 'El mesero', q: 'LA API', d: '<b>Aquí está la respuesta del examen.</b> Recibe tu pedido en un formato acordado, lo lleva a la cocina y te trae el resultado. Nunca te deja entrar a la cocina. Eso es una API: el intermediario con reglas claras.' },
-  { e: '🍳', n: 'La cocina', q: 'Servidor / Lógica', d: 'Donde <b>de verdad</b> pasa el trabajo. Tú no ves cómo lo hacen. Pueden cambiar de chef o de receta y a ti no te afecta mientras el plato llegue igual.' },
-  { e: '🍝', n: 'El plato', q: 'La respuesta', d: 'Lo que te regresan: normalmente un <b>JSON</b> con los datos, más un <b>código de estado</b> que dice si salió bien o mal.' }
+  { e: 'user', n: 'Tú, el cliente', q: 'App / Frontend', d: 'Quien <b>quiere algo</b> y no sabe (ni le importa) cómo se cocina. En la vida real: tu app, la página web u otro sistema. Solo sabe <b>pedir</b>.' },
+  { e: 'clipboard-list', n: 'El menú', q: 'Documentación', d: 'La lista de lo que <b>puedes pedir</b> y cómo se llama cada cosa. En una API es la documentación: qué endpoints hay, qué mandar y qué te devuelven.' },
+  { e: 'chef-hat', n: 'El mesero', q: 'LA API', d: '<b>Aquí está la respuesta del examen.</b> Recibe tu pedido en un formato acordado, lo lleva a la cocina y te trae el resultado. Nunca te deja entrar a la cocina. Eso es una API: el intermediario con reglas claras.' },
+  { e: 'cooking-pot', n: 'La cocina', q: 'Servidor / Lógica', d: 'Donde <b>de verdad</b> pasa el trabajo. Tú no ves cómo lo hacen. Pueden cambiar de chef o de receta y a ti no te afecta mientras el plato llegue igual.' },
+  { e: 'utensils', n: 'El plato', q: 'La respuesta', d: 'Lo que te regresan: normalmente un <b>JSON</b> con los datos, más un <b>código de estado</b> que dice si salió bien o mal.' }
 ];
 
 const REST_RULES = [
@@ -120,16 +120,16 @@ const RULES = [
 ];
 
 const LAYERS = [
-  { e: '📱', n: 'Cliente', s: 'App móvil, web u otro sistema', d: 'Es <b>quien pide</b>. Muestra la información y recoge lo que el usuario escribe. No tiene lógica de negocio ni toca la base de datos: solo habla con la API por HTTP.' },
-  { e: '🚪', n: 'Controlador', s: 'Recibe la petición HTTP', d: 'La <b>puerta de entrada</b>. Recibe método y URL, valida que los datos vengan bien formados, llama al servicio y devuelve la respuesta con su <b>código de estado</b>. No calcula nada por su cuenta.' },
-  { e: '🧠', n: 'Servicio', s: 'Las reglas del negocio', d: 'Donde viven <b>las reglas</b>: «no se agenda en domingo», «un socio moroso no entra». Es el cerebro. No sabe de HTTP ni de SQL.' },
-  { e: '🗄️', n: 'Repositorio', s: 'Habla con la base de datos', d: 'El <b>traductor</b>. Convierte «dame la mascota 42» en la consulta concreta. Si mañana cambias de base de datos, solo se toca esta capa.' },
-  { e: '💾', n: 'Base de datos', s: 'Donde viven los datos', d: 'El <b>almacén</b>. Guarda la información de forma permanente. No decide nada: guarda y entrega.' }
+  { e: 'smartphone', n: 'Cliente', s: 'App móvil, web u otro sistema', d: 'Es <b>quien pide</b>. Muestra la información y recoge lo que el usuario escribe. No tiene lógica de negocio ni toca la base de datos: solo habla con la API por HTTP.' },
+  { e: 'door-open', n: 'Controlador', s: 'Recibe la petición HTTP', d: 'La <b>puerta de entrada</b>. Recibe método y URL, valida que los datos vengan bien formados, llama al servicio y devuelve la respuesta con su <b>código de estado</b>. No calcula nada por su cuenta.' },
+  { e: 'brain', n: 'Servicio', s: 'Las reglas del negocio', d: 'Donde viven <b>las reglas</b>: «no se agenda en domingo», «un socio moroso no entra». Es el cerebro. No sabe de HTTP ni de SQL.' },
+  { e: 'database', n: 'Repositorio', s: 'Habla con la base de datos', d: 'El <b>traductor</b>. Convierte «dame la mascota 42» en la consulta concreta. Si mañana cambias de base de datos, solo se toca esta capa.' },
+  { e: 'hard-drive', n: 'Base de datos', s: 'Donde viven los datos', d: 'El <b>almacén</b>. Guarda la información de forma permanente. No decide nada: guarda y entrega.' }
 ];
 
 const GIROS = [
   {
-    id: 'veterinaria', e: '🐶', n: 'Veterinaria', s: 'Una clínica que registra mascotas y sus citas médicas.',
+    id: 'veterinaria', e: 'dog', n: 'Veterinaria', s: 'Una clínica que registra mascotas y sus citas médicas.',
     res: ['/mascotas', '/citas', '/veterinarios'],
     eps: [
       { m: 'GET', p: '/v1/mascotas', d: 'Lista todas las mascotas, con filtros y paginación.', c: [200] },
@@ -141,7 +141,7 @@ const GIROS = [
     j: { r: 'POST /v1/mascotas', b: { nombre: 'Firulais', especie: 'perro', raza: 'labrador', edad: 4, duenoId: 17 } }
   },
   {
-    id: 'gimnasio', e: '💪', n: 'Gimnasio', s: 'Control de socios, membresías y clases.',
+    id: 'gimnasio', e: 'dumbbell', n: 'Gimnasio', s: 'Control de socios, membresías y clases.',
     res: ['/socios', '/membresias', '/clases'],
     eps: [
       { m: 'GET', p: '/v1/socios', d: 'Lista los socios registrados.', c: [200] },
@@ -153,7 +153,7 @@ const GIROS = [
     j: { r: 'POST /v1/socios', b: { nombre: 'Ana Rivera', correo: 'ana.rivera@correo.com', telefono: '7771234567', plan: 'mensual' } }
   },
   {
-    id: 'cine', e: '🎬', n: 'Cine', s: 'Cartelera, funciones y venta de boletos.',
+    id: 'cine', e: 'clapperboard', n: 'Cine', s: 'Cartelera, funciones y venta de boletos.',
     res: ['/peliculas', '/funciones', '/boletos'],
     eps: [
       { m: 'GET', p: '/v1/peliculas', d: 'Cartelera completa.', c: [200] },
@@ -165,7 +165,7 @@ const GIROS = [
     j: { r: 'POST /v1/boletos', b: { funcionId: 88, asiento: 'F12', clienteId: 24, precio: 95 } }
   },
   {
-    id: 'biblioteca', e: '📚', n: 'Biblioteca', s: 'Acervo de libros y préstamos a usuarios.',
+    id: 'biblioteca', e: 'book-open', n: 'Biblioteca', s: 'Acervo de libros y préstamos a usuarios.',
     res: ['/libros', '/prestamos', '/usuarios'],
     eps: [
       { m: 'GET', p: '/v1/libros', d: 'Lista el acervo, filtrable por autor o disponibilidad.', c: [200] },
@@ -177,7 +177,7 @@ const GIROS = [
     j: { r: 'POST /v1/prestamos', b: { libroId: 301, usuarioId: 12, fechaPrestamo: '2026-09-14', fechaLimite: '2026-09-28' } }
   },
   {
-    id: 'restaurante', e: '🍕', n: 'Restaurante', s: 'Menú, pedidos y mesas.',
+    id: 'restaurante', e: 'pizza', n: 'Restaurante', s: 'Menú, pedidos y mesas.',
     res: ['/platillos', '/pedidos', '/mesas'],
     eps: [
       { m: 'GET', p: '/v1/platillos', d: 'Menú completo.', c: [200] },
@@ -189,7 +189,7 @@ const GIROS = [
     j: { r: 'POST /v1/pedidos', b: { mesaId: 7, items: [{ platilloId: 3, cantidad: 2 }, { platilloId: 11, cantidad: 1 }], notas: 'Sin cebolla' } }
   },
   {
-    id: 'hospital', e: '🏥', n: 'Hospital', s: 'Pacientes, expedientes y citas médicas.',
+    id: 'hospital', e: 'stethoscope', n: 'Hospital', s: 'Pacientes, expedientes y citas médicas.',
     res: ['/pacientes', '/citas', '/medicos'],
     eps: [
       { m: 'GET', p: '/v1/pacientes', d: 'Lista de pacientes registrados.', c: [200, 401] },
@@ -253,7 +253,7 @@ function initTema() {
 }
 function aplicarTema(oscuro) {
   document.documentElement.setAttribute('data-theme', oscuro ? 'dark' : 'light');
-  $('#themeBtn').textContent = oscuro ? '☀️' : '🌙';
+  $('#themeBtn').innerHTML = '<i data-lucide="' + (oscuro ? 'sun' : 'moon') + '"></i>'; iconos();
   const meta = document.querySelector('meta[name=theme-color]');
   if (meta) meta.setAttribute('content', oscuro ? '#1b1a21' : '#f7f1e3');
 }
@@ -268,7 +268,7 @@ function renderCheat() {
   const done = store.get('cheat', []);
   const g = $('#cheats'); g.innerHTML = '';
   CHEAT.forEach((c, i) => {
-    const n = el('div', 'cheat' + (done.includes(i) ? ' done' : ''), `<span class="mark">✓</span><h4>${c.t}</h4><p>${c.d}</p>`);
+    const n = el('div', 'cheat' + (done.includes(i) ? ' done' : ''), `<span class="mark"><i data-lucide="check"></i></span><h4>${c.t}</h4><p>${c.d}</p>`);
     n.addEventListener('click', () => {
       const d = store.get('cheat', []); const k = d.indexOf(i);
       if (k > -1) d.splice(k, 1); else d.push(i);
@@ -282,10 +282,10 @@ function renderCheat() {
 function renderResto() {
   const g = $('#resto'); g.innerHTML = '';
   RESTO.forEach(p => {
-    const n = el('div', 'resto-p', `<span class="e">${p.e}</span><div class="n">${p.n}</div><div class="q">${p.q}</div>`);
+    const n = el('div', 'resto-p', `<i class="e" data-lucide="${p.e}"></i><div class="n">${p.n}</div><div class="q">${p.q}</div>`);
     n.addEventListener('click', () => {
       $$('.resto-p').forEach(x => x.classList.remove('on')); n.classList.add('on');
-      $('#restoOut').innerHTML = `<h4>${p.e} ${p.n} → ${p.q}</h4><p>${p.d}</p>`;
+      $('#restoOut').innerHTML = `<h4><i class="e-in" data-lucide="${p.e}"></i> ${p.n} → ${p.q}</h4><p>${p.d}</p>`;
     });
     g.appendChild(n);
   });
@@ -294,7 +294,7 @@ function renderResto() {
 function renderRest() {
   const g = $('#rest'); g.innerHTML = '';
   REST_RULES.forEach(r => g.appendChild(el('div', 'rest-c' + (r.star ? ' star' : ''),
-    `<div class="n2">${r.n}</div><h4>${r.t}${r.star ? ' ⭐' : ''}</h4><p>${r.d}</p><p class="say">💬 ${r.s}</p>`)));
+    `<div class="n2">${r.n}</div><h4>${r.t}${r.star ? ' <i data-lucide="star" class="ico-star"></i>' : ''}</h4><p>${r.d}</p><p class="say">${r.s}</p>`)));
 }
 
 function renderUrl() {
@@ -318,8 +318,8 @@ function renderMets() {
         <div class="t">${m.t}</div><p>${m.d}</p>
         <div class="ex">${m.ex}</div>
         <div class="flags">
-          <span class="flag ${m.safe ? 'y' : 'n'}">${m.safe ? '✓' : '✗'} Seguro</span>
-          <span class="flag ${m.idem ? 'y' : 'n'}">${m.idem ? '✓' : '✗'} Idempotente</span>
+          <span class="flag ${m.safe ? 'y' : 'n'}"><i data-lucide="${m.safe ? 'check' : 'x'}"></i> Seguro</span>
+          <span class="flag ${m.idem ? 'y' : 'n'}"><i data-lucide="${m.idem ? 'check' : 'x'}"></i> Idempotente</span>
         </div>
       </div>`);
     g.appendChild(n);
@@ -340,7 +340,7 @@ function renderFams() {
 let filtro = 'todos';
 function renderFilters() {
   const g = $('#filters'); g.innerHTML = '';
-  ['todos', '2xx', '3xx', '4xx', '5xx', '⭐ clave'].forEach(k => {
+  ['todos', '2xx', '3xx', '4xx', '5xx', 'clave'].forEach(k => {
     const b = el('button', 'fbtn' + (k === filtro ? ' on' : ''), k);
     b.addEventListener('click', () => { filtro = k; renderFilters(); renderCodes(); });
     g.appendChild(b);
@@ -349,13 +349,13 @@ function renderFilters() {
 
 function renderCodes() {
   const g = $('#codes'); g.innerHTML = '';
-  CODIGOS.filter(c => filtro === 'todos' || (filtro === '⭐ clave' ? c.star : c.f === filtro)).forEach(c => {
-    const n = el('div', 'code', `${c.star ? '<span class="st">⭐</span>' : ''}<b>${c.c}</b><span>${c.n}</span>`);
+  CODIGOS.filter(c => filtro === 'todos' || (filtro === 'clave' ? c.star : c.f === filtro)).forEach(c => {
+    const n = el('div', 'code', `${c.star ? '<span class="st"><i data-lucide="star"></i></span>' : ''}<b>${c.c}</b><span>${c.n}</span>`);
     n.style.background = famBg(c.f);
     n.addEventListener('click', () => {
       $$('.code').forEach(x => x.classList.remove('on')); n.classList.add('on');
       $('#codeOut').innerHTML = `
-        <h4><span style="font-family:var(--mono)">${c.c}</span> · ${c.n} ${c.star ? '⭐' : ''}</h4>
+        <h4><span style="font-family:var(--mono)">${c.c}</span> · ${c.n} ${c.star ? '<i data-lucide="star" class="ico-star"></i>' : ''}</h4>
         <p>${c.d}</p>
         <p style="margin:0"><span style="background:${famBg(c.f)};color:#1a1712;border:2px solid var(--line);border-radius:7px;padding:2px 9px;font-weight:800;font-size:.8rem">familia ${c.f}</span>
         &nbsp; <span style="font-family:var(--mono);font-size:.85rem">${c.ex}</span></p>`;
@@ -373,16 +373,16 @@ function renderDuels() {
 function renderRules() {
   const g = $('#rules'); g.innerHTML = '';
   RULES.forEach(r => g.appendChild(el('div', 'rule',
-    `<h4>${r.t}</h4><div class="ok-line">✅ <span>${r.g}</span></div><div class="bad-line">❌ <span>${r.b}</span></div><p>${r.p}</p>`)));
+    `<h4>${r.t}</h4><div class="ok-line"><i data-lucide="check"></i> <span>${r.g}</span></div><div class="bad-line"><i data-lucide="x"></i> <span>${r.b}</span></div><p>${r.p}</p>`)));
 }
 
 function renderLayers() {
   const g = $('#layers'); g.innerHTML = '';
   LAYERS.forEach((l, i) => {
-    const n = el('div', 'layer', `<span class="e">${l.e}</span><div><div class="nm">${i + 1}. ${l.n}</div><div class="sh2">${l.s}</div></div>`);
+    const n = el('div', 'layer', `<i class="e" data-lucide="${l.e}"></i><div><div class="nm">${i + 1}. ${l.n}</div><div class="sh2">${l.s}</div></div>`);
     n.addEventListener('click', () => {
       $$('.layer').forEach(x => x.classList.remove('on')); n.classList.add('on');
-      $('#layerOut').innerHTML = `<h4>${l.e} ${l.n}</h4><p>${l.d}</p>`;
+      $('#layerOut').innerHTML = `<h4><i class="e-in" data-lucide="${l.e}"></i> ${l.n}</h4><p>${l.d}</p>`;
     });
     g.appendChild(n);
     if (i < LAYERS.length - 1) g.appendChild(el('div', 'arrow', '↓'));
@@ -415,7 +415,7 @@ function pintarOrden(marcar) {
 function comprobarOrden() {
   const bien = ordState.every((v, i) => v === i);
   pintarOrden(true);
-  $('#ordMsg').textContent = bien ? '🎉 ¡Exacto! Ese es el orden.' : 'Todavía no. Las verdes están en su lugar.';
+  $('#ordMsg').textContent = bien ? '¡Exacto! Ese es el orden.' : 'Todavía no. Las verdes están en su lugar.';
   if (window.Sonido) bien ? Sonido.fanfarria() : Sonido.mal();
   if (bien) { store.set('orden', true); progreso(); }
 }
@@ -455,17 +455,17 @@ function tocarCarta(n) {
       const best = store.get('mBest', null);
       const record = best == null || mTries < best;
       if (record) { store.set('mBest', mTries); $('#mBest').textContent = mTries + ' intentos'; }
-      $('#mMsg').textContent = record ? `🏆 ¡Ronda completa en ${mTries} intentos! Nuevo récord.` : `✅ Ronda completa en ${mTries} intentos.`;
+      $('#mMsg').textContent = record ? `¡Ronda completa en ${mTries} intentos! Nuevo récord.` : `Ronda completa en ${mTries} intentos.`;
       store.set('parejas', true); progreso();
     } else {
-      $('#mMsg').textContent = '✅ ¡Va!';
+      $('#mMsg').textContent = '¡Va!';
     }
   } else {
     mLock = true;
     const a = mSel, b = n;
     if (window.Sonido) Sonido.mal();
     a.classList.remove('sel'); a.classList.add('miss'); b.classList.add('miss');
-    $('#mMsg').textContent = '❌ Esa no.';
+    $('#mMsg').textContent = 'Esa no.';
     setTimeout(() => { a.classList.remove('miss'); b.classList.remove('miss'); mLock = false; }, 420);
     mSel = null;
   }
@@ -525,7 +525,7 @@ function evaluarBuilder() {
 
   if (grave) {
     v.className = 'build-verdict v-no';
-    v.innerHTML = '<b>❌ Algo no cuadra</b><ul style="margin:6px 0 0">' + problemas.map(p => `<li>${p}</li>`).join('') + '</ul>';
+    v.innerHTML = '<b><i data-lucide="circle-x"></i> Algo no cuadra</b><ul style="margin:6px 0 0">' + problemas.map(p => `<li>${p}</li>`).join('') + '</ul>';
     return;
   }
 
@@ -541,10 +541,10 @@ function evaluarBuilder() {
   else { hace = `Borra el elemento 42.`; codigo = '204 No Content · 404 si no existe'; }
 
   v.className = 'build-verdict v-ok';
-  v.innerHTML = `<b>✅ Bien formado</b>
+  v.innerHTML = `<b><i data-lucide="circle-check"></i> Bien formado</b>
     <p style="margin:6px 0 4px">${hace}</p>
     <p style="margin:0"><b>Códigos esperados:</b> <span style="font-family:var(--mono)">${codigo}</span></p>
-    ${problemas.length ? '<p style="margin:8px 0 0;font-size:.87rem">💡 ' + problemas[0] + '</p>' : ''}`;
+    ${problemas.length ? '<p style="margin:8px 0 0;font-size:.87rem"><i data-lucide="lightbulb"></i> ' + problemas[0] + '</p>' : ''}`;
 }
 
 /* ---------- validador ---------- */
@@ -571,7 +571,7 @@ function validar(ruta) {
 }
 function pintarVal(r) {
   $('#valOut').innerHTML = validar(r).map(([t, m]) =>
-    `<div class="v-item ${t === 'err' ? 'err' : t === 'warn' ? 'warn' : 'ok'}"><span>${t === 'err' ? '❌' : t === 'warn' ? '⚠️' : '✅'}</span><span>${m}</span></div>`).join('');
+    `<div class="v-item ${t === 'err' ? 'err' : t === 'warn' ? 'warn' : 'ok'}"><span>${t === 'err' ? '<i data-lucide="circle-x"></i>' : t === 'warn' ? '<i data-lucide="triangle-alert"></i>' : '<i data-lucide="circle-check"></i>'}</span><span>${m}</span></div>`).join('');
 }
 
 /* ---------- giros ---------- */
@@ -579,7 +579,7 @@ let giroI = 0;
 function renderGiroTabs() {
   const g = $('#giroTabs'); g.innerHTML = '';
   GIROS.forEach((x, i) => {
-    const b = el('button', 'gtab' + (i === giroI ? ' on' : ''), `<span>${x.e}</span> ${x.n}`);
+    const b = el('button', 'gtab' + (i === giroI ? ' on' : ''), `<i data-lucide="${x.e}"></i> ${x.n}`);
     b.addEventListener('click', () => { giroI = i; store.set('giro', i); renderGiroTabs(); renderGiro(); });
     g.appendChild(b);
   });
@@ -587,7 +587,7 @@ function renderGiroTabs() {
 function renderGiro() {
   const x = GIROS[giroI], js = JSON.stringify(x.j.b, null, 2);
   $('#giro').innerHTML = `
-    <div class="giro-t"><span class="e">${x.e}</span><h3>API de ${x.n}</h3></div>
+    <div class="giro-t"><i class="e" data-lucide="${x.e}"></i><h3>API de ${x.n}</h3></div>
     <p class="giro-s">${x.s}</p>
 
     <div class="gb"><h4>1 · Recursos, en plural</h4>
@@ -618,11 +618,11 @@ function renderGiro() {
       </div></div>
 
     <div class="gb"><h4>5 · Diagrama de capas</h4>
-      <div class="mini">${LAYERS.map(l => `<div>${l.e} &nbsp;<b>${l.n}</b> — ${l.s}</div>`).join('<div class="arrow">↓</div>')}</div></div>`;
+      <div class="mini">${LAYERS.map(l => `<div><i data-lucide="${l.e}"></i> <b>${l.n}</b> — ${l.s}</div>`).join('<div class="arrow">↓</div>')}</div></div>`;
 
   const cb = $('#copyJson');
   cb.addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(js); cb.textContent = '✅ Copiado'; }
+    try { await navigator.clipboard.writeText(js); cb.textContent = 'Copiado'; }
     catch (e) { cb.textContent = 'Selecciónalo a mano'; }
     setTimeout(() => cb.textContent = 'Copiar', 1700);
   });
@@ -632,7 +632,7 @@ function renderCheck() {
   const done = store.get('chk', []);
   const g = $('#check'); g.innerHTML = '';
   CHECK.forEach((t, i) => {
-    const n = el('div', 'chk' + (done.includes(i) ? ' done' : ''), `<div class="chk-b">✓</div><div class="chk-t">${t}</div>`);
+    const n = el('div', 'chk' + (done.includes(i) ? ' done' : ''), `<div class="chk-b"><i data-lucide="check"></i></div><div class="chk-t">${t}</div>`);
     n.addEventListener('click', () => {
       const d = store.get('chk', []); const k = d.indexOf(i);
       if (k > -1) d.splice(k, 1); else d.push(i);
@@ -679,7 +679,7 @@ function runSim() {
   else if (caso === 'malos' && ['POST', 'PUT', 'PATCH'].includes(m)) { code = 400; nm = 'Bad Request'; body = { error: 'El campo "nombre" es obligatorio' }; why = '<b>400</b>: familia <b>4xx</b>, culpa del <b>cliente</b>. Mandaste el cuerpo incompleto o mal formado.'; }
   else if (caso === 'malos') { code = 200; nm = 'OK'; body = { nota: 'GET y DELETE no llevan cuerpo' }; why = '<b>GET</b> y <b>DELETE</b> normalmente no llevan cuerpo, así que no puede haber datos inválidos. Cambia a POST, PUT o PATCH para ver el 400.'; }
   else if (caso === 'noexiste' && conId) { code = 404; nm = 'Not Found'; body = { error: `No existe ${rec.slice(0, -1)} con id 42` }; why = '<b>404</b>: la ruta es correcta pero <b>ese elemento no existe</b>. Es 4xx porque el cliente pidió algo que no está.'; }
-  else if (caso === 'noexiste' && !conId) { code = 200; nm = 'OK'; body = { datos: [], total: 0 }; why = '⚠️ <b>Trampa de examen.</b> Si pides la <b>colección completa</b> y está vacía, NO es 404: la colección sí existe. Es <b>200 con lista vacía</b>.'; }
+  else if (caso === 'noexiste' && !conId) { code = 200; nm = 'OK'; body = { datos: [], total: 0 }; why = '<b>Trampa de examen.</b> Si pides la <b>colección completa</b> y está vacía, NO es 404: la colección sí existe. Es <b>200 con lista vacía</b>.'; }
   else if (m === 'GET') { code = 200; nm = 'OK'; body = conId ? Object.assign({ id: 42 }, cuerpo) : { datos: [Object.assign({ id: 42 }, cuerpo)], total: 1, pagina: 1 }; why = '<b>200 OK</b>: la lectura salió bien. GET nunca modifica nada, por eso es el único «seguro».'; }
   else if (m === 'POST' && !conId) { code = 201; nm = 'Created'; body = Object.assign({ id: 43 }, cuerpo); why = `<b>201 Created</b> porque se <b>creó</b> un recurso nuevo. Suele traer <code>Location: ${ruta}/43</code>.`; }
   else if (m === 'POST' && conId) { code = 405; nm = 'Method Not Allowed'; body = { error: 'No se puede crear sobre un id existente' }; why = `<b>405</b>: POST va sobre la <b>colección</b> (<code>/v1/${rec}</code>), no sobre un id. El servidor asigna el id, tú no.`; }
@@ -692,7 +692,7 @@ function runSim() {
   $('#simStatus').textContent = `${code} ${nm}`;
   $('#simStatus').style.background = famBg(String(code)[0] + 'xx');
   $('#simRes').textContent = body === null ? '(sin cuerpo)' : JSON.stringify(body, null, 2);
-  $('#simWhy').innerHTML = '💡 ' + why;
+  $('#simWhy').innerHTML = '<i data-lucide="lightbulb"></i> ' + why;
 }
 
 /* ============================================================
@@ -729,7 +729,7 @@ function qResp(elegida, boton, q) {
   if (ok) { qSc++; $('#qScore').textContent = `${qSc} ✓`; } else { boton.classList.add('wrong'); qBad.push(qOrd[qI]); }
   const fb = $('#qFb');
   fb.className = 'q-fb ' + (ok ? 'ok' : 'no');
-  fb.innerHTML = (ok ? '✅ <b>¡Correcto!</b> ' : '❌ <b>No era esa.</b> ') + q.e;
+  fb.innerHTML = (ok ? '<i data-lucide="circle-check"></i> <b>¡Correcto!</b> ' : '<i data-lucide="circle-x"></i> <b>No era esa.</b> ') + q.e;
   fb.classList.remove('hidden');
   $('#qNext').classList.remove('hidden');
   $('#qNext').textContent = qI + 1 >= qOrd.length ? 'Ver resultado' : 'Siguiente';
@@ -739,10 +739,10 @@ function qFin() {
   $('#qRun').classList.add('hidden'); $('#qEnd').classList.remove('hidden');
   const total = qOrd.length, pct = qSc / total;
   $('#qFinal').textContent = qSc; $('#qFinalOf').textContent = '/' + total;
-  $('#qMsg').textContent = pct === 1 ? '🏆 Perfecto. Vas blindado.' :
-    pct >= .85 ? '🔥 Muy bien. Repasa lo poco que falló y listo.' :
-      pct >= .6 ? '💪 Vas bien, pero hay huecos. Otra vuelta y quedas.' :
-        '📚 Todavía no. Vuelve a la chuleta y a los códigos, y repite.';
+  $('#qMsg').textContent = pct === 1 ? 'Perfecto. Vas blindado.' :
+    pct >= .85 ? 'Muy bien. Repasa lo poco que falló y listo.' :
+      pct >= .6 ? 'Vas bien, pero hay huecos. Otra vuelta y quedas.' :
+        'Todavía no. Vuelve a la chuleta y a los códigos, y repite.';
   const temas = [...new Set(qBad.map(i => QUIZ[i].tema))];
   $('#qWeak').innerHTML = temas.length
     ? '<p class="counter" style="margin:8px 0 4px">Repasa estos temas:</p>' + temas.map(t => `<span class="weak">${t}</span>`).join('')
@@ -771,12 +771,12 @@ async function compartirResultado() {
   try {
     if (navigator.share) await navigator.share({ text: t });
     else await navigator.clipboard.writeText(t);
-    b.textContent = '✅ Listo';
+    b.innerHTML = '<i data-lucide="check"></i> Listo'; iconos();
   } catch (e) {
-    try { await navigator.clipboard.writeText(t); b.textContent = '✅ Copiado'; }
+    try { await navigator.clipboard.writeText(t); b.textContent = 'Copiado'; }
     catch (e2) { b.textContent = 'Cópialo de arriba'; }
   }
-  setTimeout(() => b.textContent = '📤 Compartir resultado', 2000);
+  setTimeout(() => b.innerHTML = '<i data-lucide="share-2"></i> Compartir resultado', iconos(), 2000);
 }
 
 /* ============================================================
@@ -792,6 +792,78 @@ function progreso() {
   $('#progFill').style.width = pct + '%';
 }
 
+
+/* ---------- hoja imprimible ----------
+   Solo aparece al imprimir o al «Guardar como PDF». Se arma con los mismos
+   datos de arriba, pero condensada: en pantalla no se ve nunca. */
+function construirHoja() {
+  const sinHtml = s => String(s).replace(/<[^>]+>/g, '');
+  const claves = CODIGOS.filter(c => c.star);
+  $('#hojaImpresa').innerHTML = `
+    <header class="hi-h">
+      <h1>Repaso API REST — chuleta</h1>
+      <p>Aplicaciones Web · UTEZ &nbsp;·&nbsp; skytoti.github.io/Aplicaciones-Web</p>
+    </header>
+
+    <h2>Lo mínimo que hay que saberse</h2>
+    <ul class="hi-cols">${CHEAT.map(c => `<li><b>${c.t}.</b> ${sinHtml(c.d)}</li>`).join('')}</ul>
+
+    <h2>Métodos HTTP</h2>
+    <table class="hi-t">
+      <tr><th>Método</th><th>Qué hace</th><th>Seguro</th><th>Idemp.</th><th>Éxito</th></tr>
+      ${METODOS.map(m => `<tr><td><b>${m.m}</b></td><td>${m.t}</td><td>${m.safe ? 'sí' : 'no'}</td><td>${m.idem ? 'sí' : 'no'}</td><td>${m.c}</td></tr>`).join('')}
+    </table>
+    <p class="hi-nota"><b>Seguro</b> = no modifica nada. <b>Idempotente</b> = repetirlo deja el mismo resultado.
+    <b>PUT</b> reemplaza completo, <b>PATCH</b> solo lo que mandes.</p>
+
+    <h2>Las 5 familias</h2>
+    <ul class="hi-fam">${FAMILIAS.map(f => `<li><b>${f.n}</b> ${f.t} — ${sinHtml(f.d)} <i>${f.q}</i></li>`).join('')}</ul>
+
+    <h2>Los códigos que caen</h2>
+    <table class="hi-t">
+      ${claves.map(c => `<tr><td><b>${c.c}</b></td><td>${c.n}</td><td>${sinHtml(c.corto)}</td></tr>`).join('')}
+    </table>
+
+    <h2>Reglas de nombrado</h2>
+    <ul class="hi-cols">${RULES.map(r => `<li><b>${r.t}:</b> sí <code>${r.g}</code> &nbsp;·&nbsp; no <code>${r.b}</code></li>`).join('')}</ul>
+
+    <h2>Arquitectura por capas</h2>
+    <p class="hi-capas">${LAYERS.map(l => l.n).join('  →  ')}</p>
+    <ul class="hi-cols">${LAYERS.map(l => `<li><b>${l.n}:</b> ${sinHtml(l.d).split('.')[0]}.</li>`).join('')}</ul>
+
+    <p class="hi-pie">La entrega va en la libreta, con foto, y <b>firmada</b>.</p>`;
+}
+
+/* ---------- iconos (Lucide) ----------
+   Lucide reemplaza cada <i data-lucide="x"> por un <svg>. Como casi todo
+   el contenido se pinta desde JS, un observador se encarga de convertir los
+   iconos nuevos sin tener que llamarlo a mano en cada render. */
+function iconos(intento) {
+  if (!window.lucide) return;
+  try { lucide.createIcons(); } catch (e) { }
+  // Si un render metió iconos nuevos justo después de esta pasada, se vuelve
+  // a intentar. Sin esto se quedan <i> vacíos, que es un hueco invisible.
+  const n = intento || 0;
+  // Ojo: aquí NO se puede usar requestAnimationFrame. El navegador lo congela
+  // cuando la pestaña no está al frente, y entonces los iconos se quedan sin
+  // pintar para siempre en quien abre el link y se cambia de app.
+  if (n < 6 && document.querySelector('i[data-lucide]')) {
+    setTimeout(() => iconos(n + 1), 40);
+  }
+}
+
+function initIconos() {
+  if (!window.lucide) return;              // si el CDN falla, la página sigue funcionando
+  let pendiente = false;
+  const obs = new MutationObserver(() => {
+    if (pendiente) return;
+    pendiente = true;
+    setTimeout(() => { pendiente = false; iconos(); }, 30);
+  });
+  obs.observe(document.body, { childList: true, subtree: true });
+  iconos();
+}
+
 /* ---------- panel de sonido ---------- */
 function initSonido() {
   if (!window.Sonido) return;
@@ -802,7 +874,7 @@ function initSonido() {
     const fx = Sonido.efectosActivos(), rain = Sonido.lluviaActiva();
     swFx.classList.toggle('on', fx); swFx.setAttribute('aria-checked', fx);
     swRain.classList.toggle('on', rain); swRain.setAttribute('aria-checked', rain);
-    btn.textContent = (fx || rain) ? '🔊' : '🔇';
+    btn.innerHTML = '<i data-lucide="' + ((fx || rain) ? 'volume-2' : 'volume-x') + '"></i>'; iconos();
   };
 
   btn.addEventListener('click', e => { e.stopPropagation(); panel.classList.toggle('hidden'); pinta(); });
@@ -854,7 +926,11 @@ document.addEventListener('DOMContentLoaded', () => {
   renderFams(); renderFilters(); renderCodes(); renderDuels(); renderRules();
   renderLayers(); renderBuilder(); nuevaRonda(); nuevoOrden();
   giroI = store.get('giro', 0); renderGiroTabs(); renderGiro(); renderCheck();
-  initSim(); initNav(); initCd(); initSonido(); progreso();
+  initSim(); initNav(); initCd(); initSonido(); construirHoja(); progreso(); initIconos();
+
+  const alImprimir = () => { construirHoja(); window.print(); };
+  $('#imprimir').addEventListener('click', alImprimir);
+  $('#imprimir2').addEventListener('click', alImprimir);
 
   $('#resetCheat').addEventListener('click', () => { store.set('cheat', []); renderCheat(); progreso(); });
   $('#mNew').addEventListener('click', nuevaRonda);

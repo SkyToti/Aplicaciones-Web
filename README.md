@@ -34,9 +34,13 @@ JSON de ejemplo, códigos esperados y diagrama de capas.
 ## Detalles
 
 - **Tema claro y oscuro**, con el botón de la barra. Arranca según el sistema.
-- **Sonido opcional**, apagado por defecto: efectos cortos y ruido de lluvia para
-  concentrarse. Todo se genera con Web Audio en el navegador — cero archivos,
+- **Sonido opcional**, apagado por defecto: efectos cortos y lluvia en tres capas
+  (siseo, cuerpo y gotas sueltas al azar) generada con Web Audio — cero archivos,
   cero descargas, cero derechos de autor.
+- **Iconos de [Lucide](https://lucide.dev)** (ISC), no emojis.
+- **Hoja imprimible**: el botón «Imprimir la chuleta» saca un PDF de 2 páginas con
+  lo mínimo, los métodos, los códigos, las reglas y el diagrama. El resto de la
+  página no se imprime.
 - El avance se guarda en `localStorage`, en ese dispositivo.
 - Diseño estilo cuaderno: tinta gruesa, sombras duras, color plano.
   Cada método HTTP y cada familia de códigos tiene su color, y siempre el mismo.

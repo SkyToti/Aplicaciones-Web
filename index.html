@@ -26,7 +26,7 @@
 <header class="bar">
   <div class="bar-in">
     <a class="logo" href="#top">
-      <span class="logo-mark">📓</span>
+      <i class="logo-mark" data-lucide="notebook-pen"></i>
       <span class="logo-txt">Repaso <b>REST</b></span>
     </a>
 
@@ -48,8 +48,8 @@
 
     <div class="bar-right">
       <div class="prog" title="Tu avance"><div class="prog-fill" id="progFill"></div><span id="progPct">0%</span></div>
-      <button class="icon-btn" id="sndBtn" aria-label="Sonido">🔇</button>
-      <button class="icon-btn" id="themeBtn" aria-label="Cambiar tema">🌙</button>
+      <button class="icon-btn" id="sndBtn" aria-label="Sonido"><i data-lucide="volume-x"></i></button>
+      <button class="icon-btn" id="themeBtn" aria-label="Cambiar tema"><i data-lucide="moon"></i></button>
     </div>
   </div>
 
@@ -113,6 +113,7 @@
   <div class="row-end">
     <span class="counter" id="cheatCount"></span>
     <button class="btn btn-ghost btn-s" id="resetCheat">Desmarcar todo</button>
+    <button class="btn btn-ghost btn-s" id="imprimir2"><i data-lucide="printer"></i> Guardar como PDF</button>
   </div>
 </section>
 
@@ -121,7 +122,7 @@
   <header class="sec-h"><span class="num">2</span><h2>¿Qué es una API?</h2></header>
   <p class="sec-p">La respuesta corta, la que sirve en cualquier examen: <b>una API es un contrato que le dice a un programa cómo pedirle cosas a otro programa.</b></p>
 
-  <p class="lead">Y la analogía que nunca falla es un restaurante. Toca cada pieza 👇</p>
+  <p class="lead">Y la analogía que nunca falla es un restaurante. Toca cada pieza:</p>
   <div class="resto" id="resto"></div>
   <div class="panel" id="restoOut"><span class="ph">Toca una pieza de arriba.</span></div>
 
@@ -137,7 +138,7 @@
   <p class="sec-p">REST = <b>RE</b>presentational <b>S</b>tate <b>T</b>ransfer. No es un lenguaje ni una librería: es un <b>estilo</b> de diseñar APIs. Si cumple estas reglas, es RESTful.</p>
   <div class="rest" id="rest"></div>
   <div class="box box-yellow">
-    <b>⚠️ La que más cae</b>
+    <b><i data-lucide="triangle-alert"></i> La que más cae</b>
     <p><b>Sin estado (stateless).</b> Cada petición viaja completa y el servidor <b>no recuerda</b> la anterior. Si necesitas identidad, la mandas en cada petición.</p>
   </div>
 </section>
@@ -377,7 +378,7 @@
 
   <div class="quiz">
     <div id="qStart" class="q-start">
-      <div class="q-start-emo">✏️</div>
+      <div class="q-start-emo"><i data-lucide="pencil-line"></i></div>
       <p><b id="qTotal">24</b> preguntas. Sin tiempo y sin castigo: lo que falles se te queda más.</p>
       <button class="btn btn-yellow btn-l" id="qStartBtn">Empezar</button>
       <p class="counter" id="qLast"></p>
@@ -402,7 +403,7 @@
       <div id="qWeak"></div>
       <pre class="q-share" id="qShareTxt"></pre>
       <div class="row-mid">
-        <button class="btn btn-yellow" id="qShare">📤 Compartir resultado</button>
+        <button class="btn btn-yellow" id="qShare"><i data-lucide="share-2"></i> Compartir resultado</button>
         <button class="btn btn-ghost" id="qAgain">Otra vez</button>
         <button class="btn btn-ghost" id="qWrong">Solo las que fallé</button>
       </div>
@@ -415,12 +416,19 @@
   <p>Chuleta → juego de parejas → quiz dos veces → copiar un giro a la libreta. Con eso pasas.</p>
   <p class="counter">Tu avance se guarda solo en este dispositivo. Nadie más lo ve.</p>
   <p class="counter">Hecho por Diego para el grupo de Aplicaciones Web.</p>
-  <button class="btn btn-ghost btn-s" id="wipe">Borrar mi avance</button>
+  <div class="row-mid">
+    <button class="btn btn-ghost btn-s" id="imprimir"><i data-lucide="printer"></i> Imprimir la chuleta</button>
+    <button class="btn btn-ghost btn-s" id="wipe">Borrar mi avance</button>
+  </div>
 </footer>
 
 </main>
 
 <a href="#top" class="up" id="up" aria-label="Arriba">↑</a>
+
+<!-- Solo se ve al imprimir o al guardar como PDF. La llena app.js. -->
+<div id="hojaImpresa" aria-hidden="true"></div>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 <script src="sonido.js"></script>
 <script src="app.js"></script>
 <script src="armar.js"></script>

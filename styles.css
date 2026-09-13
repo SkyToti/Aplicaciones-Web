@@ -616,6 +616,69 @@ tr:last-child td{border-bottom:0}
   .ar-sub{flex-basis:100%}
 }
 
+/* ============================================================
+   ICONOS (Lucide) — trazo grueso para que peguen con la tinta
+   ============================================================ */
+[data-lucide],svg.lucide{
+  width:1.05em;height:1.05em;stroke-width:2.4;
+  vertical-align:-.17em;flex-shrink:0;
+}
+.logo-mark{width:23px;height:23px}
+.icon-btn svg{width:19px;height:19px;vertical-align:-.28em}
+.resto-p .e{width:34px;height:34px;display:block;margin:0 auto 2px;stroke-width:2}
+.layer .e,.giro-t .e{width:32px;height:32px;stroke-width:2}
+.e-in{width:1.15em;height:1.15em}
+.ico-star{width:.95em;height:.95em;color:#c9932a;fill:#f7c33f}
+.code .st svg{width:12px;height:12px;color:#a97f18;fill:#f7c33f;stroke-width:2}
+.q-start-emo svg{width:46px;height:46px;stroke-width:2}
+.mark svg,.chk-b svg{width:15px;height:15px;stroke-width:3.4}
+.flag svg{width:.88em;height:.88em;stroke-width:3.2}
+.gtab svg{width:19px;height:19px}
+.mini svg{width:17px;height:17px}
+.box>b svg{width:1.1em;height:1.1em;vertical-align:-.2em}
+.ok-line svg{color:#0d7a3c}
+.bad-line svg{color:#b3262c}
+.ar-chip svg{width:.95em;height:.95em;stroke-width:3}
+.v-item svg,.q-fb svg,.why svg,.build-verdict svg,.ar-aviso svg{width:1.05em;height:1.05em;vertical-align:-.2em}
+
+/* ============================================================
+   HOJA IMPRIMIBLE — invisible en pantalla, es lo único que sale
+   al imprimir o al «Guardar como PDF»
+   ============================================================ */
+#hojaImpresa{display:none}
+
+@media print{
+  @page{margin:11mm}
+  html,body{background:#fff !important;color:#000 !important}
+  body{background-image:none !important;font-size:10pt;line-height:1.42}
+  .bar,main,.foot,.up,.snd-panel{display:none !important}
+  #hojaImpresa{display:block !important;font-family:var(--body)}
+
+  #hojaImpresa h1{font-size:17pt;margin:0 0 2pt}
+  #hojaImpresa h2{
+    font-size:11pt;margin:11pt 0 4pt;padding-bottom:2pt;
+    border-bottom:1.5pt solid #000;break-after:avoid;page-break-after:avoid;
+  }
+  .hi-h{border-bottom:2.5pt solid #000;padding-bottom:5pt;margin-bottom:4pt}
+  .hi-h p{margin:0;font-size:8.5pt;color:#444}
+
+  #hojaImpresa ul{margin:0;padding-left:13pt}
+  #hojaImpresa li{margin-bottom:2.5pt;break-inside:avoid;page-break-inside:avoid}
+  .hi-cols{columns:2;column-gap:14pt}
+  .hi-fam li{list-style:none;margin-left:-13pt}
+  .hi-fam i{color:#444}
+
+  .hi-t{width:100%;border-collapse:collapse;font-size:9pt;margin-top:2pt}
+  .hi-t td,.hi-t th{border:.75pt solid #999;padding:2.5pt 5pt;text-align:left}
+  .hi-t th{background:#eee;font-size:8pt;text-transform:uppercase;letter-spacing:.04em}
+  .hi-t tr{break-inside:avoid;page-break-inside:avoid}
+
+  #hojaImpresa code{font-family:var(--mono);font-size:8.6pt;background:#f0f0f0;padding:0 2pt;border-radius:2pt}
+  .hi-nota{font-size:8.5pt;color:#333;margin:4pt 0 0}
+  .hi-capas{font-weight:800;font-size:10.5pt;margin:2pt 0 5pt;letter-spacing:.01em}
+  .hi-pie{margin-top:10pt;padding-top:5pt;border-top:1pt dashed #999;font-size:9pt}
+}
+
 @media (prefers-reduced-motion:reduce){
   *{animation:none !important;transition:none !important}
   html{scroll-behavior:auto}

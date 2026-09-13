@@ -65,57 +65,109 @@ const Sonido = (() => {
     /* ---------- lluvia ---------- */
     lluviaActiva() { return !!lluvia; },
 
+    /* La lluvia son TRES capas. Una sola capa de ruido filtrado grave suena a
+       tormenta lejana, que es justo lo que no queremos:
+         1. Siseo  — ruido agudo y parejo. Es el «shhh» del agua.
+         2. Cuerpo — un colchón grave muy bajito, para que no suene a estática.
+         3. Gotas  — golpecitos sueltos al azar. Esto es lo que el oído
+                     reconoce como LLUVIA y no como ruido blanco.
+       Las dos primeras son estéreo con ruido distinto en cada canal, que es
+       lo que hace que suene ancho y relajado en vez de plano. */
     alternarLluvia() {
       if (lluvia) { this.pararLluvia(); return false; }
       if (!arrancar()) return false;
 
-      // ruido marrón: más grave y parejo que el blanco, es el que de verdad
-      // ayuda a concentrarse. Se genera un buffer de 4 s y se pone en bucle.
-      const seg = 4, n = ctx.sampleRate * seg;
-      const buf = ctx.createBuffer(1, n, ctx.sampleRate);
-      const d = buf.getChannelData(0);
-      let ultimo = 0;
-      for (let i = 0; i < n; i++) {
-        const blanco = Math.random() * 2 - 1;
-        ultimo = (ultimo + 0.02 * blanco) / 1.02;
-        d[i] = ultimo * 3.2;
+      const sr = ctx.sampleRate, seg = 6, n = sr * seg;
+
+      // --- buffer de ruido estéreo, canales independientes ---
+      const buf = ctx.createBuffer(2, n, sr);
+      for (let c = 0; c < 2; c++) {
+        const d = buf.getChannelData(c);
+        for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
       }
 
-      const fuente = ctx.createBufferSource();
-      fuente.buffer = buf; fuente.loop = true;
+      const salida = ctx.createGain();
+      salida.gain.value = 0.0001;
+      salida.connect(ctx.destination);
 
-      const filtro = ctx.createBiquadFilter();
-      filtro.type = 'lowpass';
-      filtro.frequency.value = 1100;
-      filtro.Q.value = 0.6;
+      // --- 1) siseo: se le quita el retumbe grave y el filo agudo ---
+      const siseo = ctx.createBufferSource();
+      siseo.buffer = buf; siseo.loop = true;
+      const hp = ctx.createBiquadFilter();
+      hp.type = 'highpass'; hp.frequency.value = 900; hp.Q.value = 0.5;
+      const lp = ctx.createBiquadFilter();
+      lp.type = 'lowpass'; lp.frequency.value = 5200; lp.Q.value = 0.4;
+      const gSiseo = ctx.createGain(); gSiseo.gain.value = 0.5;
+      siseo.connect(hp); hp.connect(lp); lp.connect(gSiseo); gSiseo.connect(salida);
 
-      const g = ctx.createGain();
-      g.gain.value = 0.0001;
+      // --- 2) cuerpo: colchón grave discreto, para que tenga calidez ---
+      const cuerpo = ctx.createBufferSource();
+      cuerpo.buffer = buf; cuerpo.loop = true;
+      cuerpo.playbackRate.value = 0.8;          // desfasado del siseo
+      const lpB = ctx.createBiquadFilter();
+      lpB.type = 'lowpass'; lpB.frequency.value = 420; lpB.Q.value = 0.3;
+      const gCuerpo = ctx.createGain(); gCuerpo.gain.value = 0.16;
+      cuerpo.connect(lpB); lpB.connect(gCuerpo); gCuerpo.connect(salida);
 
-      // un vaivén lentísimo de volumen, para que suene a olas y no a estática
+      // --- vaivén lentísimo: la lluvia arrecia y se calma sola ---
       const lfo = ctx.createOscillator();
       const lfoG = ctx.createGain();
-      lfo.frequency.value = 0.07;
-      lfoG.gain.value = 0.06;
-      lfo.connect(lfoG); lfoG.connect(g.gain);
+      lfo.frequency.value = 0.035;               // un ciclo cada ~28 s
+      lfoG.gain.value = 0.09;
+      lfo.connect(lfoG); lfoG.connect(gSiseo.gain);
 
-      fuente.connect(filtro); filtro.connect(g); g.connect(ctx.destination);
-      fuente.start(); lfo.start();
-      g.gain.exponentialRampToValueAtTime(Math.max(0.02, cfg.vol * 0.34), ctx.currentTime + 1.2);
+      siseo.start(); cuerpo.start(); lfo.start();
 
-      lluvia = { fuente, g, filtro, lfo };
+      // --- 3) gotas sueltas ---
+      let vivo = true;
+      const gota = () => {
+        if (!vivo || !lluvia) return;
+        const t = ctx.currentTime;
+        const dur = 0.02 + Math.random() * 0.03;
+        const src = ctx.createBufferSource();
+        src.buffer = buf; src.loop = true;
+        src.playbackRate.value = 0.9 + Math.random() * 0.5;
+
+        const bp = ctx.createBiquadFilter();
+        bp.type = 'bandpass';
+        bp.frequency.value = 1400 + Math.random() * 3200;   // tono de cada gota
+        bp.Q.value = 6 + Math.random() * 7;
+
+        const g = ctx.createGain();
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.035 + Math.random() * 0.05, t + 0.004);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+
+        let destino = salida;
+        if (ctx.createStereoPanner) {                       // cae a mono si no existe
+          const pan = ctx.createStereoPanner();
+          pan.pan.value = Math.random() * 1.6 - 0.8;        // cada gota en un lado
+          pan.connect(salida); destino = pan;
+        }
+        src.connect(bp); bp.connect(g); g.connect(destino);
+        src.start(t); src.stop(t + dur + 0.03);
+
+        setTimeout(gota, 45 + Math.random() * 260);
+      };
+      setTimeout(gota, 120);
+
+      // entra despacio: 2.5 s de fundido
+      salida.gain.exponentialRampToValueAtTime(Math.max(0.02, cfg.vol * 0.4), ctx.currentTime + 2.5);
+
+      lluvia = { siseo, cuerpo, lfo, salida, parar: () => { vivo = false; } };
       cfg.lluviaOn = true;
       return true;
     },
 
     pararLluvia() {
       if (!lluvia) return;
-      const { fuente, g, lfo } = lluvia;
+      const { siseo, cuerpo, lfo, salida, parar } = lluvia;
+      parar();                                   // deja de programar gotas
       const t = ctx.currentTime;
-      g.gain.cancelScheduledValues(t);
-      g.gain.setValueAtTime(g.gain.value, t);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.8);   // se apaga suave
-      setTimeout(() => { try { fuente.stop(); lfo.stop(); } catch (e) { } }, 900);
+      salida.gain.cancelScheduledValues(t);
+      salida.gain.setValueAtTime(salida.gain.value, t);
+      salida.gain.exponentialRampToValueAtTime(0.0001, t + 1.4);   // se aleja suave
+      setTimeout(() => { try { siseo.stop(); cuerpo.stop(); lfo.stop(); } catch (e) { } }, 1500);
       lluvia = null;
       cfg.lluviaOn = false;
     },
@@ -132,7 +184,7 @@ const Sonido = (() => {
     ponerVolumen(v) {
       cfg.vol = v; guardar('snd_vol', v);
       if (maestro) maestro.gain.value = v;
-      if (lluvia) lluvia.g.gain.setTargetAtTime(Math.max(0.02, v * 0.34), ctx.currentTime, 0.1);
+      if (lluvia) lluvia.salida.gain.setTargetAtTime(Math.max(0.02, v * 0.4), ctx.currentTime, 0.15);
     }
   };
 

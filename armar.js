@@ -8,10 +8,11 @@
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const el = (t, c, h) => { const n = document.createElement(t); if (c) n.className = c; if (h != null) n.innerHTML = h; return n; };
 
+  // Un <option> nativo solo admite texto: aquí no caben iconos ni SVG.
   const GIRO_OPS = [
-    ['veterinaria', '🐶 Veterinaria'], ['gimnasio', '💪 Gimnasio'], ['cine', '🎬 Cine'],
-    ['biblioteca', '📚 Biblioteca'], ['restaurante', '🍕 Restaurante'], ['hospital', '🏥 Hospital'],
-    ['otro', '✏️ Otro (yo lo escribo)']
+    ['veterinaria', 'Veterinaria'], ['gimnasio', 'Gimnasio'], ['cine', 'Cine'],
+    ['biblioteca', 'Biblioteca'], ['restaurante', 'Restaurante'], ['hospital', 'Hospital'],
+    ['otro', 'Otro (yo lo escribo)']
   ];
   const CAPAS = ['Cliente', 'Controlador', 'Servicio', 'Repositorio', 'Base de datos'];
   const METS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
@@ -79,6 +80,7 @@
   function render() {
     pintaPaso1(); pintaPaso2(); pintaPaso3(); pintaPaso4(); pintaHoja(); pintaAvance();
     persistir();
+    if (window.iconos) iconos();
   }
 
   function pintaPaso1() {
@@ -99,7 +101,9 @@
       $$('.ar-rec', c).forEach((fila, i) => {
         const chip = $('.ar-chip', fila), v = revisaRecurso(S.recursos[i]);
         chip.className = 'ar-chip ' + v.nivel;
-        chip.textContent = v.nivel === 'ok' ? '✓' : v.nivel === 'warn' ? '⚠ ' + v.msg : v.nivel === 'err' ? '✕ ' + v.msg : (i < 2 ? 'obligatorio' : 'opcional');
+        const ico = n => '<i data-lucide="' + n + '"></i> ';
+        chip.innerHTML = v.nivel === 'ok' ? ico('check') : v.nivel === 'warn' ? ico('triangle-alert') + v.msg : v.nivel === 'err' ? ico('circle-x') + v.msg : (i < 2 ? 'obligatorio' : 'opcional');
+        if (window.iconos) iconos();
       });
       return;
     }
@@ -150,7 +154,7 @@
       const out = el('div', 'ar-ep-out' + (aviso ? ' mal' : ''));
       out.innerHTML = ruta
         ? `<code>${e.m} ${ruta}</code> <span class="ar-cods">${codigosDe(e).map(x => `<i>${x}</i>`).join('')}</span>` +
-        (aviso ? `<div class="ar-aviso">⚠️ ${aviso}</div>` : '')
+        (aviso ? `<div class="ar-aviso"><i data-lucide="triangle-alert"></i> ${aviso}</div>` : '')
         : '<span class="ph">Elige un recurso arriba.</span>';
 
       const caja = el('div', 'ar-ep-box');
@@ -174,15 +178,15 @@
     ta.value = S.json;
     let estado = '';
     if (S.json.trim()) {
-      try { JSON.parse(S.json); estado = '<span class="ar-chip ok">✓ JSON válido</span>'; }
-      catch (err) { estado = '<span class="ar-chip err">✕ Le falta algo: revisa comas y comillas</span>'; }
+      try { JSON.parse(S.json); estado = '<span class="ar-chip ok"><i data-lucide="circle-check"></i> JSON válido</span>'; }
+      catch (err) { estado = '<span class="ar-chip err"><i data-lucide="circle-x"></i> Le falta algo: revisa comas y comillas</span>'; }
     }
     $('#arJsonEstado').innerHTML = estado;
   }
 
   /* ---------- la hoja final ---------- */
   function textoHoja() {
-    const giro = S.giro === 'otro' ? (S.giroNombre || 'Mi giro') : (GIRO_OPS.find(g => g[0] === S.giro) || [, ''])[1].replace(/^\S+\s/, '');
+    const giro = S.giro === 'otro' ? (S.giroNombre || 'Mi giro') : (GIRO_OPS.find(g => g[0] === S.giro) || [, ''])[1];
     const recs = S.recursos.filter(r => r.trim()).map(r => '/' + r.trim());
     const L = [];
     L.push(`API DE ${giro.toUpperCase()}`);
@@ -216,7 +220,7 @@
     if (recs.length < 2) f.push('mínimo 2 recursos');
     if (recs.some(r => revisaRecurso(r).nivel === 'err')) f.push('arreglar los recursos marcados en rojo');
     if (S.eps.some(e => !rutaDe(e))) f.push('completar los 5 endpoints');
-    if (S.eps.some(e => avisoDe(e))) f.push('arreglar los endpoints con ⚠️');
+    if (S.eps.some(e => avisoDe(e))) f.push('arreglar los endpoints marcados en rojo');
     if (!S.json.trim()) f.push('el JSON de ejemplo');
     else { try { JSON.parse(S.json); } catch (e) { f.push('arreglar el JSON'); } }
     return f;
@@ -227,7 +231,7 @@
     const c = $('#arAvance');
     c.className = 'ar-avance ' + (listo ? 'ok' : '');
     c.innerHTML = listo
-      ? '<b>✅ Ya está completo.</b> Cópialo y pásalo a la libreta. No se te olvide <b>firmarlo</b>.'
+      ? '<b><i data-lucide="circle-check"></i> Ya está completo.</b> Cópialo y pásalo a la libreta. No se te olvide <b>firmarlo</b>.'
       : '<b>Te falta:</b> ' + f.join(' · ');
     $('#arCopiar').disabled = false;
   }
@@ -242,9 +246,9 @@
       try {
         if (navigator.share) { await navigator.share({ title: 'Mi diseño de API', text: t }); }
         else { await navigator.clipboard.writeText(t); }
-        $('#arCopiar').textContent = '✅ Listo';
+        $('#arCopiar').innerHTML = '<i data-lucide="check"></i> Listo';
       } catch (e) {
-        try { await navigator.clipboard.writeText(t); $('#arCopiar').textContent = '✅ Copiado'; }
+        try { await navigator.clipboard.writeText(t); $('#arCopiar').innerHTML = '<i data-lucide="check"></i> Copiado'; }
         catch (e2) { $('#arCopiar').textContent = 'Selecciónalo a mano'; }
       }
       if (window.Sonido) Sonido.bien();
