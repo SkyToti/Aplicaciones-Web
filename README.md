@@ -41,8 +41,8 @@ JSON de ejemplo, códigos esperados y diagrama de capas.
 - **Hoja imprimible estilo apuntes**: el botón «Imprimir la chuleta» saca un PDF
   de 2 páginas con papel de cuadrícula, resaltador, washi tape, notas adhesivas,
   anotaciones a mano y el diagrama de capas dibujado. El resto de la página no se
-  imprime. Lleva , que es lo que hace que los fondos
-  de color salgan de verdad en el PDF.
+  imprime. Lleva `print-color-adjust: exact`, que es lo que hace que los fondos
+  de color salgan de verdad en el PDF y no en gris.
 - El avance se guarda en `localStorage`, en ese dispositivo.
 - Diseño estilo cuaderno: tinta gruesa, sombras duras, color plano.
   Cada método HTTP y cada familia de códigos tiene su color, y siempre el mismo.
