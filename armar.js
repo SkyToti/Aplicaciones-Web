@@ -7,6 +7,8 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const el = (t, c, h) => { const n = document.createElement(t); if (c) n.className = c; if (h != null) n.innerHTML = h; return n; };
+  // Lo que escribe el alumno se escapa antes de ir en HTML: un «<b>» se lee, no se pinta.
+  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
   // Un <option> nativo solo admite texto: aquí no caben iconos ni SVG.
   const GIRO_OPS = [
@@ -136,7 +138,7 @@
       const selR = el('select', 'ar-recsel');
       S.recursos.forEach((r, k) => {
         if (!r.trim()) return;
-        const o = el('option', '', '/' + r.trim()); o.value = k; selR.appendChild(o);
+        const o = el('option'); o.textContent = '/' + r.trim(); o.value = k; selR.appendChild(o);
       });
       if (!selR.options.length) { const o = el('option', '', '(escribe un recurso arriba)'); selR.appendChild(o); selR.disabled = true; }
       selR.value = e.r; selR.addEventListener('change', () => { e.r = +selR.value; render(); });
@@ -153,7 +155,7 @@
       const ruta = rutaDe(e), aviso = avisoDe(e);
       const out = el('div', 'ar-ep-out' + (aviso ? ' mal' : ''));
       out.innerHTML = ruta
-        ? `<code>${e.m} ${ruta}</code> <span class="ar-cods">${codigosDe(e).map(x => `<i>${x}</i>`).join('')}</span>` +
+        ? `<code>${e.m} ${esc(ruta)}</code> <span class="ar-cods">${codigosDe(e).map(x => `<i>${x}</i>`).join('')}</span>` +
         (aviso ? `<div class="ar-aviso"><i data-lucide="triangle-alert"></i> ${aviso}</div>` : '')
         : '<span class="ph">Elige un recurso arriba.</span>';
 

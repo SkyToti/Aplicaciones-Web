@@ -27,4 +27,4 @@ http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': TIPOS[path.extname(archivo)] || 'application/octet-stream', 'Cache-Control': 'no-store' });
     res.end(data);
   });
-}).listen(PORT, () => console.log(`Repaso API REST en http://localhost:${PORT}`));
+}).listen(PORT, () => console.log(`Cuaderno de repaso en http://localhost:${PORT}`));

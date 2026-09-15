@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f1e3">
+<title>¿Qué es la recursividad? · Estructura de Datos</title>
+<meta name="description" content="La recursividad explicada desde cero: la fila del cine, el caso base y el caso recursivo, las 3 reglas de oro, cómo pensar un método recursivo, sus tipos y la comparación con los ciclos.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="¿Qué es la recursividad? · Estructura de Datos">
+<meta property="og:description" content="La fila del cine, el caso base y el caso recursivo, las 3 reglas de oro, cómo pensar un método recursivo y sus tipos.">
+<!-- Si el repo cambia de nombre, actualiza estas dos URLs -->
+<meta property="og:url" content="https://skytoti.github.io/Aplicaciones-Web/recursividad.html">
+<meta property="og:image" content="https://skytoti.github.io/Aplicaciones-Web/og-ed.png">
+<meta property="og:locale" content="es_MX">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📓</text></svg>">
+<!-- El tema se aplica ANTES de pintar: sin esto, en modo oscuro cada cambio
+     de página daría un destello blanco. -->
+<script>try{var t=localStorage.getItem('rest_tema');var d=t==null?matchMedia('(prefers-color-scheme: dark)').matches:JSON.parse(t);document.documentElement.setAttribute('data-theme',d?'dark':'light')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=f1702e9a">
+</head>
+<body data-pagina="ed-recursividad" data-materia="ed">
+<div id="cabecera"></div>
+<main id="top" class="pagina">
+
+  <header class="pg-hero tono-rs">
+    <span class="pg-kicker"><i data-lucide="repeat"></i> Parte 2 de 6</span>
+    <h1>¿Qué es la recursividad?</h1>
+    <p class="pg-lead">Primero la idea, sin código. Después, cómo se ve en Java. Al terminar esta página vas a poder explicar con tus palabras qué es, qué partes tiene y cuándo conviene usarla.</p>
+    <nav class="pg-indice" aria-label="En esta página">
+      <a href="#idea">La idea</a>
+      <a href="#cine">La fila del cine</a>
+      <a href="#partes">Sus dos partes</a>
+      <a href="#reglas">Reglas de oro</a>
+      <a href="#receta">Cómo pensarla</a>
+      <a href="#clasifica">Juego</a>
+      <a href="#tipos">Tipos</a>
+      <a href="#vsciclo">vs ciclos</a>
+    </nav>
+  </header>
+
+<section id="idea" class="sec">
+  <header class="sec-h"><span class="num">1</span><h2>La idea en una frase</h2></header>
+  <p class="sec-p">La respuesta corta, la que sirve en cualquier examen: <b>un método es recursivo cuando se llama a sí mismo para resolver una versión más pequeña del mismo problema.</b></p>
+  <p>¿Un método que se usa a sí mismo? Suena a truco, pero es una forma de pensar que ya usas. Así se come una bolsa de papitas: te comes <b>una</b> papita y luego te comes <b>el resto de la bolsa</b>. «El resto de la bolsa» es el mismo problema de antes, solo que con una papita menos. ¿Y cuándo paras? Cuando la bolsa ya está vacía.</p>
+
+  <div class="analogias">
+    <div class="analogia tono-am">
+      <i data-lucide="package-open"></i>
+      <b>Las muñecas rusas</b>
+      <p>Abres una muñeca y adentro hay otra igual, pero más chica. La abres y hay otra más chica. Hasta que llegas a una tan pequeña que ya no se abre: ahí terminas. Esa última muñeca es el <b>caso base</b>.</p>
+    </div>
+    <div class="analogia tono-mo">
+      <i data-lucide="columns-2"></i>
+      <b>Dos espejos de frente</b>
+      <p>Ves un reflejo dentro de otro reflejo, dentro de otro… y nunca termina. Eso es una recursión <b>sin caso base</b>: en Java, en vez de un pasillo infinito, obtienes un error.</p>
+    </div>
+    <div class="analogia tono-ve">
+      <i data-lucide="book-a"></i>
+      <b>El diccionario</b>
+      <p>Buscas una palabra y la definición usa otra palabra que no conoces, así que la buscas también. Terminas cuando llegas a una definición que ya entiendes.</p>
+    </div>
+  </div>
+
+  <div class="box box-blue">
+    <b>Frase para el examen</b>
+    <p>«La recursividad es una técnica en la que un método se llama a sí mismo para resolver un problema, dividiéndolo en versiones más pequeñas del mismo problema hasta llegar a un caso base que se resuelve directamente.»</p>
+  </div>
+</section>
+
+<section id="cine" class="sec">
+  <header class="sec-h"><span class="num">2</span><h2>La fila del cine</h2></header>
+  <p class="sec-p">La analogía que mejor explica cómo corre una recursión. Avanza paso a paso y fíjate en dos cosas: las preguntas viajan <b>hacia adelante</b> y las respuestas regresan <b>hacia atrás</b>.</p>
+  <div class="fila" id="fila"></div>
+</section>
+
+<section id="partes" class="sec">
+  <header class="sec-h"><span class="num">3</span><h2>Las dos partes que siempre lleva</h2></header>
+  <p class="sec-p">En la fila del cine ya viste las dos. Todo método recursivo, sin excepción, las tiene:</p>
+  <div class="duo">
+    <div class="card card-yellow">
+      <h4>Caso base · la condición de paro</h4>
+      <p>El caso <b>tan pequeño</b> que la respuesta se sabe sin hacer más llamadas. Es la persona de la fila 1. Es lo que hace que la recursión <b>termine</b>, y se revisa <b>antes de la llamada recursiva</b>.</p>
+    </div>
+    <div class="card card-purple">
+      <h4>Caso recursivo · el que se llama a sí mismo</h4>
+      <p>Para todos los demás casos: el método se llama con un problema <b>un poquito más pequeño</b> y usa lo que le devuelven para armar su respuesta. Es preguntarle al de adelante y sumarle 1.</p>
+    </div>
+  </div>
+
+  <p>Así se ven en Java. Este método calcula 1 + 2 + … + n. Toca cada parte:</p>
+  <div class="anat" id="anatRec" data-anatomia="recursivo"></div>
+  <div class="panel" id="anatRecOut"><span class="ph">Toca una parte del método.</span></div>
+
+  <h3 class="sub">Léelo como si fuera español</h3>
+  <p>«La suma hasta n es: si n es 0, cero. Si no, n más la suma hasta n − 1.» Con n = 3 queda así:</p>
+  <pre class="traza"><code>suma(3) = 3 + suma(2)
+        = 3 + (2 + suma(1))
+        = 3 + (2 + (1 + suma(0)))
+        = 3 + (2 + (1 + 0))       ← caso base: aquí se deja de llamar
+        = 6</code></pre>
+  <p class="lead">Nadie calculó la suma «de golpe»: cada llamada dejó una cuenta pendiente y todas se resolvieron de regreso. En la <a href="recursividad-pila.html#visualizador">parte 3</a> vas a ver esto moverse, paso a paso.</p>
+</section>
+
+<section id="reglas" class="sec">
+  <header class="sec-h"><span class="num">4</span><h2>Las 3 reglas de oro</h2></header>
+  <p class="sec-p">Si un método recursivo rompe alguna de estas tres, no funciona: úsalas como checklist cada vez que escribas uno. Y aunque las cumpla todas, revisa que el caso base devuelva el valor correcto: un factorial que devuelve 0 en su caso base cumple las tres reglas y aun así siempre da 0.</p>
+  <div class="rest" id="reglasEd"></div>
+
+  <div class="box box-green">
+    <b>El salto de fe</b>
+    <p>Al escribir un método recursivo <b>no intentes seguir todas las llamadas en tu cabeza</b>: te vas a marear. Haz como la gente del cine: <b>confía</b> en que la llamada con el problema más pequeño te devuelve la respuesta correcta, y preocúpate solo por usarla bien. Es la misma confianza que le tienes a <code>System.out.println</code>: lo usas sin saber cómo está hecho por dentro.</p>
+  </div>
+</section>
+
+<section id="receta" class="sec">
+  <header class="sec-h"><span class="num">5</span><h2>Cómo pensar un método recursivo</h2></header>
+  <p class="sec-p">Cuando te pidan escribir uno desde cero, sigue estos cuatro pasos. Vamos a aplicarlos a un problema nuevo: <b>calcular base elevado a exp</b> sin usar <code>Math.pow</code>, el método que Java ya trae para potencias. Por ejemplo, 2⁵ = 32.</p>
+  <ol class="receta">
+    <li>
+      <span class="receta-n">1</span>
+      <div><b>Encuentra el caso más fácil.</b>
+      <p>¿Con qué valor la respuesta es obvia, sin calcular nada? Cualquier número elevado a la 0 vale 1. Ese es el <b>caso base</b>: si <code>exp == 0</code>, devuelve 1.</p></div>
+    </li>
+    <li>
+      <span class="receta-n">2</span>
+      <div><b>Imagina que ya tienes resuelto el problema un poquito más chico.</b>
+      <p>No lo calcules: supón que alguien ya te dio la respuesta de <code>potencia(base, exp - 1)</code>. Si quieres 2⁵, imagina que ya te dijeron que 2⁴ = 16.</p></div>
+    </li>
+    <li>
+      <span class="receta-n">3</span>
+      <div><b>Úsalo para resolver el tuyo.</b>
+      <p>Con 2⁴ = 16 en la mano, 2⁵ es 2 × 16 = 32. En general: <code>base * potencia(base, exp - 1)</code>. Ese es el <b>caso recursivo</b>.</p></div>
+    </li>
+    <li>
+      <span class="receta-n">4</span>
+      <div><b>Revisa que siempre llegues al caso base.</b>
+      <p><code>exp</code> baja de uno en uno: 5, 4, 3, 2, 1, 0. Sí llega. Prueba también el caso más raro: con <code>exp = 0</code> devuelve 1 de inmediato, bien. Con un exponente negativo nunca llegaría a 0; si eso puede pasar, hay que validarlo.</p></div>
+    </li>
+  </ol>
+  <p>Y el método sale solo:</p>
+  <pre class="java"><code>public static int potencia(int base, int exp) {
+    // paso 1: el caso más fácil
+    if (exp == 0) {
+        return 1;
+    }
+    // pasos 2 y 3: confía en el problema más chico y úsalo
+    return base * potencia(base, exp - 1);
+}</code></pre>
+</section>
+
+<section id="clasifica" class="sec">
+  <header class="sec-h"><span class="num">6</span><h2>Juego: ¿caso base o caso recursivo?</h2></header>
+  <p class="sec-p">Te enseño un renglón sacado de un método recursivo real, y tú dices qué es. Ocho por ronda.</p>
+  <div class="game" id="clasif"></div>
+</section>
+
+<section id="tipos" class="sec">
+  <header class="sec-h"><span class="num">7</span><h2>Tipos de recursión</h2></header>
+  <p class="sec-p">Vocabulario que cae en los exámenes. Van en parejas, porque cada tipo se entiende mejor junto a su opuesto.</p>
+  <div class="tipos-rec" id="tiposRec"></div>
+
+  <div class="box box-yellow">
+    <b><i data-lucide="triangle-alert"></i> Dato que suma puntos</b>
+    <p>Algunos lenguajes convierten la recursión de cola en un ciclo para no gastar memoria. <b>Java no lo hace</b>: aunque la escribas de cola, cada llamada sigue ocupando su lugar en la pila.</p>
+  </div>
+</section>
+
+<section id="vsciclo" class="sec">
+  <header class="sec-h"><span class="num">8</span><h2>Recursión vs ciclos</h2></header>
+  <p class="sec-p">Todo lo que se hace con recursión se puede hacer también con un ciclo (<code>for</code> o <code>while</code>), y al revés. Este es el mismo factorial de las dos formas:</p>
+  <div class="duo">
+    <div class="card">
+      <h4>Con un ciclo (iterativo)</h4>
+      <pre class="java"><code>public static long factorialCiclo(int n) {
+    long resultado = 1;
+    for (int i = 2; i &lt;= n; i++) {
+        resultado = resultado * i;
+    }
+    return resultado;
+}</code></pre>
+      <p>Una variable va acumulando la multiplicación, vuelta por vuelta.</p>
+    </div>
+    <div class="card">
+      <h4>Recursivo</h4>
+      <pre class="java"><code>public static long factorial(int n) {
+    if (n == 0) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}</code></pre>
+      <p>No hay acumulador: cada llamada deja pendiente su multiplicación y todas se resuelven de regreso.</p>
+    </div>
+  </div>
+
+  <div class="tscroll"><table class="tabla-vs">
+    <thead><tr><th></th><th>Recursión</th><th>Ciclo</th></tr></thead>
+    <tbody>
+      <tr><td><b>Cómo repite</b></td><td>El método se llama a sí mismo</td><td>Con <code>for</code> o <code>while</code></td></tr>
+      <tr><td><b>Cómo se detiene</b></td><td>Al llegar al caso base</td><td>Cuando la condición del ciclo se vuelve falsa</td></tr>
+      <tr><td><b>Memoria</b></td><td>Cada llamada pendiente ocupa un marco en la pila</td><td>Solo unas cuantas variables</td></tr>
+      <tr><td><b>Si algo sale mal</b></td><td>Truena con <code>StackOverflowError</code></td><td>Ciclo infinito: el programa se queda trabado</td></tr>
+      <tr><td><b>Velocidad</b></td><td>Un poco más lenta, porque crear y quitar marcos cuesta; y muchísimo más lenta si repite cálculos, como fibonacci</td><td>Normalmente más rápido</td></tr>
+      <tr><td><b>Brilla en</b></td><td>Problemas que se dividen en versiones más pequeñas de sí mismos: búsqueda binaria, Torres de Hanoi y los árboles, una estructura de datos que verás más adelante</td><td>Repeticiones sencillas: recorrer, contar, acumular</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="box box-blue">
+    <b>Frase para el examen</b>
+    <p>«Todo algoritmo recursivo tiene una versión iterativa. La recursión da un código más corto y claro cuando el problema se divide en subproblemas del mismo tipo, a cambio de usar más memoria, porque cada llamada ocupa un espacio en la pila de llamadas.»</p>
+  </div>
+</section>
+</main>
+
+<div id="pie"></div>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="sonido.js?v=b584605a"></script>
+<script src="datos.js?v=1af35b9a"></script>
+<script src="datos-ed.js?v=b0accc63"></script>
+<script src="nucleo.js?v=09186451"></script>
+<script src="secciones.js?v=c2d7ae49"></script>
+<script src="secciones-ed.js?v=be370f58"></script>
+</body>
+</html>

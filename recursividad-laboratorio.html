@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f1e3">
+<title>Laboratorio de recursividad · Estructura de Datos</title>
+<meta name="description" content="Practica recursividad en Java razonando: ¿qué imprime?, encuentra el error, arma tu propio método recursivo y resuelve las Torres de Hanoi.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Laboratorio de recursividad · Estructura de Datos">
+<meta property="og:description" content="¿Qué imprime?, encuentra el error, arma tu propio método recursivo y las Torres de Hanoi.">
+<!-- Si el repo cambia de nombre, actualiza estas dos URLs -->
+<meta property="og:url" content="https://skytoti.github.io/Aplicaciones-Web/recursividad-laboratorio.html">
+<meta property="og:image" content="https://skytoti.github.io/Aplicaciones-Web/og-ed.png">
+<meta property="og:locale" content="es_MX">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📓</text></svg>">
+<!-- El tema se aplica ANTES de pintar: sin esto, en modo oscuro cada cambio
+     de página daría un destello blanco. -->
+<script>try{var t=localStorage.getItem('rest_tema');var d=t==null?matchMedia('(prefers-color-scheme: dark)').matches:JSON.parse(t);document.documentElement.setAttribute('data-theme',d?'dark':'light')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=f1702e9a">
+</head>
+<body data-pagina="ed-laboratorio" data-materia="ed">
+<div id="cabecera"></div>
+<main id="top" class="pagina">
+
+  <header class="pg-hero tono-az">
+    <span class="pg-kicker"><i data-lucide="flask-conical"></i> Parte 5 de 6</span>
+    <h1>Laboratorio</h1>
+    <p class="pg-lead">Aquí no se lee: se razona. Adivina qué imprime, caza errores, arma tu propio método y resuelve las Torres de Hanoi.</p>
+    <nav class="pg-indice" aria-label="En esta página">
+      <a href="#imprime">¿Qué imprime?</a>
+      <a href="#error">Encuentra el error</a>
+      <a href="#armar">Arma el método</a>
+      <a href="#hanoi">Torres de Hanoi</a>
+    </nav>
+  </header>
+
+<section id="imprime" class="sec">
+  <header class="sec-h"><span class="num">1</span><h2>¿Qué imprime?</h2></header>
+  <p class="sec-p">Lee el código, piensa en la ida y en la vuelta, y elige. Van del más fácil al reto. Todos se corrieron de verdad en Java: las respuestas son las reales.</p>
+  <div class="game" id="imprimeJuego"></div>
+</section>
+
+<section id="error" class="sec">
+  <header class="sec-h"><span class="num">2</span><h2>Encuentra el error</h2></header>
+  <p class="sec-p">Cada método tiene algo mal. Di qué pasa al llamarlo; después te marco el renglón culpable y cómo se arregla.</p>
+  <div class="game" id="errorJuego"></div>
+</section>
+
+<section id="armar" class="sec">
+  <header class="sec-h"><span class="num">3</span><h2>Arma tu método recursivo</h2></header>
+  <p class="sec-p">Elige qué quieres calcular y arma el método tocando bloques. Lo corro con n de 0 a 5 y te digo si funciona y, si no, por qué.</p>
+  <div class="builder" id="armarEd"></div>
+</section>
+
+<section id="hanoi" class="sec">
+  <header class="sec-h"><span class="num">4</span><h2>Torres de Hanoi</h2></header>
+  <p class="sec-p">Pasa todos los discos del poste A al poste C. Toca un poste para tomar su disco de arriba y toca otro para soltarlo. Se mueve un disco a la vez y nunca va uno grande sobre uno chico.</p>
+  <div class="game" id="hanoiJuego"></div>
+
+  <div class="box box-green">
+    <b>La idea recursiva, otra vez</b>
+    <p>Para mover n discos de A a C: mueve los n − 1 de arriba de A a B, mueve el grande de A a C, y vuelve a mover los n − 1 de B a C. Cuando le piques a «Ver la solución», fíjate: <b>justo a la mitad</b> se mueve el disco más grande. El código completo está en los <a href="recursividad-ejemplos.html#hanoi">ejemplos resueltos</a>.</p>
+  </div>
+</section>
+</main>
+
+<div id="pie"></div>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="sonido.js?v=b584605a"></script>
+<script src="datos.js?v=1af35b9a"></script>
+<script src="datos-ed.js?v=b0accc63"></script>
+<script src="nucleo.js?v=09186451"></script>
+<script src="secciones.js?v=c2d7ae49"></script>
+<script src="secciones-ed.js?v=be370f58"></script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f1e3">
+<title>La pila de llamadas · Estructura de Datos</title>
+<meta name="description" content="Qué pasa por dentro cuando un método se llama a sí mismo: qué es una pila, los marcos, visualizador paso a paso, ida y vuelta, prueba de escritorio y StackOverflowError.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="La pila de llamadas · Estructura de Datos">
+<meta property="og:description" content="Visualizador paso a paso de la recursión en Java: marcos, ida y vuelta, prueba de escritorio y StackOverflowError.">
+<!-- Si el repo cambia de nombre, actualiza estas dos URLs -->
+<meta property="og:url" content="https://skytoti.github.io/Aplicaciones-Web/recursividad-pila.html">
+<meta property="og:image" content="https://skytoti.github.io/Aplicaciones-Web/og-ed.png">
+<meta property="og:locale" content="es_MX">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📓</text></svg>">
+<!-- El tema se aplica ANTES de pintar: sin esto, en modo oscuro cada cambio
+     de página daría un destello blanco. -->
+<script>try{var t=localStorage.getItem('rest_tema');var d=t==null?matchMedia('(prefers-color-scheme: dark)').matches:JSON.parse(t);document.documentElement.setAttribute('data-theme',d?'dark':'light')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=f1702e9a">
+</head>
+<body data-pagina="ed-pila" data-materia="ed">
+<div id="cabecera"></div>
+<main id="top" class="pagina">
+
+  <header class="pg-hero tono-mo">
+    <span class="pg-kicker"><i data-lucide="layers"></i> Parte 3 de 6</span>
+    <h1>La pila de llamadas</h1>
+    <p class="pg-lead">Qué hace la computadora, de verdad, cuando un método se llama a sí mismo. Cuando esto te haga clic, los ejercicios de «¿qué imprime?» se vuelven fáciles.</p>
+    <nav class="pg-indice" aria-label="En esta página">
+      <a href="#pila">¿Qué es una pila?</a>
+      <a href="#marcos">La pila de llamadas</a>
+      <a href="#visualizador">Visualizador</a>
+      <a href="#idavuelta">Ida y vuelta</a>
+      <a href="#rastreo">Prueba de escritorio</a>
+      <a href="#overflow">StackOverflowError</a>
+    </nav>
+  </header>
+
+<section id="pila" class="sec">
+  <header class="sec-h"><span class="num">1</span><h2>Primero: ¿qué es una pila?</h2></header>
+  <p class="sec-p">Una <b>pila</b> (en inglés, <i>stack</i>) es una forma de guardar cosas <b>una encima de otra</b>, como una pila de platos: el plato nuevo se pone <b>arriba</b>, y el único que puedes quitar es <b>el de arriba</b>. Si quieres el de hasta abajo, primero tienes que quitar todos los demás. Pruébalo:</p>
+  <div class="platos" id="platos"></div>
+
+  <div class="tscroll"><table>
+    <thead><tr><th>Operación</th><th>En inglés</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><b>Apilar</b></td><td><code>push</code></td><td>Pone un elemento nuevo hasta arriba</td></tr>
+      <tr><td><b>Desapilar</b></td><td><code>pop</code></td><td>Quita el de hasta arriba y te lo da</td></tr>
+      <tr><td><b>Ver la cima</b></td><td><code>peek</code></td><td>Te dice cuál está arriba, sin quitarlo</td></tr>
+      <tr><td><b>¿Está vacía?</b></td><td><code>isEmpty</code></td><td>Da <code>true</code> si no hay nada</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="box box-purple">
+    <b>LIFO: la palabra que tienes que saberte</b>
+    <p><b>L</b>ast <b>I</b>n, <b>F</b>irst <b>O</b>ut: «el último en entrar es el primero en salir». Es la regla de toda pila. Y sí, la pila es una <b>estructura de datos</b>: la vas a volver a ver en esta materia con más calma.</p>
+  </div>
+</section>
+
+<section id="marcos" class="sec">
+  <header class="sec-h"><span class="num">2</span><h2>La pila de llamadas</h2></header>
+  <p class="sec-p">Java lleva el control de los métodos que están corriendo con una pila. Se llama la <b>pila de llamadas</b> (<i>call stack</i>) y funciona así:</p>
+  <div class="pasos3">
+    <div class="paso3 tono-az"><span class="paso3-n">1</span><b>Llamas a un método</b><p>Java <b>apila</b> un marco nuevo para esa llamada, encima de todos.</p></div>
+    <div class="paso3 tono-am"><span class="paso3-n">2</span><b>Solo corre el de arriba</b><p>El marco de hasta arriba es el que se ejecuta. Los de abajo están <b>en pausa</b>, esperando.</p></div>
+    <div class="paso3 tono-ve"><span class="paso3-n">3</span><b>El método termina</b><p>Su marco se <b>desapila</b>, y el de abajo continúa justo donde se había quedado, con el valor que le devolvieron.</p></div>
+  </div>
+
+  <h3 class="sub">¿Qué es un marco?</h3>
+  <p>Un <b>marco</b> (también se le dice <b>registro de activación</b>, o <i>stack frame</i>) es el espacio que ocupa <b>una llamada</b> mientras dura. Guarda tres cosas:</p>
+  <ul class="lista-clara">
+    <li><b>Qué método es</b> y con qué <b>parámetros</b> se llamó: por ejemplo, <code>factorial</code> con <code>n = 3</code>.</li>
+    <li>Sus <b>variables locales</b>: las que se crean dentro del método.</li>
+    <li><b>En qué punto va</b>, para saber dónde continuar cuando le regrese la llamada que está esperando.</li>
+  </ul>
+
+  <div class="box box-green">
+    <b>Por esto funciona la recursividad</b>
+    <p>Cuando <code>factorial(3)</code> llama a <code>factorial(2)</code>, se apila un marco nuevo con <b>otra</b> <code>n</code>, que vale 2. La <code>n = 3</code> sigue intacta en el marco de abajo, esperando. Hay tantas <code>n</code> como llamadas en curso, y ninguna pisa a otra.</p>
+  </div>
+</section>
+
+<section id="visualizador" class="sec">
+  <header class="sec-h"><span class="num">3</span><h2>Visualizador paso a paso</h2></header>
+  <p class="sec-p">Elige un método y un valor, y avanza con <b>Siguiente</b>. Vas a ver el renglón que se ejecuta, los marcos que entran y salen de la pila, y lo que se imprime. Empieza con <b>Factorial</b> y después prueba <b>Ida y vuelta</b>.</p>
+  <div class="visual" id="visual" data-programas="factorial,suma,cuenta,idaVuelta,potencia,fibonacci,invertir,sinBase"></div>
+  <p class="lead">Consejo: antes de picarle a Siguiente, <b>adivina</b> qué va a pasar. Así se entrena para el examen.</p>
+</section>
+
+<section id="idavuelta" class="sec">
+  <header class="sec-h"><span class="num">4</span><h2>Ida y vuelta: el truco de «¿qué imprime?»</h2></header>
+  <p class="sec-p">Una recursión como la del factorial tiene dos momentos. En la <b>ida</b>, las llamadas se apilan hasta llegar al caso base. En la <b>vuelta</b>, se desapilan una por una, de la última a la primera. Por eso importa <b>dónde</b> está cada instrucción respecto a la llamada:</p>
+  <div class="duo">
+    <div class="card card-yellow">
+      <h4>Antes de la llamada → en el orden de las llamadas</h4>
+      <pre class="java"><code>public static void f(int n) {
+    if (n == 0) return;
+    System.out.print(n + " ");
+    f(n - 1);
+}</code></pre>
+      <p><code>f(3)</code> imprime <b>3 2 1</b>. Cada llamada imprime <b>al bajar</b>, antes de llamar a la siguiente.</p>
+    </div>
+    <div class="card card-purple">
+      <h4>Después de la llamada → en orden inverso</h4>
+      <pre class="java"><code>public static void f(int n) {
+    if (n == 0) return;
+    f(n - 1);
+    System.out.print(n + " ");
+}</code></pre>
+      <p><code>f(3)</code> imprime <b>1 2 3</b>. Cada llamada espera a que terminen las llamadas que hizo, e imprime <b>al regresar</b>. La primera en imprimir es la última que entró.</p>
+    </div>
+  </div>
+
+  <div class="box box-blue">
+    <b>La regla para el examen</b>
+    <p>Lo que está <b>antes</b> de la llamada recursiva se ejecuta <b>en el orden de las llamadas</b>. Lo que está <b>después</b>, <b>en orden inverso</b>. Si hay algo antes y algo después, la salida queda en espejo: con un <code>print</code> en cada lado, <code>f(3)</code> imprime 3 2 1 1 2 3.</p>
+  </div>
+  <p class="lead">Velo moverse: en el visualizador de arriba elige <b>Ida y vuelta</b>. Y si eliges <b>Fibonacci</b>, fíjate en algo distinto: como cada llamada hace <b>dos</b> llamadas, la ida y la vuelta se van alternando.</p>
+</section>
+
+<section id="rastreo" class="sec">
+  <header class="sec-h"><span class="num">5</span><h2>La prueba de escritorio</h2></header>
+  <p class="sec-p">Así se le llama a seguir un programa <b>a mano</b>, en papel, sin computadora. Es lo que te pueden pedir en un examen escrito. Con recursión hay dos formas de hacerla; usa la que pida tu profe.</p>
+  <div class="duo">
+    <div class="card">
+      <h4>Forma 1 · la escalera</h4>
+      <pre class="traza"><code>factorial(3)
+= 3 * factorial(2)
+= 3 * 2 * factorial(1)
+= 3 * 2 * 1 * factorial(0)
+= 3 * 2 * 1 * 1
+= 6</code></pre>
+      <p>Vas reemplazando cada llamada por lo que vale, hasta que ya no queda ninguna.</p>
+    </div>
+    <div class="card">
+      <h4>Forma 2 · la tabla</h4>
+      <div class="tscroll"><table class="tabla-rastreo">
+        <thead><tr><th>Llamada</th><th>n</th><th>¿Base?</th><th>Devuelve</th></tr></thead>
+        <tbody>
+          <tr><td><code>factorial(3)</code></td><td>3</td><td>no</td><td>3 × 2 = <b>6</b></td></tr>
+          <tr><td><code>factorial(2)</code></td><td>2</td><td>no</td><td>2 × 1 = <b>2</b></td></tr>
+          <tr><td><code>factorial(1)</code></td><td>1</td><td>no</td><td>1 × 1 = <b>1</b></td></tr>
+          <tr><td><code>factorial(0)</code></td><td>0</td><td>sí</td><td><b>1</b></td></tr>
+        </tbody>
+      </table></div>
+      <p>Las primeras columnas se llenan <b>bajando</b>; la columna «Devuelve», <b>de abajo hacia arriba</b>. Ojo: en el papel la llamada más nueva queda <b>abajo</b>, y en la pila queda <b>arriba</b>. Es el mismo orden, dibujado al revés.</p>
+    </div>
+  </div>
+
+  <h3 class="sub">Juego: completa el rastreo</h3>
+  <p class="lead">Escribe lo que devuelve cada llamada. Empieza por abajo: el caso base es el único que se sabe sin ayuda.</p>
+  <div class="game" id="rastreoJuego"></div>
+</section>
+
+<section id="overflow" class="sec">
+  <header class="sec-h"><span class="num">6</span><h2>StackOverflowError: cuando la pila se llena</h2></header>
+  <p class="sec-p">La pila de llamadas <b>no es infinita</b>. Cada llamada pendiente ocupa un marco, y si se acumulan demasiados ya no cabe uno más. Entonces Java detiene el programa con este mensaje:</p>
+  <pre class="consola"><code>Exception in thread "main" java.lang.StackOverflowError
+	at Main.suma(Main.java:4)
+	at Main.suma(Main.java:4)
+	at Main.suma(Main.java:4)
+	...</code></pre>
+  <p>Se lee así: «la pila se desbordó, y lo que se estaba repitiendo era el renglón 4 del método <code>suma</code>, llamándose una y otra vez». Suele pasar después de <b>miles</b> de llamadas pendientes; el número exacto depende de la computadora y de cuánto ocupa cada marco.</p>
+
+  <h3 class="sub">Las tres causas de siempre</h3>
+  <div class="causas">
+    <div class="causa"><b>1. No hay caso base</b><p>Nada detiene las llamadas.</p><pre class="java"><code>return n + suma(n - 1);</code></pre></div>
+    <div class="causa"><b>2. Nunca se llega al caso base</b><p>Existe, pero las llamadas no se acercan a él, o se lo brincan.</p><pre class="java"><code>if (n == 0) return 0;
+return n + suma(n + 1);</code></pre></div>
+    <div class="causa"><b>3. El caso base se revisa tarde</b><p>La llamada recursiva está antes del <code>if</code>.</p><pre class="java"><code>long resto = factorial(n - 1);
+if (n == 0) return 1;</code></pre></div>
+  </div>
+  <p>Y una cuarta, menos común: la recursión está bien hecha pero el problema es <b>demasiado grande</b>. <code>suma(1000)</code> funciona sin problema, pero con <code>suma(100000)</code> lo normal es que truene aunque el método sea correcto: son cien mil marcos pendientes al mismo tiempo. Ahí conviene un ciclo.</p>
+  <p class="lead">¿Quieres verlo? En el visualizador de arriba elige <b>Sin caso base (truena)</b>.</p>
+</section>
+</main>
+
+<div id="pie"></div>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="sonido.js?v=b584605a"></script>
+<script src="datos.js?v=1af35b9a"></script>
+<script src="datos-ed.js?v=b0accc63"></script>
+<script src="nucleo.js?v=09186451"></script>
+<script src="secciones.js?v=c2d7ae49"></script>
+<script src="secciones-ed.js?v=be370f58"></script>
+</body>
+</html>

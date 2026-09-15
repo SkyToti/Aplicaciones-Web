@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f1e3">
+<title>Java desde cero · Estructura de Datos</title>
+<meta name="description" content="El Java que necesitas para entender la recursividad, sin dar nada por sabido: variables, operadores, if, ciclos, métodos, arreglos, String y cómo una llamada espera a otra.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Java desde cero · Estructura de Datos">
+<meta property="og:description" content="Variables, operadores, if, ciclos, métodos, arreglos, String y cómo una llamada espera a otra. Para entender la recursividad sin dar nada por sabido.">
+<!-- Si el repo cambia de nombre, actualiza estas dos URLs -->
+<meta property="og:url" content="https://skytoti.github.io/Aplicaciones-Web/java-basico.html">
+<meta property="og:image" content="https://skytoti.github.io/Aplicaciones-Web/og-ed.png">
+<meta property="og:locale" content="es_MX">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📓</text></svg>">
+<!-- El tema se aplica ANTES de pintar: sin esto, en modo oscuro cada cambio
+     de página daría un destello blanco. -->
+<script>try{var t=localStorage.getItem('rest_tema');var d=t==null?matchMedia('(prefers-color-scheme: dark)').matches:JSON.parse(t);document.documentElement.setAttribute('data-theme',d?'dark':'light')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=f1702e9a">
+</head>
+<body data-pagina="ed-java" data-materia="ed">
+<div id="cabecera"></div>
+<main id="top" class="pagina">
+
+  <header class="pg-hero tono-am">
+    <span class="pg-kicker"><i data-lucide="coffee"></i> Parte 1 de 6</span>
+    <h1>Java desde cero</h1>
+    <p class="pg-lead">Exactamente el Java que necesitas para entender la recursividad, sin dar nada por sabido. Si ya programas en Java, dale una pasada rápida y haz la autoevaluación del final.</p>
+    <nav class="pg-indice" aria-label="En esta página">
+      <a href="#programa">Primer programa</a>
+      <a href="#variables">Variables</a>
+      <a href="#operadores">Operadores</a>
+      <a href="#decisiones">if y ciclos</a>
+      <a href="#metodos">Métodos</a>
+      <a href="#arreglos">Arreglos y String</a>
+      <a href="#llamadas">Llamadas</a>
+      <a href="#listo">Antes de seguir</a>
+    </nav>
+  </header>
+
+<section id="programa" class="sec">
+  <header class="sec-h"><span class="num">1</span><h2>Tu primer programa</h2></header>
+  <p class="sec-p">Un programa es una lista de instrucciones que la computadora sigue <b>en orden, de arriba hacia abajo</b>. Este es el programa más pequeño que se puede escribir en Java: solo muestra un saludo. Toca cada pieza para saber qué hace.</p>
+
+  <div class="anat" id="anatHola" data-anatomia="hola"></div>
+  <div class="panel" id="anatHolaOut"><span class="ph">Toca una pieza del código.</span></div>
+
+  <h3 class="sub">De texto a programa, en tres pasos</h3>
+  <div class="pasos3">
+    <div class="paso3 tono-az"><span class="paso3-n">1</span><b>Escribes</b><p>El código va en un archivo que se llama igual que la clase: <code>Main.java</code>.</p></div>
+    <div class="paso3 tono-mo"><span class="paso3-n">2</span><b>Compilas</b><p>Java revisa que todo esté bien escrito y lo traduce a algo que la computadora entiende. Si falta un <code>;</code> o una llave, aquí te detiene.</p></div>
+    <div class="paso3 tono-ve"><span class="paso3-n">3</span><b>Ejecutas</b><p>Ahora sí corre, instrucción por instrucción, empezando por <code>main</code>.</p></div>
+  </div>
+  <p>En NetBeans, IntelliJ o VS Code los pasos 2 y 3 pasan juntos cuando le picas al botón ▶. Pero siguen siendo dos momentos distintos, y saberlo te ayuda a entender qué tipo de error tienes:</p>
+  <div class="duo">
+    <div class="card card-yellow">
+      <h4>«No compila»</h4>
+      <p>El código <b>está mal escrito</b>: falta un punto y coma, un paréntesis, un <code>return</code>… El programa ni siquiera arranca. El editor lo marca en rojo antes de correrlo.</p>
+    </div>
+    <div class="card card-purple">
+      <h4>Error al ejecutar</h4>
+      <p>El código está bien escrito y arranca, pero <b>algo sale mal mientras corre</b>: pedir una posición que no existe o, el que más vas a ver en este tema, <code>StackOverflowError</code>. A estos errores Java los llama <b>excepciones</b>, y el programa se detiene en ese momento.</p>
+    </div>
+  </div>
+
+  <div class="box box-blue">
+    <b>Tres reglas que Java no perdona</b>
+    <ul>
+      <li><b>Distingue mayúsculas de minúsculas.</b> <code>Main</code>, <code>main</code> y <code>MAIN</code> son tres cosas diferentes.</li>
+      <li><b>Cada instrucción termina en <code>;</code>.</b> Los renglones que abren un bloque con <code>{</code> no lo llevan.</li>
+      <li><b>Todo lo que abres, lo cierras:</b> cada <code>{</code> con su <code>}</code> y cada <code>(</code> con su <code>)</code>.</li>
+    </ul>
+  </div>
+  <p class="lead">Un detalle más: todo lo que va después de <code>//</code> en un renglón es un <b>comentario</b>. Java lo ignora; sirve para dejar notas a quien lee el código. Vas a ver muchos en esta página.</p>
+</section>
+
+<section id="variables" class="sec">
+  <header class="sec-h"><span class="num">2</span><h2>Variables y tipos de datos</h2></header>
+  <p class="sec-p">Una <b>variable</b> es una cajita con nombre donde guardas un dato para usarlo después. En Java cada caja tiene un <b>tipo</b>, y solo le cabe ese tipo de dato: en una caja de enteros no puedes guardar texto.</p>
+
+  <div class="decl" aria-label="int edad = 20;">
+    <span class="decl-p tono-az"><code>int</code><small>el tipo</small></span>
+    <span class="decl-p tono-ve"><code>edad</code><small>el nombre</small></span>
+    <span class="decl-p tono-am"><code>=</code><small>guarda</small></span>
+    <span class="decl-p tono-mo"><code>20</code><small>el valor</small></span>
+    <span class="decl-p tono-ro"><code>;</code><small>fin</small></span>
+  </div>
+  <p>Se lee: «crea una caja para enteros que se llame <code>edad</code> y guárdale un 20». Después se usa solo con su nombre, y se le puede cambiar el valor <b>sin volver a escribir el tipo</b>:</p>
+  <pre class="java"><code>int edad = 20;           // se crea con un valor
+edad = 21;               // se cambia: ya no lleva int
+int en10 = edad + 10;    // se usa: en10 vale 31</code></pre>
+
+  <h3 class="sub">Los tipos que vas a usar</h3>
+  <div class="tscroll"><table class="tabla-tipos" id="tiposDato"></table></div>
+
+  <div class="box box-yellow">
+    <b><i data-lucide="triangle-alert"></i> En Java, = no significa «igual»</b>
+    <p><code>=</code> significa <b>guarda</b>: calcula lo de la derecha y lo mete en la caja de la izquierda. Por eso <code>edad = edad + 1;</code> tiene sentido: «guarda en edad lo que vale edad, más 1». Para <b>preguntar</b> si dos cosas son iguales se usan dos signos: <code>==</code>.</p>
+    <p>Un detalle de este sitio: en las explicaciones vas a leer cosas como «con n = 3». Eso es español, no Java: significa «cuando n vale 3».</p>
+  </div>
+</section>
+
+<section id="operadores" class="sec">
+  <header class="sec-h"><span class="num">3</span><h2>Operadores</h2></header>
+  <p class="sec-p">Los de siempre funcionan como en la calculadora: <code>+</code> suma, <code>-</code> resta y <code>*</code> multiplica. Los que tienen truco son la división y el módulo, y son justo los que más usa la recursividad con números.</p>
+
+  <div class="duo">
+    <div class="card card-yellow">
+      <h4><code>/</code> entre enteros tira los decimales</h4>
+      <p>Si los dos números son <code>int</code>, el resultado también lo es: <code>7 / 2</code> da <b>3</b>, no 3.5. No redondea: <b>corta</b>. Para tener decimales, al menos uno debe ser <code>double</code>: <code>7.0 / 2</code> da 3.5.</p>
+    </div>
+    <div class="card card-purple">
+      <h4><code>%</code> da el residuo</h4>
+      <p>El <b>módulo</b> es lo que <b>sobra</b> de una división entera: <code>7 % 2</code> da <b>1</b>, porque 7 = 2 × 3 + 1. Sirve para saber si un número es par (<code>n % 2 == 0</code>) o para sacar su último dígito (<code>n % 10</code>).</p>
+    </div>
+  </div>
+
+  <h3 class="sub">El + con texto, y quién va primero</h3>
+  <p>Si de algún lado del <code>+</code> hay texto (un String), el <code>+</code> ya no suma: <b>pega</b>. <code>"ida " + 3</code> da <code>"ida 3"</code>, y así se imprime una variable con un mensaje. Java lee de izquierda a derecha, y eso cambia el resultado: <code>1 + 2 + "x"</code> da <code>"3x"</code> (primero suma, luego pega), pero <code>"x" + 1 + 2</code> da <code>"x12"</code> (desde el principio ya hay texto).</p>
+  <p>Y como en la primaria, <code>*</code>, <code>/</code> y <code>%</code> van <b>antes</b> que <code>+</code> y <code>-</code>: <code>2 + 3 * 4</code> da 14, no 20. Los paréntesis cambian el orden: <code>(2 + 3) * 4</code> da 20.</p>
+
+  <h3 class="sub">Pruébalo: la división de la primaria</h3>
+  <p class="lead">Escribe dos enteros. Es la misma división que hacías a mano: <code>/</code> te da el cociente y <code>%</code> el residuo.</p>
+  <div class="calc" id="calcDiv"></div>
+
+  <h3 class="sub">Para comparar y combinar</h3>
+  <p>Una comparación siempre da un <code>boolean</code>, <code>true</code> o <code>false</code>. Por eso es lo que va dentro de un <code>if</code>.</p>
+  <div class="tscroll"><table>
+    <thead><tr><th>Operador</th><th>Pregunta</th><th>Ejemplo</th><th>Da true cuando…</th></tr></thead>
+    <tbody>
+      <tr><td><code>==</code></td><td>¿Son iguales?</td><td><code>n == 0</code></td><td>n vale 0</td></tr>
+      <tr><td><code>!=</code></td><td>¿Son distintos?</td><td><code>n != 0</code></td><td>n vale cualquier cosa menos 0</td></tr>
+      <tr><td><code>&lt;</code> <code>&gt;</code></td><td>¿Menor? ¿Mayor?</td><td><code>n &lt; 10</code></td><td>n es 9, 8, 7… o negativo</td></tr>
+      <tr><td><code>&lt;=</code> <code>&gt;=</code></td><td>¿Menor o igual? ¿Mayor o igual?</td><td><code>n &lt;= 1</code></td><td>n es 1, 0 o negativo</td></tr>
+      <tr><td><code>&amp;&amp;</code></td><td>¿Se cumplen las dos? (y)</td><td><code>n &gt; 0 &amp;&amp; n &lt; 10</code></td><td>n está entre 1 y 9</td></tr>
+      <tr><td><code>||</code></td><td>¿Se cumple al menos una? (o)</td><td><code>n == 0 || n == 1</code></td><td>n es 0 o 1</td></tr>
+      <tr><td><code>!</code></td><td>Lo contrario (no)</td><td><code>!(n == 0)</code></td><td>n no es 0</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="decisiones" class="sec">
+  <header class="sec-h"><span class="num">4</span><h2>Decisiones y ciclos</h2></header>
+  <p class="sec-p">Hasta aquí todo corre de arriba hacia abajo, una vez. Con <code>if</code> el programa <b>decide</b> qué camino tomar, y con los ciclos <b>repite</b>.</p>
+
+  <h3 class="sub">if / else: tomar una decisión</h3>
+  <pre class="java"><code>if (calificacion >= 8) {
+    System.out.println("Aprobaste");
+} else {
+    System.out.println("A estudiar");
+}</code></pre>
+  <p>Entre los paréntesis va una <b>condición</b>. Si da <code>true</code>, se ejecuta el primer bloque; si da <code>false</code>, el del <code>else</code>. El <code>else</code> es opcional: sin él, cuando la condición es falsa no pasa nada y el programa sigue con lo de abajo.</p>
+  <p>Si el bloque tiene <b>una sola instrucción</b>, las llaves se pueden quitar. Esta forma corta la vas a ver mucho en recursividad:</p>
+  <pre class="java"><code>if (n == 0) return 1;    // lo mismo que con llaves, en un renglón</code></pre>
+
+  <div class="box box-yellow">
+    <b><i data-lucide="triangle-alert"></i> Un return termina el método en ese instante</b>
+    <p>En cuanto Java llega a un <code>return</code>, el método <b>se acaba ahí mismo</b>, aunque haya más código abajo. Por eso <code>if (n == 0) return 1;</code> funciona como una puerta de salida: si n vale 0, lo de abajo ya no se ejecuta. Eso es exactamente un <b>caso base</b>, como vas a ver en la siguiente parte.</p>
+  </div>
+
+  <h3 class="sub">for y while: repetir</h3>
+  <div class="duo">
+    <div class="card">
+      <h4>for · cuando sabes cuántas vueltas</h4>
+      <pre class="java"><code>for (int i = 1; i &lt;= 3; i++) {
+    System.out.println(i);
+}</code></pre>
+      <p>Imprime 1, 2 y 3. Entre los paréntesis hay tres partes separadas por <code>;</code>: <b>desde</b> dónde empieza (<code>int i = 1</code>), <b>mientras</b> qué se repite (<code>i &lt;= 3</code>) y <b>cómo avanza</b> (<code>i++</code>, que significa «súmale 1 a i»).</p>
+    </div>
+    <div class="card">
+      <h4>while · mientras se cumpla algo</h4>
+      <pre class="java"><code>int n = 3;
+while (n > 0) {
+    System.out.println(n);
+    n = n - 1;
+}</code></pre>
+      <p>Imprime 3, 2 y 1. Repite <b>mientras</b> la condición sea verdadera. Si se te olvida cambiar <code>n</code>, la condición nunca se vuelve falsa y se queda repitiendo para siempre: un <b>ciclo infinito</b>.</p>
+    </div>
+  </div>
+  <p class="lead">¿Por qué ver ciclos si el tema es recursividad? Porque todo lo que hace una recursión se puede hacer también con un ciclo, y es pregunta de examen. Los comparamos en la siguiente parte.</p>
+</section>
+
+<section id="metodos" class="sec">
+  <header class="sec-h"><span class="num">5</span><h2>Métodos: el corazón de todo</h2></header>
+  <p class="sec-p">Un <b>método</b> es un pedazo de código con nombre que hace <b>una tarea</b>. Lo escribes una vez y lo usas cuantas veces quieras. Si esto te queda claro, ya llevas la mitad de la recursividad: un método recursivo es simplemente un método que se usa a sí mismo.</p>
+
+  <p>Piensa en una <b>licuadora</b>: le metes ingredientes (los <b>parámetros</b>), hace su trabajo (el <b>cuerpo</b>) y te entrega un licuado (lo que <b>devuelve</b>). Para usarla no necesitas saber cómo funciona el motor.</p>
+  <p>Al primer renglón de un método se le llama su <b>firma</b>: dice quién puede usarlo, qué devuelve, cómo se llama y qué recibe. Toca cada pieza de este método:</p>
+  <div class="anat" id="anatMetodo" data-anatomia="metodo"></div>
+  <div class="panel" id="anatMetodoOut"><span class="ph">Toca una pieza del método.</span></div>
+
+  <h3 class="sub">¿Dónde se escribe un método?</h3>
+  <p><b>Dentro de la clase, pero fuera de <code>main</code>.</b> Los métodos son hermanos de <code>main</code>, no van adentro de él. El orden entre ellos no importa.</p>
+  <pre class="java"><code>public class Main {
+
+    // tus métodos van aquí: dentro de la clase, fuera de main
+    public static int sumar(int a, int b) {
+        int resultado = a + b;
+        return resultado;
+    }
+
+    public static void main(String[] args) {
+        int total = sumar(2, 3);
+        System.out.println(total);
+    }
+}</code></pre>
+
+  <h3 class="sub">Qué pasa cuando llamas a un método</h3>
+  <p>Fíjate en <code>int total = sumar(2, 3);</code>. <b>Llamar</b> a un método es escribir su nombre con los datos entre paréntesis. Esto es lo que hace Java, en orden:</p>
+  <ol class="pasos-lista">
+    <li>Deja <code>main</code> <b>en pausa</b>, justo en ese renglón.</li>
+    <li>Copia los valores que mandaste a los parámetros: <code>a</code> vale 2 y <code>b</code> vale 3.</li>
+    <li>Ejecuta el cuerpo de <code>sumar</code>: <code>resultado</code> vale 5.</li>
+    <li>Llega a <code>return resultado;</code>: <code>sumar</code> termina y devuelve un 5.</li>
+    <li><code>main</code> sigue donde se quedó, y la llamada <code>sumar(2, 3)</code> <b>se reemplaza por el 5</b> que devolvió. Es como si dijera <code>int total = 5;</code></li>
+  </ol>
+
+  <div class="box box-purple">
+    <b>Parámetro vs argumento</b>
+    <p><b>Parámetro</b> es la variable que aparece en la firma: <code>a</code> y <code>b</code>. <b>Argumento</b> es el valor concreto que mandas al llamar: <code>2</code> y <code>3</code>. Los parámetros son las cajas; los argumentos, lo que metes en ellas. Y cada vez que se llama al método se crean <b>cajas nuevas</b>, solo para esa llamada, con los argumentos que mandaste. Esto es clave para la recursividad.</p>
+  </div>
+
+  <h3 class="sub">La trampa clásica: imprimir no es devolver</h3>
+  <div class="duo">
+    <div class="card card-yellow">
+      <h4>return · le devuelve el valor a quien llamó</h4>
+      <pre class="java"><code>public static int doble(int x) {
+    return x * 2;
+}
+
+// en main:
+int r = doble(4) + 1;    // r vale 9</code></pre>
+      <p>El 8 <b>regresa</b> a quien llamó, y se puede seguir usando en otras cuentas.</p>
+    </div>
+    <div class="card card-purple">
+      <h4>println · solo lo muestra</h4>
+      <pre class="java"><code>public static void dobleImprime(int x) {
+    System.out.println(x * 2);
+}
+
+// en main:
+dobleImprime(4);    // se ve un 8, y ya</code></pre>
+      <p>El 8 <b>se ve en pantalla</b>, pero nadie lo recibe: el método es <code>void</code>. Escribir <code>dobleImprime(4) + 1</code> ni siquiera compila.</p>
+    </div>
+  </div>
+  <p>Esto es clave en recursividad: cada llamada <b>necesita</b> el valor que le devuelve la siguiente para armar su propio resultado. Si solo se imprime, a la llamada que espera no le llega nada.</p>
+</section>
+
+<section id="arreglos" class="sec">
+  <header class="sec-h"><span class="num">6</span><h2>Arreglos y String</h2></header>
+  <p class="sec-p">Dos formas de guardar <b>varios datos en orden</b>. Aparecen en varios ejemplos recursivos, así que vale la pena tenerlas claras.</p>
+
+  <h3 class="sub">Arreglos: varias cajas en fila</h3>
+  <pre class="java"><code>int[] numeros = {4, 8, 15, 16, 23, 42};</code></pre>
+  <div class="arr-demo" aria-hidden="true">
+    <div class="arr-fila">
+      <span class="arr-c"><b>4</b><small>0</small></span><span class="arr-c"><b>8</b><small>1</small></span><span class="arr-c"><b>15</b><small>2</small></span>
+      <span class="arr-c"><b>16</b><small>3</small></span><span class="arr-c"><b>23</b><small>4</small></span><span class="arr-c"><b>42</b><small>5</small></span>
+    </div>
+    <p class="arr-pie">arriba el valor · abajo su posición</p>
+  </div>
+  <ul class="lista-clara">
+    <li><code>int[]</code> significa «arreglo de enteros». Los valores van entre llaves, separados por coma.</li>
+    <li>Cada elemento tiene una <b>posición</b> (su índice) que <b>empieza en 0</b>, no en 1: <code>numeros[0]</code> es 4 y <code>numeros[2]</code> es 15.</li>
+    <li><code>numeros.length</code> dice cuántos elementos hay: 6. Va <b>sin</b> paréntesis.</li>
+    <li>Como se empieza a contar en 0, el último está en la posición <code>numeros.length - 1</code>, o sea 5. Pedir <code>numeros[6]</code> truena al ejecutar con <code>ArrayIndexOutOfBoundsException</code>.</li>
+  </ul>
+
+  <h3 class="sub">String: una fila de caracteres</h3>
+  <p>A un String también se le dice <b>cadena</b> (de caracteres). Funciona parecido a un arreglo: cada carácter tiene su posición, empezando en 0. La diferencia es que se consulta con <b>métodos</b>, que llevan paréntesis. Escribe una palabra, mueve la posición y mira qué da cada uno:</p>
+  <div class="str-lab" id="strLab"></div>
+
+  <div class="box box-yellow">
+    <b><i data-lucide="triangle-alert"></i> Dos detalles que confunden a todos</b>
+    <ul>
+      <li>En un arreglo es <code>arr.length</code>, <b>sin</b> paréntesis. En un String es <code>s.length()</code>, <b>con</b> paréntesis.</li>
+      <li>Para comparar dos String no uses <code>==</code>: usa <code>s.equals("hola")</code>. El <code>==</code> revisa si son el mismo objeto en memoria, no si dicen lo mismo, y a veces falla sin avisar.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="llamadas" class="sec">
+  <header class="sec-h"><span class="num">7</span><h2>Una llamada espera a la otra</h2></header>
+  <p class="sec-p">Lo último, y lo más importante para lo que sigue. Un método puede llamar a otro, que a su vez llama a otro… Y cada vez, <b>el que llama se queda en pausa</b> hasta que el llamado termina y le devuelve su resultado.</p>
+  <p>Avanza este programa paso a paso. Cada tarjeta de la columna <b>«Llamadas en curso»</b> es una <b>llamada</b> que no ha terminado, con <b>sus propias variables</b> (un mismo método puede tener varias tarjetas a la vez). La de hasta arriba es la que se ejecuta ahorita; las de abajo están esperando. En la parte 3 vas a ver que esta columna se llama <b>pila de llamadas</b> y que a cada tarjeta se le dice <b>marco</b>.</p>
+  <div class="visual" id="visLlamadas" data-programas="llamadas" data-unidad="tarjeta"></div>
+  <div class="box box-green">
+    <b>Fíjate en esto antes de seguir</b>
+    <p>La <code>x</code> de <code>doble</code> y la <code>x</code> de <code>cuadruple</code> se llaman igual, pero <b>no son la misma caja</b>: cada llamada tiene las suyas. Y cuando <code>doble</code> termina, su tarjeta desaparece y <code>cuadruple</code> sigue exactamente donde se había quedado. La recursividad funciona igualito; la única diferencia es que el método que llama y el llamado <b>son el mismo</b>.</p>
+  </div>
+</section>
+
+<section id="listo" class="sec">
+  <header class="sec-h"><span class="num">8</span><h2>Antes de seguir</h2></header>
+  <p class="sec-p">Palomea lo que ya puedas hacer sin ver. Si algo no te sale, regresa a esa sección: lo que sigue da por hecho estos puntos, y ninguno más.</p>
+  <div class="check" id="javaCheck"></div>
+  <p class="counter" id="javaCheckMsg"></p>
+</section>
+</main>
+
+<div id="pie"></div>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="sonido.js?v=b584605a"></script>
+<script src="datos.js?v=1af35b9a"></script>
+<script src="datos-ed.js?v=b0accc63"></script>
+<script src="nucleo.js?v=09186451"></script>
+<script src="secciones.js?v=c2d7ae49"></script>
+<script src="secciones-ed.js?v=be370f58"></script>
+</body>
+</html>

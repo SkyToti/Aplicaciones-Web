@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f1e3">
+<title>Repaso API REST — Aplicaciones Web</title>
+<meta name="description" content="Cuaderno interactivo para el examen de Aplicaciones Web: teoría, códigos HTTP, laboratorio, los 6 giros resueltos y simulacro cronometrado.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Repaso API REST — Aplicaciones Web">
+<meta property="og:description" content="Cuaderno interactivo para el examen de Aplicaciones Web: teoría, códigos HTTP, laboratorio, los 6 giros resueltos y simulacro cronometrado.">
+<!-- Si el repo cambia de nombre, actualiza estas dos URLs -->
+<meta property="og:url" content="https://skytoti.github.io/Aplicaciones-Web/aplicaciones-web.html">
+<meta property="og:image" content="https://skytoti.github.io/Aplicaciones-Web/og.png">
+<meta property="og:locale" content="es_MX">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📓</text></svg>">
+<!-- El tema se aplica ANTES de pintar: sin esto, en modo oscuro cada cambio
+     de página daría un destello blanco. -->
+<script>try{var t=localStorage.getItem('rest_tema');var d=t==null?matchMedia('(prefers-color-scheme: dark)').matches:JSON.parse(t);document.documentElement.setAttribute('data-theme',d?'dark':'light')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=f1702e9a">
+</head>
+<body data-pagina="inicio">
+<div id="cabecera"></div>
+<main id="top" class="pagina">
+
+<section class="cover">
+  <div class="cover-card">
+    <span class="tape tape-l"></span>
+    <span class="tape tape-r"></span>
+    <div class="cover-sub">Aplicaciones Web · UTEZ</div>
+    <h1>Cuaderno de<br>repaso <span class="marker">API REST</span></h1>
+    <p class="cover-p">Toda la teoría, los códigos que sí caen, el ejercicio resuelto para los 6 giros y un simulacro con reloj. Con juegos, porque leyendo no se te va a quedar.</p>
+
+    <div class="cd" id="cd">
+      <span class="cd-t">Faltan para el lunes 7:00 a.m.</span>
+      <div class="cd-row">
+        <div class="cd-b"><b id="cdD">–</b><i>días</i></div>
+        <div class="cd-b"><b id="cdH">–</b><i>horas</i></div>
+        <div class="cd-b"><b id="cdM">–</b><i>min</i></div>
+        <div class="cd-b"><b id="cdS">–</b><i>seg</i></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="avisos" id="avisos"></div>
+</section>
+
+<section id="ruta-sec" class="sec">
+  <header class="sec-h"><span class="num"><i data-lucide="route"></i></span><h2>Tu ruta de estudio</h2></header>
+  <p class="sec-p">En este orden. Cada tarjeta se va llenando conforme avanzas, y se guarda en este dispositivo.</p>
+  <div class="ruta" id="ruta"></div>
+</section>
+
+<section id="chuleta" class="sec">
+  <header class="sec-h"><span class="num"><i data-lucide="zap"></i></span><h2>La chuleta</h2></header>
+  <p class="sec-p">Si solo tuvieras diez minutos, sería esto. Toca una tarjeta cuando ya te la sepas de memoria.</p>
+  <div class="cheats" id="cheats"></div>
+  <div class="row-end">
+    <span class="counter" id="cheatCount"></span>
+    <button class="btn btn-ghost btn-s" id="resetCheat">Desmarcar todo</button>
+    <button class="btn btn-ghost btn-s" data-imprimir><i data-lucide="printer"></i> Guardar como PDF</button>
+  </div>
+</section>
+</main>
+
+<div id="pie"></div>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="sonido.js?v=b584605a"></script>
+<script src="datos.js?v=1af35b9a"></script>
+<script src="datos-ed.js?v=b0accc63"></script>
+<script src="nucleo.js?v=09186451"></script>
+<script src="secciones.js?v=c2d7ae49"></script>
+</body>
+</html>

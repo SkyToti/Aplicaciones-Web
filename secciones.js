@@ -1,23 +1,51 @@
 /* ============================================================
-   Repaso API REST — COMPONENTES
-   Cada bloque interactivo (chuleta, simulador, juegos, giros…).
-   Ninguno sabe en qué página vive: initSecciones() arranca solo los
-   que encuentra en el HTML de la página actual.
+   Cuaderno de repaso — COMPONENTES
+   Los bloques interactivos de Aplicaciones Web (simulador, juegos,
+   giros…) y los inicios de cada materia. Ninguno sabe en qué página vive:
+   initSecciones() arranca solo los que encuentra en el HTML de la página.
+   Los de Estructura de Datos están en secciones-ed.js.
    ============================================================ */
 
+/* ---------- si el nucleo.js es el de antes ----------
+   GitHub Pages ignora el ?v=: una página vieja en caché puede cargar este
+   archivo nuevo junto con el nucleo.js de antes, que no sabe de materias.
+   Entonces se imitan aquí sus funciones, como si todo fuera Aplicaciones Web,
+   para que la página no truene los 10 minutos que dura la caché. Con el
+   nucleo.js nuevo este bloque no hace nada. */
+if (typeof materiaActual !== 'function') {
+  const web = {
+    id: 'web', llave: '', examen: 'examen.html',
+    primera: { href: 'fundamentos.html', txt: 'Empieza por los fundamentos' },
+    simulacro: { n: 10, gancho: 'Pruébate como el lunes' }
+  };
+  const conMateria = p => p && Object.assign({ materia: 'web' }, p);
+  Object.assign(window, {
+    materiaDe: () => web,
+    materiaActual: () => web,
+    llaveDe: (mat, k) => k,
+    datosDe: () => ({ chuleta: CHEAT, quiz: QUIZ }),
+    paginaDe: id => conMateria(PAGINAS.find(p => p.id === id)),
+    paginasDe: () => PAGINAS.map(conMateria),
+    escHtml: s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  });
+}
+
+/* La chuleta de la materia de la página: cada una marca las suyas. */
 function renderCheat() {
-  const done = store.get('cheat', []);
+  const mat = (materiaActual() || materiaDe('web')).id;
+  const lista = datosDe(mat).chuleta, llave = llaveDe(mat, 'cheat');
+  const done = store.get(llave, []);
   const g = $('#cheats'); g.innerHTML = '';
-  CHEAT.forEach((c, i) => {
+  lista.forEach((c, i) => {
     const n = el('div', 'cheat' + (done.includes(i) ? ' done' : ''), `<span class="mark"><i data-lucide="check"></i></span><h4>${c.t}</h4><p>${c.d}</p>`);
     n.addEventListener('click', () => {
-      const d = store.get('cheat', []); const k = d.indexOf(i);
+      const d = store.get(llave, []); const k = d.indexOf(i);
       if (k > -1) d.splice(k, 1); else d.push(i);
-      store.set('cheat', d); renderCheat(); progreso();
+      store.set(llave, d); renderCheat(); progreso();
     });
     g.appendChild(n);
   });
-  $('#cheatCount').textContent = `${done.length} de ${CHEAT.length} dominadas`;
+  $('#cheatCount').textContent = `${done.length} de ${lista.length} dominadas`;
 }
 
 function renderResto() {
@@ -289,15 +317,16 @@ function validar(ruta) {
   if (/[A-Z]/.test(sq)) out.push(['err', 'Tiene <b>mayúsculas</b>. Las URLs van en minúsculas.']);
   const verbos = ['get', 'post', 'obtener', 'crear', 'borrar', 'eliminar', 'actualizar', 'listar', 'buscar', 'consultar', 'agregar', 'insertar', 'update', 'delete', 'create', 'add', 'filtrar', 'guardar', 'editar', 'modificar', 'registrar', 'traer', 'ver'];
   const cv = partes.find(p => verbos.some(v => p.toLowerCase() === v || (p.toLowerCase().startsWith(v) && p.length > v.length && /[A-Z-]/.test(p[v.length] || ''))));
-  if (cv) out.push(['err', `<b>«${cv}»</b> parece un verbo. El verbo lo pone el método HTTP, no la URL.`]);
+  // Los pedazos de la ruta los escribió el alumno: se escapan para que un «<b>» se lea, no se pinte.
+  if (cv) out.push(['err', `<b>«${escHtml(cv)}»</b> parece un verbo. El verbo lo pone el método HTTP, no la URL.`]);
   if (/_/.test(sq)) out.push(['warn', 'Usa <b>guion medio</b> (-) en vez de guion bajo (_).']);
   const sust = partes.filter(p => !/^\{?\d/.test(p) && !/^\{.*\}$/.test(p) && !/^v\d+$/.test(p) && !/^api$/i.test(p));
   const sing = sust.find(p => !/s$|es$/.test(p.toLowerCase()) && !verbos.includes(p.toLowerCase()));
-  if (sing && !cv) out.push(['warn', `<b>«${sing}»</b> parece estar en <b>singular</b>. Los recursos van en plural.`]);
+  if (sing && !cv) out.push(['warn', `<b>«${escHtml(sing)}»</b> parece estar en <b>singular</b>. Los recursos van en plural.`]);
   if (!partes.some(p => /^v\d+$/.test(p))) out.push(['warn', 'No veo versión (<b>/v1</b>). No es obligatorio, pero suma puntos.']);
   if (r.includes('?')) out.push(['ok', `Query params detectados. Perfecto: los filtros van ahí, no en la ruta.`]);
   const i = partes.findIndex(p => /^\d+$|^\{.*\}$/.test(p));
-  if (i > 0) out.push(['ok', `Identificador <b>«${partes[i]}»</b> bien colocado después de «${partes[i - 1]}».`]);
+  if (i > 0) out.push(['ok', `Identificador <b>«${escHtml(partes[i])}»</b> bien colocado después de «${escHtml(partes[i - 1])}».`]);
   if (!out.some(o => o[0] !== 'ok')) out.unshift(['ok', '<b>¡Ruta correcta!</b> Cumple las reglas de nombrado REST.']);
   else if (!out.some(o => o[0] === 'err')) out.unshift(['ok', 'Sin errores graves, solo detalles que pulir.']);
   return out;
@@ -418,11 +447,12 @@ function runSim() {
 }
 
 /* ============================================================
-   INICIO — ruta de estudio y avisos
+   INICIOS — ruta de estudio, avisos y las materias
    ============================================================ */
 function renderRuta() {
   const g = $('#ruta'); if (!g) return;
-  g.innerHTML = PAGINAS.filter(p => p.id !== 'inicio').map((p, i) => {
+  const mat = materiaActual(); if (!mat) return;
+  g.innerHTML = paginasDe(mat.id).slice(1).map((p, i) => {
     const av = avancePagina(p.id), pct = Math.round(av * 100), lista = av >= .99;
     const estado = lista ? 'Listo' : av > 0 ? 'Continuar' : 'Empezar';
     return `<a class="ruta-c tono-${p.tono}${lista ? ' lista' : ''}" href="${p.archivo}">
@@ -438,19 +468,67 @@ function renderRuta() {
   }).join('');
 }
 
+const avisoHtml = (tono, href, ico, chico, grande) =>
+  `<a class="aviso tono-${tono}" href="${href}"><i class="aviso-i" data-lucide="${ico}"></i><span><small>${chico}</small><b>${grande}</b></span><i class="aviso-f" data-lucide="arrow-right"></i></a>`;
+
+const fallosDe = mat => {
+  const f = store.get(llaveDe(mat, 'fallos'), {});
+  return datosDe(mat).quiz.filter(q => f[q.id]).length;
+};
+const ultimaDe = mat => {
+  const p = paginaDe(store.get(llaveDe(mat, 'ultima'), null));
+  return p && p.materia === mat && p.id !== paginasDe(mat)[0].id ? p : null;
+};
+
 function renderAvisos() {
   const c = $('#avisos'); if (!c) return;
-  const f = store.get('fallos', {});
-  const nf = QUIZ.filter(q => f[q.id]).length;
-  const ultima = PAGINAS.find(p => p.id === store.get('ultima', null) && p.id !== 'inicio');
-  const bestEx = store.get('bestExamen', 0);
-  const aviso = (tono, href, ico, chico, grande) =>
-    `<a class="aviso tono-${tono}" href="${href}"><i class="aviso-i" data-lucide="${ico}"></i><span><small>${chico}</small><b>${grande}</b></span><i class="aviso-f" data-lucide="arrow-right"></i></a>`;
+  const mat = materiaActual(); if (!mat) return;
+  const nf = fallosDe(mat.id), ultima = ultimaDe(mat.id);
+  const bestEx = store.get(llaveDe(mat.id, 'bestExamen'), 0);
   c.innerHTML =
-    (ultima ? aviso(ultima.tono, ultima.archivo, 'bookmark', 'Te quedaste en', ultima.nombre)
-      : aviso('az', 'fundamentos.html', 'play', 'Primera vez aquí', 'Empieza por los fundamentos')) +
-    (nf ? aviso('am', 'examen.html#fallos', 'rotate-ccw', 'Tienes pendientes', nf + ' pregunta' + (nf === 1 ? '' : 's') + ' que fallaste') : '') +
-    aviso('ro', 'examen.html#simulacro', 'timer', bestEx ? 'Tu mejor simulacro: ' + bestEx + '/10' : 'Pruébate como el lunes', 'Hacer el simulacro');
+    (ultima ? avisoHtml(ultima.tono, ultima.archivo, 'bookmark', 'Te quedaste en', ultima.nombre)
+      : avisoHtml('az', mat.primera.href, 'play', 'Primera vez aquí', mat.primera.txt)) +
+    (nf ? avisoHtml('am', mat.examen + '#fallos', 'rotate-ccw', 'Tienes pendientes', nf + ' pregunta' + (nf === 1 ? '' : 's') + ' que fallaste') : '') +
+    avisoHtml('ro', mat.examen + '#simulacro', 'timer', bestEx ? `Tu mejor simulacro: ${bestEx}/${mat.simulacro.n}` : mat.simulacro.gancho, 'Hacer el simulacro');
+}
+
+/* Inicio general: una tarjeta por materia con su avance. */
+function renderMaterias() {
+  const g = $('#materias'); if (!g) return;
+  g.innerHTML = MATERIAS.map(m => {
+    const pct = Math.round(avanceMateria(m.id) * 100);
+    const ultima = ultimaDe(m.id), nf = fallosDe(m.id);
+    const bestEx = store.get(llaveDe(m.id, 'bestExamen'), 0);
+    const pags = paginasDe(m.id).slice(1);
+    const meta = (bestEx ? `<span><i data-lucide="timer"></i> Mejor simulacro: <b>${bestEx}/${m.simulacro.n}</b></span>` : '') +
+      (nf ? `<a href="${m.examen}#fallos"><i data-lucide="rotate-ccw"></i> ${nf} fallo${nf === 1 ? '' : 's'} pendiente${nf === 1 ? '' : 's'}</a>` : '');
+    return `<article class="materia tono-${m.tono}">
+      <a class="materia-h" href="${m.inicio}">
+        <span class="materia-ico"><i data-lucide="${m.icono}"></i></span>
+        <span class="materia-nom"><small>${m.tema}</small><b>${m.nombre}</b></span>
+        <span class="materia-pct">${pct}%</span>
+      </a>
+      <div class="materia-b">
+        <p class="materia-d">${m.desc}</p>
+        <ol class="materia-pags">
+          ${pags.map((p, i) => `<li${avancePagina(p.id) >= .99 ? ' class="lista"' : ''}><a href="${p.archivo}"><span class="materia-n">${i + 1}</span>${p.nombre}<i data-lucide="check"></i></a></li>`).join('')}
+        </ol>
+        <div class="materia-barra" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}" aria-label="Avance en ${m.nombre}"><span style="width:${pct}%"></span></div>
+        ${meta ? `<p class="materia-meta">${meta}</p>` : ''}
+        <div class="materia-cta">
+          <a class="btn btn-yellow" href="${ultima ? ultima.archivo : m.inicio}">${ultima ? `Seguir en ${ultima.nombre}` : 'Entrar'} <i data-lucide="arrow-right"></i></a>
+          ${ultima ? `<a class="btn btn-ghost btn-s" href="${m.inicio}">Inicio de la materia</a>` : ''}
+        </div>
+      </div>
+    </article>`;
+  }).join('');
+
+  const av = $('#avisosHub');
+  if (av) {
+    const m = materiaDe(store.get('ultimaMateria', null)), ultima = m && ultimaDe(m.id);
+    av.innerHTML = ultima ? avisoHtml(m.tono, ultima.archivo, 'bookmark', `Te quedaste en ${m.nombre}`, ultima.nombre) : '';
+    av.classList.toggle('hidden', !ultima);
+  }
 }
 
 /* ============================================================
@@ -460,13 +538,14 @@ function renderAvisos() {
 function initSecciones() {
   const hay = id => !!document.getElementById(id);
 
+  if (hay('materias')) { renderMaterias(); alProgreso.push(renderMaterias); }
   if (hay("ruta")) { renderRuta(); alProgreso.push(renderRuta); }
   if (hay("avisos")) renderAvisos();
 
   if (hay('cheats')) {
     renderCheat();
     const r = $('#resetCheat');
-    if (r) r.addEventListener('click', () => { store.set('cheat', []); renderCheat(); progreso(); });
+    if (r) r.addEventListener('click', () => { store.set(llaveDe((materiaActual() || materiaDe('web')).id, 'cheat'), []); renderCheat(); progreso(); });
   }
   if (hay('resto')) renderResto();
   if (hay('restGrid')) renderRest();

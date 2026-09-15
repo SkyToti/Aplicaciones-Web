@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f1e3">
+<title>Ejemplos resueltos · Estructura de Datos</title>
+<meta name="description" content="Los 10 ejemplos clásicos de recursividad en Java resueltos: cuenta regresiva, suma, factorial, potencia, fibonacci, suma de dígitos, invertir cadena, suma de arreglo, búsqueda binaria y Torres de Hanoi.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ejemplos resueltos · Estructura de Datos">
+<meta property="og:description" content="Los 10 clásicos de recursividad en Java: la idea en español, el código renglón por renglón, su prueba de escritorio y el programa completo.">
+<!-- Si el repo cambia de nombre, actualiza estas dos URLs -->
+<meta property="og:url" content="https://skytoti.github.io/Aplicaciones-Web/recursividad-ejemplos.html">
+<meta property="og:image" content="https://skytoti.github.io/Aplicaciones-Web/og-ed.png">
+<meta property="og:locale" content="es_MX">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📓</text></svg>">
+<!-- El tema se aplica ANTES de pintar: sin esto, en modo oscuro cada cambio
+     de página daría un destello blanco. -->
+<script>try{var t=localStorage.getItem('rest_tema');var d=t==null?matchMedia('(prefers-color-scheme: dark)').matches:JSON.parse(t);document.documentElement.setAttribute('data-theme',d?'dark':'light')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=f1702e9a">
+</head>
+<body data-pagina="ed-ejemplos" data-materia="ed">
+<div id="cabecera"></div>
+<main id="top" class="pagina">
+
+  <header class="pg-hero tono-ve">
+    <span class="pg-kicker"><i data-lucide="code-xml"></i> Parte 4 de 6</span>
+    <h1>Ejemplos resueltos</h1>
+    <p class="pg-lead">Los diez clásicos, del más fácil al reto. Cada uno trae la idea en español, el código explicado renglón por renglón, su prueba de escritorio, los errores típicos y el programa completo para que lo corras tú.</p>
+    <nav class="pg-indice" aria-label="En esta página">
+      <a href="#ejemplos">Los 10 ejemplos</a>
+      <a href="#resumen">Todos en una tabla</a>
+    </nav>
+  </header>
+
+<section id="ejemplos" class="sec">
+  <header class="sec-h"><span class="num">1</span><h2>Los 10 ejemplos</h2></header>
+  <p class="sec-p">Te recomiendo ir en orden: cada uno agrega algo nuevo al anterior. Los que dicen «Verlo paso a paso» se pueden seguir en el visualizador de la pila.</p>
+
+  <div class="box box-blue">
+    <b>¿Cómo pruebo los programas?</b>
+    <p>Crea un proyecto en NetBeans, IntelliJ o VS Code con una clase que se llame <code>Main</code>, borra lo que traiga (menos el renglón <code>package …;</code> de hasta arriba, si tu editor lo puso) y pega el <b>programa completo</b> de cada ejemplo. Si no tienes nada instalado, busca «compilador de Java en línea»: funciona igual desde el celular. Todos los programas de aquí se corrieron antes de publicarse, y su salida es la real.</p>
+  </div>
+
+  <div class="giro-tabs" id="ejTabs"></div>
+  <div class="giro ejemplo" id="ej"></div>
+</section>
+
+<section id="resumen" class="sec">
+  <header class="sec-h"><span class="num">2</span><h2>Todos en una tabla</h2></header>
+  <p class="sec-p">Para repasar rápido: el caso base, el caso recursivo y cómo se acerca cada uno al caso base. Toca un nombre para abrir su ejemplo.</p>
+  <div class="tscroll"><table class="tabla-resumen" id="ejResumen"></table></div>
+</section>
+</main>
+
+<div id="pie"></div>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="sonido.js?v=b584605a"></script>
+<script src="datos.js?v=1af35b9a"></script>
+<script src="datos-ed.js?v=b0accc63"></script>
+<script src="nucleo.js?v=09186451"></script>
+<script src="secciones.js?v=c2d7ae49"></script>
+<script src="secciones-ed.js?v=be370f58"></script>
+</body>
+</html>
